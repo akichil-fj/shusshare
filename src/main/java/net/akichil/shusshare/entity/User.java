@@ -23,4 +23,6 @@ public class User {
 
     private String profilePhotoUrl;
 
+    private UserStatus status;
+
 }
