@@ -25,4 +25,6 @@ public class User {
 
     private UserStatus status;
 
+    private FriendStatus friendStatus;
+
 }
