@@ -1,4 +1,4 @@
-friend_id,account_id_1,account_id_2,status,lock_version,updated_at
+friend_id,account_id_from,account_id_to,status,lock_version,updated_at
 1,1,2,0,0,2022-06-03 12:00:00.000
 2,2,3,0,0,2022-06-03 13:00:00.000
 3,3,4,0,0,2022-06-03 14:00:00.000

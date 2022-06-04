@@ -19,17 +19,19 @@ create table if not exists friend
     account_id_from    bigint unsigned                    not null,
     account_id_to      bigint unsigned                    not null,
     status             smallint unsigned    default 0     not null,
+    lock_version       int unsigned         default 0     not null,
     updated_at         timestamp(3)         default current_timestamp(3) not null,
-    foreign key (user_id_1) references account (id),
-    foreign key (user_id_2) references account (id)
+    foreign key (account_id_from) references account (account_id),
+    foreign key (account_id_to) references account (account_id)
 );
 
 create table if not exists shussha
 (
-    shussha_id   bigint unsigned       primary key          auto_increment,
-    user_id      bigint unsigned                            not null,
-    date         date            default current_date,
-    updated_at   timestamp(3)    default current_timestamp(3) not null,
-    foreign key (user_id) references account (id)
+    shussha_id     bigint unsigned       primary key          auto_increment,
+    account_id     bigint unsigned                            not null,
+    date           date                  default current_date,
+    lock_version   int unsigned          default 0    not null,
+    updated_at     timestamp(3)          default current_timestamp(3) not null,
+    foreign key (account_id) references account (account_id)
 );
 
