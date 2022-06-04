@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
-public enum UserStatus {
+public enum AccountStatus {
 
     NORMAL(0),
     DELETED(1),
@@ -15,7 +15,7 @@ public enum UserStatus {
 
     private final int value;
 
-    public static UserStatus getUserStatus(int value) {
+    public static AccountStatus getUserStatus(int value) {
         return Arrays.stream(values())
                 .filter(v -> v.getValue() == value)
                 .findFirst().orElse(NONE);

@@ -11,10 +11,10 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FriendList {
 
-    private List<User> acceptedFriends;
+    private List<Account> acceptedFriends;
 
-    private List<User> requestedFriends;
+    private List<Account> requestedFriends;
 
-    private List<User> pendingFriends;
+    private List<Account> pendingFriends;
 
 }
