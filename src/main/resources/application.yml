@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driverClassName: com.mariadb.cj.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/s_share?serverTimezone=JST&connectionTimezone=SERVER
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 4
+      minimum-idle: 1
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+
