@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Account {
 
-    private Integer id;
+    private Integer accountId;
 
     private String userId;
 

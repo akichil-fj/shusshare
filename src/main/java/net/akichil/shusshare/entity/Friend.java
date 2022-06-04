@@ -13,7 +13,11 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Friend {
 
-    private Integer id;
+    private Integer friendId;
+
+    private Integer accountIdFrom;
+
+    private Integer accountId;
 
     private String userId;
 
@@ -22,4 +26,5 @@ public class Friend {
     private String profilePhotoUrl;
 
     private FriendStatus status;
+
 }
