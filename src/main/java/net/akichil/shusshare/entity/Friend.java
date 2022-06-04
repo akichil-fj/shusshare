@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Account {
+public class Friend {
 
     private Integer id;
 
@@ -19,10 +19,7 @@ public class Account {
 
     private String userName;
 
-    private String password;
-
     private String profilePhotoUrl;
 
-    private AccountStatus status;
-
+    private FriendStatus status;
 }
