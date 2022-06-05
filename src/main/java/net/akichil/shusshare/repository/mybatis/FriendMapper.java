@@ -18,10 +18,10 @@ public interface FriendMapper {
 
     List<FriendDetail> findGoOfficeFriends(Integer id);
 
-    int add(Friend friend);
+    int insert(Friend friend);
 
     int update(Friend friend);
 
-    int remove(Friend friend);
+    int delete(Friend friend);
 
 }

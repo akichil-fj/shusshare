@@ -83,4 +83,45 @@
             f.account_id_to = #{id}
     </select>
 
+    <insert id="insert">
+        INSERT INTO friend(
+            account_id_from,
+            account_id_to,
+            status
+        )
+        VALUES(
+            #{accountIdFrom},
+            #{accountIdTo},
+            #{status}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+            friend
+        SET
+            <if test="status != null">
+                status = #{status},
+            </if>
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            account_id_from = #{accountIdFrom}
+            AND
+            account_id_to = #{accountIdTo}
+            AND
+            lock_version = #{lockVersion}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM
+            friend
+        WHERE
+            account_id_from = #{accountIdFrom}
+            AND
+            account_id_to = #{accountIdTo}
+            AND
+            lock_version = #{lockVersion}
+    </delete>
+
 </mapper>

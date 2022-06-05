@@ -45,16 +45,16 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     @Override
     public void add(Friend friend) {
-
+        sqlSession.getMapper(FriendMapper.class).insert(friend);
     }
 
     @Override
     public void set(Friend friend) {
-
+        sqlSession.getMapper(FriendMapper.class).update(friend);
     }
 
     @Override
     public void remove(Friend friend) {
-
+        sqlSession.getMapper(FriendMapper.class).delete(friend);
     }
 }
