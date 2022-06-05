@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'net.akichil'
@@ -35,4 +36,25 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+
+	reports {
+		xml.required = true
+		csv.required = false
+		html.required = true
+	}
+
+	// カバレッジ集計の対象外を設定
+	afterEvaluate {
+		classDirectories.setFrom(fileTree(
+			dir: 'build/classes/java/main/',
+			excludes: [ '**/entity/*' ]
+		))
+	}
 }
