@@ -45,7 +45,7 @@ public class FriendRepositoryImplDbUnitTest {
 
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
-            assertEquals(4, findResults.size());
+            assertEquals(3, findResults.size());
         }
 
         /**
@@ -131,6 +131,17 @@ public class FriendRepositoryImplDbUnitTest {
         @Test
         public void testFindFriendNotFound() {
             final Integer accountId = 100;
+            final Integer accountIdFrom = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(accountId, accountIdFrom));
+        }
+
+        /**
+         * 削除済みのaccount_idを検索
+         */
+        @Test
+        public void testFindFriendDeleted() {
+            final Integer accountId = 3;
             final Integer accountIdFrom = 1;
 
             assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(accountId, accountIdFrom));

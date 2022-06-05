@@ -46,6 +46,8 @@
                 AND
                 a.account_id != #{accountIdFrom}
             </if>
+            AND
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
         </where>
     </select>
 
@@ -81,6 +83,8 @@
             ON a.account_id = f.account_id_from
         WHERE
             f.account_id_to = #{id}
+            AND
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
     <select id="findFriendByAccountId" resultMap="FriendDetail">
@@ -107,6 +111,8 @@
             ON a.account_id = f.account_id_to
         WHERE
             a.account_id = #{accountId}
+            AND
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
     <insert id="insert">

@@ -56,6 +56,16 @@ public class AccountRepositoryImplDbUnitTest {
             assertThrows(ResourceNotFoundException.class, () -> target.findOne(accountId));
         }
 
+        /**
+         * 削除済みユーザを検索
+         */
+        @Test
+        public void testNotFoundDeleted() {
+            final Integer accountId = 3;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(accountId));
+        }
+
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})

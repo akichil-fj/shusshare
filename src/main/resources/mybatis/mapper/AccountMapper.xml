@@ -23,6 +23,8 @@
             account
         WHERE
             account_id = #{accountId}
+            AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="accountId" keyColumn="account_id">
@@ -66,6 +68,8 @@
         WHERE
             account_id = #{accountId}
             AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+            AND
             lock_version = #{lockVersion}
     </update>
 
@@ -79,8 +83,9 @@
         WHERE
             account_id = #{accountId}
             AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+            AND
             lock_version = #{lockVersion}
     </update>
-
 
 </mapper>
