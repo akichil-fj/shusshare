@@ -83,6 +83,32 @@
             f.account_id_to = #{id}
     </select>
 
+    <select id="findFriendByAccountId" resultMap="FriendDetail">
+        SELECT
+            a.account_id AS account_id,
+            a.user_id AS user_id,
+            a.user_name AS user_name,
+            a.profile_photo_url AS profile_photo_url,
+            f.account_id_from AS account_id_from,
+            f.account_id_to AS account_id_to,
+            f.status AS status
+        FROM
+            account a
+            LEFT OUTER JOIN
+            (SELECT
+                account_id_from,
+                account_id_to,
+                status
+            FROM
+                friend
+            WHERE
+                account_id_from = #{accountIdFrom}
+            ) AS f
+            ON a.account_id = f.account_id_to
+        WHERE
+            a.account_id = #{accountId}
+    </select>
+
     <insert id="insert">
         INSERT INTO friend(
             account_id_from,

@@ -16,7 +16,7 @@ public interface FriendRepository {
 
     List<FriendDetail> findGoOfficeFriend(Integer id);
 
-    Friend findOne(Integer id);
+    FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom);
 
     void add(Friend friend);
 

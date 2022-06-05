@@ -110,6 +110,31 @@ public class FriendRepositoryImplDbUnitTest {
             assertEquals("ほげ山ほげお", result0.getUserName());
             assertEquals(FriendStatus.FOLLOWED, result0.getStatus());
         }
+
+        /**
+         * account_idでフレンド検索
+         */
+        @Test
+        public void testFindFriendById() {
+            final Integer accountId = 3;
+            final Integer accountIdFrom = 1;
+
+            FriendDetail findResult = target.findFriendByAccountId(accountId, accountIdFrom);
+
+            assertEquals(accountId, findResult.getAccountId());
+            assertEquals(FriendStatus.FOLLOWED, findResult.getStatus());
+        }
+
+        /**
+         * account_idが存在しない
+         */
+        @Test
+        public void testFindFriendNotFound() {
+            final Integer accountId = 100;
+            final Integer accountIdFrom = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(accountId, accountIdFrom));
+        }
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})

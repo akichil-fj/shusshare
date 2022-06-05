@@ -40,8 +40,12 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public Friend findOne(Integer id) {
-        return null;
+    public FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom) {
+        FriendDetail friend = sqlSession.getMapper(FriendMapper.class).findFriendByAccountId(accountId, accountIdFrom);
+        if (friend == null) {
+            throw new ResourceNotFoundException();
+        }
+        return friend;
     }
 
     @Override
