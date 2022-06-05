@@ -25,5 +25,62 @@
             account_id = #{accountId}
     </select>
 
+    <insert id="add" useGeneratedKeys="true" keyProperty="accountId" keyColumn="account_id">
+        INSERT INTO account(
+            user_id,
+            user_name,
+            password,
+            profile_photo_url,
+            status
+        )
+        VALUES(
+            #{userId},
+            #{userName},
+            #{password},
+            #{profilePhotoUrl},
+            #{status}
+        )
+    </insert>
+
+    <update id="set">
+        UPDATE
+            account
+        SET
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="userName != null">
+                user_Name = #{userName},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="profilePhotoUrl != null">
+                profile_photo_url = #{profilePhotoUrl},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            account_id = #{accountId}
+            AND
+            lock_version = #{lockVersion}
+    </update>
+
+    <update id="remove">
+        UPDATE
+            account
+        SET
+            status = 1,
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            account_id = #{accountId}
+            AND
+            lock_version = #{lockVersion}
+    </update>
+
 
 </mapper>

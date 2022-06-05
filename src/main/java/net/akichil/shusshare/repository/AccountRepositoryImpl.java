@@ -26,17 +26,23 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public void add(Account account) {
-
+        sqlSession.getMapper(AccountMapper.class).add(account);
     }
 
     @Override
     public void set(Account account) {
-
+        final int affected = sqlSession.getMapper(AccountMapper.class).set(account);
+        if (affected != 1) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     @Override
     public void remove(Account account) {
-
+        final int affected = sqlSession.getMapper(AccountMapper.class).remove(account);
+        if (affected != 1) {
+            throw new ResourceNotFoundException();
+        }
     }
 
 }

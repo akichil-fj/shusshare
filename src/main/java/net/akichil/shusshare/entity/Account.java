@@ -25,4 +25,6 @@ public class Account {
 
     private AccountStatus status;
 
+    private Integer lockVersion;
+
 }
