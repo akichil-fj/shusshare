@@ -19,6 +19,8 @@ public class Friend {
 
     private Integer accountIdTo;
 
+    private FriendStatus status;
+
     private Integer lockVersion;
 
     private LocalDate updatedAt;

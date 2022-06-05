@@ -23,6 +23,4 @@ public class FriendDetail extends Friend {
 
     private String profilePhotoUrl;
 
-    private FriendStatus status;
-
 }
