@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.akichil.shusshare.repository.mybatis.ShusshaMapper">
+
+    <resultMap id="Shussha" type="net.akichil.shusshare.entity.Shussha">
+        <id property="shusshaId" column="shussha_id"/>
+        <result property="accountId" column="account_id"/>
+        <result property="date" column="date"/>
+        <result property="lockVersion" column="lock_version"/>
+    </resultMap>
+
+    <select id="find" resultMap="Shussha">
+        SELECT
+            shussha_id,
+            account_id,
+            date,
+            lock_version
+        FROM
+            shussha
+        WHERE
+            account_id = #{accountId}
+            AND
+            date = #{date}
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="shusshaId" keyColumn="shussha_id">
+        INSERT INTO shussha(
+            account_id,
+            date
+        )
+        VALUES(
+            #{accountId},
+            #{date}
+        )
+    </insert>
+
+    <delete id="remove">
+        DELETE FROM
+            shussha
+        WHERE
+            shussha_id = #{shusshaId}
+    </delete>
+
+</mapper>
