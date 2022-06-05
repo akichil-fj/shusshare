@@ -6,6 +6,7 @@ import net.akichil.shusshare.entity.UserSelector;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -17,7 +18,8 @@ public interface FriendMapper {
 
     List<FriendDetail> findFriendsToUser(Integer id);
 
-    List<FriendDetail> findGoOfficeFriends(Integer id);
+    List<FriendDetail> findGoOfficeFriends(@Param("accountId") Integer accountId,
+                                           @Param("date") LocalDate date);
 
     FriendDetail findFriendByAccountId(@Param(value = "accountId") Integer accountId,
                                        @Param(value = "accountIdFrom") Integer accountIdFrom);

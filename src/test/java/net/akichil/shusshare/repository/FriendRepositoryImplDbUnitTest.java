@@ -17,6 +17,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -145,6 +146,17 @@ public class FriendRepositoryImplDbUnitTest {
             final Integer accountIdFrom = 1;
 
             assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(accountId, accountIdFrom));
+        }
+
+        @Test
+        public void testFindGoOfficeFriend() {
+            final Integer id = 2;
+            final LocalDate date = LocalDate.of(2022, 6, 5);
+
+            List<FriendDetail> findResults = target.findGoOfficeFriend(id, date);
+
+            assertEquals(1, findResults.size());
+            assertEquals(1, findResults.get(0).getAccountId());
         }
     }
 
