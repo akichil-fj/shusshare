@@ -10,7 +10,8 @@ create table if not exists account
     profile_photo_url  varchar(300)          default null,
     updated_at         timestamp(3)          default current_timestamp(3) not null,
     lock_version       int unsigned          default 0    not null,
-    status             smallint unsigned     default 0    not null
+    status             smallint unsigned     default 0    not null,
+    shussha_count      int                   default 0    not null
 );
 
 create table if not exists friend

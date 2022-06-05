@@ -25,6 +25,8 @@ public class Account {
 
     private AccountStatus status;
 
+    private Integer shusshaCount;
+
     private Integer lockVersion;
 
 }

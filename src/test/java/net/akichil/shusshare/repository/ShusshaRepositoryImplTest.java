@@ -60,7 +60,7 @@ public class ShusshaRepositoryImplTest {
         @Test
         public void testInsertSuccess() throws Exception {
             final Shussha insertData = new Shussha();
-            insertData.setAccountId(3);
+            insertData.setAccountId(2);
             insertData.setDate(LocalDate.of(2022, 6, 7));
 
             target.add(insertData);
