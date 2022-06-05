@@ -3,6 +3,7 @@ package net.akichil.shusshare.repository;
 import net.akichil.shusshare.entity.Friend;
 import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.UserSelector;
+import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.repository.mybatis.FriendMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -50,11 +51,17 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     @Override
     public void set(Friend friend) {
-        sqlSession.getMapper(FriendMapper.class).update(friend);
+        final int affected = sqlSession.getMapper(FriendMapper.class).update(friend);
+        if (affected != 1) {
+            throw new ResourceNotFoundException("");
+        }
     }
 
     @Override
     public void remove(Friend friend) {
-        sqlSession.getMapper(FriendMapper.class).delete(friend);
+        final int affected = sqlSession.getMapper(FriendMapper.class).delete(friend);
+        if (affected != 1) {
+            throw new ResourceNotFoundException();
+        }
     }
 }

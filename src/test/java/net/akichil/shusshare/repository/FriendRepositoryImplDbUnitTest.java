@@ -7,10 +7,12 @@ import net.akichil.shusshare.entity.FriendStatus;
 import net.akichil.shusshare.entity.UserSelector;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
 import net.akichil.shusshare.repository.dbunitUtil.DbUnitUtil;
+import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -18,6 +20,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = ShusshareApplication.class)
 public class FriendRepositoryImplDbUnitTest {
@@ -87,8 +90,8 @@ public class FriendRepositoryImplDbUnitTest {
 
             assertEquals(3, findResults.size());
             FriendDetail result0 = findResults.get(0);
-            assertEquals(3, result0.getAccountId());
-            assertEquals("test_piyo", result0.getUserId());
+            assertEquals(1, result0.getAccountId());
+            assertEquals("test_hoge", result0.getUserId());
         }
 
         /**
@@ -115,6 +118,9 @@ public class FriendRepositoryImplDbUnitTest {
 
         private static final String INSERT_DATA_PATH = "src/test/resources/testdata/insert";
 
+        /**
+         * 挿入成功時のテスト
+         */
         @Test
         public void testInsert() throws Exception {
             Friend insertData = new Friend();
@@ -128,6 +134,20 @@ public class FriendRepositoryImplDbUnitTest {
                     "updated_at");
         }
 
+        /**
+         * 挿入失敗時のテスト
+         * 主キーが重複
+         */
+        @Test
+        public void testInsertFail() {
+            Friend insertData = new Friend();
+            insertData.setAccountIdFrom(1);
+            insertData.setAccountIdTo(2);
+            insertData.setStatus(FriendStatus.FOLLOWED);
+
+            assertThrows(DuplicateKeyException.class, () -> target.add(insertData));
+        }
+
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})
@@ -136,6 +156,9 @@ public class FriendRepositoryImplDbUnitTest {
 
         private static final String UPDATE_DATA_PATH = "src/test/resources/testdata/update";
 
+        /**
+         * 更新成功時のテスト
+         */
         @Test
         public void testUpdate() throws Exception {
             Friend updateData = new Friend();
@@ -150,6 +173,20 @@ public class FriendRepositoryImplDbUnitTest {
                     "updated_at");
         }
 
+        /**
+         * 更新失敗時のテスト
+         */
+        @Test
+        public void testUpdateFail() {
+            Friend updateData = new Friend();
+            updateData.setAccountIdFrom(2);
+            updateData.setAccountIdTo(7);
+            updateData.setStatus(FriendStatus.FOLLOWED);
+            updateData.setLockVersion(0);
+
+            assertThrows(ResourceNotFoundException.class, () -> target.set(updateData));
+        }
+
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})
@@ -158,6 +195,9 @@ public class FriendRepositoryImplDbUnitTest {
 
         private static final String DELETE_DATA_PATH = "src/test/resources/testdata/delete";
 
+        /**
+         * 削除成功時のテスト
+         */
         @Test
         public void testDelete() throws Exception {
             Friend deleteData = new Friend();
@@ -169,6 +209,19 @@ public class FriendRepositoryImplDbUnitTest {
 
             DbUnitUtil.assertMutateResults(dataSource, "friend", DELETE_DATA_PATH,
                     "updated_at");
+        }
+
+        /**
+         * 削除失敗時のテスト
+         */
+        @Test
+        public void testDeleteFail() {
+            Friend deleteData = new Friend();
+            deleteData.setAccountIdFrom(1);
+            deleteData.setAccountIdTo(5);
+            deleteData.setLockVersion(0);
+
+            assertThrows(ResourceNotFoundException.class, () -> target.remove(deleteData));
         }
 
     }
