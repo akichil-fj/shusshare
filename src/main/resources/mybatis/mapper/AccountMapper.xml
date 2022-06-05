@@ -3,7 +3,7 @@
 <mapper namespace="net.akichil.shusshare.repository.mybatis.AccountMapper">
 
     <resultMap id="Account" type="net.akichil.shusshare.entity.Account">
-        <id property="id" column="id"/>
+        <id property="accountId" column="account_id"/>
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="password" column="password"/>
@@ -11,9 +11,9 @@
         <result property="status" column="status"/>
     </resultMap>
 
-    <select id="findAll" resultMap="Account">
+    <select id="findOne" resultMap="Account">
         SELECT
-            id,
+            account_id,
             user_id,
             user_name,
             password,
@@ -21,13 +21,8 @@
             status
         FROM
             account
-        <where>
-            <if test="userName != null">
-                user_name LIKE CONCAT('%', #{userName}, '%')
-                OR
-                user_id LIKE CONCAT('%', #{userName}, '%')
-            </if>
-        </where>
+        WHERE
+            account_id = #{accountId}
     </select>
 
 

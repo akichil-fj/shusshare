@@ -2,8 +2,9 @@ package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
 import net.akichil.shusshare.entity.Account;
-import net.akichil.shusshare.entity.UserSelector;
+import net.akichil.shusshare.entity.AccountStatus;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
+import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = ShusshareApplication.class)
 public class AccountRepositoryImplDbUnitTest {
@@ -26,43 +26,27 @@ public class AccountRepositoryImplDbUnitTest {
     public class FindTest {
 
         /**
-         * 全ユーザを引っ張ってくるテスト
+         * アカウント取得テスト
          */
         @Test
-        public void testFindAll() {
-            final UserSelector selector = new UserSelector();
+        public void testFind() {
+            final Integer accountId = 1;
 
-            final List<Account> findResults = target.findAll(selector);
+            final Account findResult = target.findOne(accountId);
 
-            assertEquals(5, findResults.size());
+            assertEquals("test_hoge", findResult.getUserId());
+            assertEquals("ほげ山ほげお", findResult.getUserName());
+            assertEquals(AccountStatus.NORMAL, findResult.getStatus());
         }
 
         /**
-         * ユーザ名で検索
+         * アカウントが存在しない場合
          */
         @Test
-        public void testFindByUsername() {
-            final String userName = "山";
-            final UserSelector selector = new UserSelector();
-            selector.setUserName(userName);
+        public void testNotFound() {
+            final Integer accountId = 99;
 
-            final List<Account> findResults = target.findAll(selector);
-
-            assertEquals(3, findResults.size());
-        }
-
-        /**
-         * ユーザIDで検索
-         */
-        @Test
-        public void testFindByUserId() {
-            final String userName = "user";
-            final UserSelector selector = new UserSelector();
-            selector.setUserName(userName);
-
-            final List<Account> findResults = target.findAll(selector);
-
-            assertEquals(2, findResults.size());
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(accountId));
         }
 
     }

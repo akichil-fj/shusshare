@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AccountMapper {
 
-    Account findOne(Long id);
+    Account findOne(Integer id);
 
     int add(Account account);
 
