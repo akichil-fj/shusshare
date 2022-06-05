@@ -73,7 +73,7 @@
         UPDATE
             account
         SET
-            status = 2,
+            status = '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}',
             lock_version = lock_version + 1,
             updated_at = CURRENT_TIMESTAMP
         WHERE
