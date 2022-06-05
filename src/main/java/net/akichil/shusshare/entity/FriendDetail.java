@@ -4,23 +4,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Friend {
+public class FriendDetail extends Friend {
 
-    private Integer accountIdFrom;
+    private Integer accountId;
 
-    private Integer accountIdTo;
+    private String userId;
 
-    private Integer lockVersion;
+    private String userName;
 
-    private LocalDate updatedAt;
+    private String profilePhotoUrl;
+
+    private FriendStatus status;
 
 }

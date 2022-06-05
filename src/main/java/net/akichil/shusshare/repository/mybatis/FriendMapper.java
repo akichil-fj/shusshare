@@ -1,6 +1,7 @@
 package net.akichil.shusshare.repository.mybatis;
 
 import net.akichil.shusshare.entity.Friend;
+import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.UserSelector;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,13 +10,13 @@ import java.util.List;
 @Mapper
 public interface FriendMapper {
 
-    List<Friend> findAllUser(UserSelector selector);
+    List<FriendDetail> findAllUser(UserSelector selector);
 
-    List<Friend> findFriendsFromUser(Integer id);
+    List<FriendDetail> findFriendsFromUser(Integer id);
 
-    List<Friend> findFriendsToUser(Integer id);
+    List<FriendDetail> findFriendsToUser(Integer id);
 
-    List<Friend> findGoOfficeFriends(Integer id);
+    List<FriendDetail> findGoOfficeFriends(Integer id);
 
     int add(Friend friend);
 

@@ -1,7 +1,7 @@
 package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Friend;
+import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.FriendStatus;
 import net.akichil.shusshare.entity.UserSelector;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
@@ -34,7 +34,7 @@ public class FriendRepositoryImplDbUnitTest {
             final UserSelector selector = new UserSelector();
             selector.setAccountIdFrom(1);
 
-            final List<Friend> findResults = target.findAllUser(selector);
+            final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(4, findResults.size());
         }
@@ -49,7 +49,7 @@ public class FriendRepositoryImplDbUnitTest {
             selector.setAccountIdFrom(1);
             selector.setUserName(userName);
 
-            final List<Friend> findResults = target.findAllUser(selector);
+            final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
         }
@@ -64,7 +64,7 @@ public class FriendRepositoryImplDbUnitTest {
             selector.setAccountIdFrom(1);
             selector.setUserName(userName);
 
-            final List<Friend> findResults = target.findAllUser(selector);
+            final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
         }
@@ -77,10 +77,10 @@ public class FriendRepositoryImplDbUnitTest {
         public void testFindFriendFromUser() {
             final Integer id = 2;
 
-            List<Friend> findResults = target.findFriendFromUser(id);
+            List<FriendDetail> findResults = target.findFriendFromUser(id);
 
             assertEquals(3, findResults.size());
-            Friend result0 = findResults.get(0);
+            FriendDetail result0 = findResults.get(0);
             assertEquals(3, result0.getAccountId());
             assertEquals("test_piyo", result0.getUserId());
         }
@@ -93,10 +93,10 @@ public class FriendRepositoryImplDbUnitTest {
         public void testFindFriendToUser() {
             final Integer id = 2;
 
-            List<Friend> findResults = target.findFriendsToUser(id);
+            List<FriendDetail> findResults = target.findFriendsToUser(id);
 
             assertEquals(1, findResults.size());
-            Friend result0 = findResults.get(0);
+            FriendDetail result0 = findResults.get(0);
             assertEquals(1, result0.getAccountId());
             assertEquals("ほげ山ほげお", result0.getUserName());
             assertEquals(FriendStatus.FOLLOWED, result0.getStatus());

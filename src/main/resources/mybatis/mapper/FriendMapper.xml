@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.akichil.shusshare.repository.mybatis.FriendMapper">
 
-    <resultMap id="Friend" type="net.akichil.shusshare.entity.Friend">
-        <id property="friendId" column="friend_id"/>
+    <resultMap id="FriendDetail" type="net.akichil.shusshare.entity.FriendDetail">
         <result property="accountIdFrom" column="account_id_from"/>
         <result property="accountIdTo" column="account_id_to"/>
         <result property="accountId" column="account_id"/>
@@ -11,11 +10,12 @@
         <result property="userName" column="user_name"/>
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
+        <result property="lockVersion" column="lock_version"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <select id="findAllUser" resultMap="Friend">
+    <select id="findAllUser" resultMap="FriendDetail">
         SELECT
-            f.friend_id AS friend_id,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
             a.account_id AS account_id,
@@ -27,7 +27,6 @@
             account a
             LEFT OUTER JOIN
                 (SELECT
-                    friend_id,
                     account_id_from,
                     account_id_to,
                     status
@@ -50,9 +49,8 @@
         </where>
     </select>
 
-    <select id="findFriendsFromUser" resultMap="Friend">
+    <select id="findFriendsFromUser" resultMap="FriendDetail">
         SELECT
-            f.friend_id AS friend_id,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
             f.account_id_to AS account_id,
@@ -68,9 +66,8 @@
             f.account_id_from = #{id}
     </select>
 
-    <select id="findFriendsToUser" resultMap="Friend">
+    <select id="findFriendsToUser" resultMap="FriendDetail">
         SELECT
-            f.friend_id AS friend_id,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
             f.account_id_from AS account_id,

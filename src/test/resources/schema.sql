@@ -15,12 +15,12 @@ create table if not exists account
 
 create table if not exists friend
 (
-    friend_id          bigint unsigned      primary key   auto_increment,
     account_id_from    bigint unsigned                    not null,
     account_id_to      bigint unsigned                    not null,
     status             smallint unsigned    default 0     not null,
     lock_version       int unsigned         default 0     not null,
     updated_at         timestamp(3)         default current_timestamp(3) not null,
+    primary key(account_id_from, account_id_to),
     foreign key (account_id_from) references account (account_id),
     foreign key (account_id_to) references account (account_id)
 );

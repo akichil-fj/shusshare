@@ -1,6 +1,7 @@
 package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.entity.Friend;
+import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.UserSelector;
 import net.akichil.shusshare.repository.mybatis.FriendMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -18,22 +19,22 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<Friend> findAllUser(UserSelector selector) {
+    public List<FriendDetail> findAllUser(UserSelector selector) {
         return sqlSession.getMapper(FriendMapper.class).findAllUser(selector);
     }
 
     @Override
-    public List<Friend> findFriendFromUser(Integer id) {
+    public List<FriendDetail> findFriendFromUser(Integer id) {
         return sqlSession.getMapper(FriendMapper.class).findFriendsFromUser(id);
     }
 
     @Override
-    public List<Friend> findFriendsToUser(Integer id) {
+    public List<FriendDetail> findFriendsToUser(Integer id) {
         return sqlSession.getMapper(FriendMapper.class).findFriendsToUser(id);
     }
 
     @Override
-    public List<Friend> findGoOfficeFriend(Integer id) {
+    public List<FriendDetail> findGoOfficeFriend(Integer id) {
         return sqlSession.getMapper(FriendMapper.class).findGoOfficeFriends(id);
     }
 
