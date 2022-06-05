@@ -9,9 +9,9 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum AccountStatus {
 
-    NORMAL(0),
-    DELETED(1),
-    NONE(255);
+    NONE(0),
+    NORMAL(1),
+    DELETED(2);
 
     private final int value;
 

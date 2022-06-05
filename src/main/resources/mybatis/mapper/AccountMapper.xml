@@ -73,7 +73,7 @@
         UPDATE
             account
         SET
-            status = 1,
+            status = 2,
             lock_version = lock_version + 1,
             updated_at = CURRENT_TIMESTAMP
         WHERE

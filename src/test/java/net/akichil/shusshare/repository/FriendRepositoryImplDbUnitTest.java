@@ -116,7 +116,7 @@ public class FriendRepositoryImplDbUnitTest {
          */
         @Test
         public void testFindFriendById() {
-            final Integer accountId = 3;
+            final Integer accountId = 2;
             final Integer accountIdFrom = 1;
 
             FriendDetail findResult = target.findFriendByAccountId(accountId, accountIdFrom);
