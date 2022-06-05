@@ -5,6 +5,7 @@
     <resultMap id="Friend" type="net.akichil.shusshare.entity.Friend">
         <id property="friendId" column="friend_id"/>
         <result property="accountIdFrom" column="account_id_from"/>
+        <result property="accountIdTo" column="account_id_to"/>
         <result property="accountId" column="account_id"/>
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
@@ -16,6 +17,7 @@
         SELECT
             f.friend_id AS friend_id,
             f.account_id_from AS account_id_from,
+            f.account_id_to AS account_id_to,
             a.account_id AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
@@ -48,11 +50,30 @@
         </where>
     </select>
 
-    <select id="findFriends" resultMap="Friend">
+    <select id="findFriendsFromUser" resultMap="Friend">
         SELECT
-            f.friend_id AS account_id,
+            f.friend_id AS friend_id,
             f.account_id_from AS account_id_from,
-            a.account_id_to AS account_id,
+            f.account_id_to AS account_id_to,
+            f.account_id_to AS account_id,
+            a.user_id AS user_id,
+            a.user_name AS user_name,
+            a.profile_photo_url AS profile_photo_url,
+            f.status AS status
+        FROM
+            account a
+            INNER JOIN friend f
+            ON a.account_id = f.account_id_to
+        WHERE
+            f.account_id_from = #{id}
+    </select>
+
+    <select id="findFriendsToUser" resultMap="Friend">
+        SELECT
+            f.friend_id AS friend_id,
+            f.account_id_from AS account_id_from,
+            f.account_id_to AS account_id_to,
+            f.account_id_from AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,

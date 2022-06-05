@@ -9,7 +9,9 @@ public interface FriendRepository {
 
     List<Friend> findAllUser(UserSelector selector);
 
-    List<Friend> findFriend(Integer id);
+    List<Friend> findFriendFromUser(Integer id);
+
+    List<Friend> findFriendsToUser(Integer id);
 
     List<Friend> findGoOfficeFriend(Integer id);
 

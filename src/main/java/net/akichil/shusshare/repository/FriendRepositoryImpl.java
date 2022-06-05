@@ -23,8 +23,13 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<Friend> findFriend(Integer id) {
-        return sqlSession.getMapper(FriendMapper.class).findFriends(id);
+    public List<Friend> findFriendFromUser(Integer id) {
+        return sqlSession.getMapper(FriendMapper.class).findFriendsFromUser(id);
+    }
+
+    @Override
+    public List<Friend> findFriendsToUser(Integer id) {
+        return sqlSession.getMapper(FriendMapper.class).findFriendsToUser(id);
     }
 
     @Override

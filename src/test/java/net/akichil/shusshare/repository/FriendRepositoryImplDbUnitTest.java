@@ -1,8 +1,8 @@
 package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Account;
 import net.akichil.shusshare.entity.Friend;
+import net.akichil.shusshare.entity.FriendStatus;
 import net.akichil.shusshare.entity.UserSelector;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
 import org.junit.jupiter.api.Nested;
@@ -69,6 +69,38 @@ public class FriendRepositoryImplDbUnitTest {
             assertEquals(2, findResults.size());
         }
 
+        /**
+         * あるユーザのフレンドを検索
+         * フォローしている人
+         */
+        @Test
+        public void testFindFriendFromUser() {
+            final Integer id = 2;
+
+            List<Friend> findResults = target.findFriendFromUser(id);
+
+            assertEquals(3, findResults.size());
+            Friend result0 = findResults.get(0);
+            assertEquals(3, result0.getAccountId());
+            assertEquals("test_piyo", result0.getUserId());
+        }
+
+        /**
+         * あるユーザのフレンドを検索
+         * フォロワー
+         */
+        @Test
+        public void testFindFriendToUser() {
+            final Integer id = 2;
+
+            List<Friend> findResults = target.findFriendsToUser(id);
+
+            assertEquals(1, findResults.size());
+            Friend result0 = findResults.get(0);
+            assertEquals(1, result0.getAccountId());
+            assertEquals("ほげ山ほげお", result0.getUserName());
+            assertEquals(FriendStatus.FOLLOWED, result0.getStatus());
+        }
     }
 
 }

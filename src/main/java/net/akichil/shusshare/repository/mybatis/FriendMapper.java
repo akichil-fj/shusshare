@@ -11,7 +11,9 @@ public interface FriendMapper {
 
     List<Friend> findAllUser(UserSelector selector);
 
-    List<Friend> findFriends(Integer id);
+    List<Friend> findFriendsFromUser(Integer id);
+
+    List<Friend> findFriendsToUser(Integer id);
 
     List<Friend> findGoOfficeFriends(Integer id);
 

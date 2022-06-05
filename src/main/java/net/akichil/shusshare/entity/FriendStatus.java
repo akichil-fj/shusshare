@@ -9,9 +9,9 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum FriendStatus {
 
-    REQUESTED(0),
-    PENDING(1),
-    ACCEPTED(2),
+    FOLLOWED(0),
+    REQUESTED(1),
+    REJECTED(2),
     NONE(255);
 
     private final int value;

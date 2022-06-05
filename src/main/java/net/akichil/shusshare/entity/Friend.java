@@ -17,6 +17,8 @@ public class Friend {
 
     private Integer accountIdFrom;
 
+    private Integer accountIdTo;
+
     private Integer accountId;
 
     private String userId;
