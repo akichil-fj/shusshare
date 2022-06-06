@@ -1,6 +1,7 @@
 package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.*;
+import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.FriendRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,11 @@ public class FriendServiceImpl implements FriendService {
 
     private final FriendRepository friendRepository;
 
-    public FriendServiceImpl(FriendRepository friendRepository) {
+    private final AccountRepository accountRepository;
+
+    public FriendServiceImpl(FriendRepository friendRepository, AccountRepository accountRepository) {
         this.friendRepository = friendRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -73,6 +77,33 @@ public class FriendServiceImpl implements FriendService {
     public void remove(Integer accountId, Integer accountIdFrom) {
         Friend friend = friendRepository.findFriendByAccountId(accountId, accountIdFrom);
         friendRepository.remove(friend);
+    }
+
+    @Override
+    public void request(Integer accountId, Integer accountIdFrom) {
+        Friend friend = new Friend();
+        friend.setAccountIdTo(accountId);
+        friend.setAccountIdFrom(accountIdFrom);
+
+        // Accountが非公開ならREQUESTED、それ以外はFOLLOWED
+        Account account = accountRepository.findOne(accountId);
+        if (account.getStatus() == AccountStatus.PRIVATE) {
+            friend.setStatus(FriendStatus.REQUESTED);
+        } else {
+            friend.setStatus(FriendStatus.FOLLOWED);
+        }
+
+        add(friend);
+    }
+
+    @Override
+    public void allow(Integer accountId, Integer accountIdFrom) {
+        Friend friend = new Friend();
+        friend.setAccountIdTo(accountId);
+        friend.setAccountIdFrom(accountIdFrom);
+        friend.setStatus(FriendStatus.FOLLOWED);
+
+        set(friend);
     }
 
 }

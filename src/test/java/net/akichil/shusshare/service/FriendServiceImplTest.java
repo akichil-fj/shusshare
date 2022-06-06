@@ -1,15 +1,13 @@
 package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.*;
+import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.FriendRepository;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +18,9 @@ public class FriendServiceImplTest {
 
     @Mock
     private FriendRepository friendRepository;
+
+    @Mock
+    private AccountRepository accountRepository;
 
     @InjectMocks
     private FriendServiceImpl target;
@@ -159,6 +160,64 @@ public class FriendServiceImplTest {
 
         Mockito.verify(friendRepository, Mockito.times(1)).findFriendByAccountId(accountId, accountIdFrom);
         Mockito.verify(friendRepository, Mockito.times(0)).remove(friend);
+    }
+
+    @Test
+    public void testRequestToNormalAccount() {
+        final Integer accountId = 1;
+        final Integer accountIdFrom = 3;
+        Account account = new Account();
+        account.setStatus(AccountStatus.NORMAL);
+        ArgumentMatcher<Friend> matcher = argument -> {
+            assertEquals(accountId, argument.getAccountIdTo());
+            assertEquals(accountIdFrom, argument.getAccountIdFrom());
+            assertEquals(FriendStatus.FOLLOWED, argument.getStatus());
+            return true;
+        };
+
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+
+        target.request(accountId, accountIdFrom);
+
+        Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
+        Mockito.verify(friendRepository, Mockito.times(1)).add(Mockito.argThat(matcher));
+    }
+
+    @Test
+    public void testRequestToPrivateAccount() {
+        final Integer accountId = 1;
+        final Integer accountIdFrom = 3;
+        Account account = new Account();
+        account.setStatus(AccountStatus.PRIVATE);
+        ArgumentMatcher<Friend> matcher = argument -> {
+            assertEquals(accountId, argument.getAccountIdTo());
+            assertEquals(accountIdFrom, argument.getAccountIdFrom());
+            assertEquals(FriendStatus.REQUESTED, argument.getStatus());
+            return true;
+        };
+
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+
+        target.request(accountId, accountIdFrom);
+
+        Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
+        Mockito.verify(friendRepository, Mockito.times(1)).add(Mockito.argThat(matcher));
+    }
+
+    @Test
+    public void testAllow() {
+        final Integer accountId = 1;
+        final Integer accountIdFrom = 3;
+        ArgumentMatcher<Friend> matcher = argument -> {
+            assertEquals(accountId, argument.getAccountIdTo());
+            assertEquals(accountIdFrom, argument.getAccountIdFrom());
+            assertEquals(FriendStatus.FOLLOWED, argument.getStatus());
+            return true;
+        };
+
+        target.allow(accountId, accountIdFrom);
+
+        Mockito.verify(friendRepository, Mockito.times(1)).set(Mockito.argThat(matcher));
     }
 
 }

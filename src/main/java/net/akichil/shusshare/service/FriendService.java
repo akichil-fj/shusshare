@@ -5,7 +5,6 @@ import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.FriendList;
 import net.akichil.shusshare.entity.UserSelector;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface FriendService {
@@ -23,5 +22,9 @@ public interface FriendService {
     void set(Friend friend);
 
     void remove(Integer accountId, Integer accountIdFrom);
+
+    void request(Integer accountId, Integer accountIdFrom);
+
+    void allow(Integer accountId, Integer accountIdFrom);
 
 }
