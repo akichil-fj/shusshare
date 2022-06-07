@@ -40,26 +40,27 @@ public class ShusshaServiceImplTest {
     }
 
     @Test
-    public void testGetToday() {
+    public void testGet() {
         final Integer accountId = 1;
         final LocalDate date = LocalDate.now();
         Shussha shussha = new Shussha();
 
         Mockito.doReturn(shussha).when(shusshaRepository).find(accountId, date);
 
-        final Shussha result = target.getToday(accountId);
+        final Shussha result = target.get(accountId, date);
 
         assertEquals(shussha, result);
         Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
     }
 
     @Test
-    public void testAddToday() {
+    public void testAdd() {
         // setup
         final Integer accountId = 1;
         final LocalDate date = LocalDate.now();
         Shussha shussha = new Shussha();
         shussha.setAccountId(accountId);
+        shussha.setDate(date);
 
         final int shusshaCount = 3;
         Account account = new Account();
@@ -68,10 +69,9 @@ public class ShusshaServiceImplTest {
         Mockito.doReturn(account).when(accountRepository).findOne(accountId);
 
         // when
-        target.addToday(shussha);
+        target.add(shussha);
 
         // then
-        assertEquals(date, shussha.getDate());
         assertEquals(shusshaCount + 1, account.getShusshaCount());
         Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
         Mockito.verify(accountRepository, Mockito.times(1)).set(account);
@@ -79,7 +79,7 @@ public class ShusshaServiceImplTest {
     }
 
     @Test
-    public void testRemoveToday() {
+    public void testRemove() {
         // setup
         final Integer shusshaId = 2;
         final Integer accountId = 1;
@@ -96,7 +96,7 @@ public class ShusshaServiceImplTest {
         Mockito.doReturn(shussha).when(shusshaRepository).find(accountId, date);
 
         // when
-        target.removeToday(accountId);
+        target.remove(accountId, date);
 
         // then
         assertEquals(shusshaCount - 1, account.getShusshaCount());

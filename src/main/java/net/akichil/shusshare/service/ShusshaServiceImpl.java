@@ -21,13 +21,12 @@ public class ShusshaServiceImpl implements ShusshaService {
     }
 
     @Override
-    public Shussha getToday(Integer accountId) {
+    public Shussha get(Integer accountId, LocalDate date) {
         return shusshaRepository.find(accountId, LocalDate.now());
     }
 
     @Override
-    public void addToday(Shussha shussha) {
-        shussha.setDate(LocalDate.now());
+    public void add(Shussha shussha) {
         shusshaRepository.add(shussha);
 
         // 出社回数更新(+1)
@@ -37,8 +36,8 @@ public class ShusshaServiceImpl implements ShusshaService {
     }
 
     @Override
-    public void removeToday(Integer accountId) {
-        Shussha shussha = shusshaRepository.find(accountId, LocalDate.now());
+    public void remove(Integer accountId, LocalDate date) {
+        Shussha shussha = shusshaRepository.find(accountId, date);
         shusshaRepository.remove(shussha);
 
         // 出社回数更新(-1)

@@ -2,12 +2,14 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Shussha;
 
+import java.time.LocalDate;
+
 public interface ShusshaService {
 
-    Shussha getToday(Integer accountId);
+    Shussha get(Integer accountId, LocalDate date);
 
-    void addToday(Shussha shussha);
+    void add(Shussha shussha);
 
-    void removeToday(Integer accountId);
+    void remove(Integer accountId, LocalDate date);
 
 }
