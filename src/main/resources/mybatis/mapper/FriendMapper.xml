@@ -10,6 +10,7 @@
         <result property="userName" column="user_name"/>
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
+        <result property="shusshaCount" column="shussha_count"/>
         <result property="lockVersion" column="lock_version"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -22,6 +23,7 @@
             a.user_id AS user_id,
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
+            a.shussha_count AS shussha_count,
             f.status AS status
         FROM
             account a
@@ -59,6 +61,7 @@
             a.user_id AS user_id,
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
+            a.shussha_count AS shussha_count,
             f.status AS status
         FROM
             account a
@@ -76,6 +79,7 @@
             a.user_id AS user_id,
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
+            a.shussha_count AS shussha_count,
             f.status AS status
         FROM
             account a
@@ -93,6 +97,7 @@
             a.user_id AS user_id,
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
+            a.shussha_count AS shussha_count,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
             f.status AS status
@@ -113,6 +118,36 @@
             a.account_id = #{accountId}
             AND
             a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+    </select>
+
+    <select id="findGoOfficeFriends" resultMap="FriendDetail">
+        SELECT
+            f.account_id_from AS account_id_from,
+            f.account_id_to AS account_id_to,
+            a.account_id AS account_id,
+            a.user_id AS user_id,
+            a.user_name AS user_name,
+            a.profile_photo_url AS profile_photo_url,
+            a.shussha_count AS shussha_count,
+            f.status AS status
+        FROM
+            account a
+            INNER JOIN friend f
+            ON a.account_id = f.account_id_to
+            INNER JOIN shussha s
+            ON a.account_id = s.account_id
+        WHERE
+            f.account_id_from = #{accountId}
+            AND
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+            <if test="startDate != null">
+                AND
+                #{startDate} &lt;= date
+            </if>
+            <if test="endDate != null">
+                AND
+                date &lt;= #{endDate}
+            </if>
     </select>
 
     <insert id="insert">

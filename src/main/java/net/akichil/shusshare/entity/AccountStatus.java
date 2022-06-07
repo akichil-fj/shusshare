@@ -11,7 +11,8 @@ public enum AccountStatus {
 
     NONE(0),
     NORMAL(1),
-    DELETED(2);
+    DELETED(2),
+    PRIVATE(3);
 
     private final int value;
 

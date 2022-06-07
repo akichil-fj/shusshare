@@ -8,6 +8,7 @@ import net.akichil.shusshare.repository.mybatis.FriendMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -35,8 +36,8 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<FriendDetail> findGoOfficeFriend(Integer id) {
-        return sqlSession.getMapper(FriendMapper.class).findGoOfficeFriends(id);
+    public List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate startDate, LocalDate endDate) {
+        return sqlSession.getMapper(FriendMapper.class).findGoOfficeFriends(id, startDate, endDate);
     }
 
     @Override

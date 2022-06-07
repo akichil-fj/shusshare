@@ -4,6 +4,7 @@ import net.akichil.shusshare.entity.Friend;
 import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.UserSelector;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface FriendRepository {
@@ -14,7 +15,7 @@ public interface FriendRepository {
 
     List<FriendDetail> findFriendsToUser(Integer id);
 
-    List<FriendDetail> findGoOfficeFriend(Integer id);
+    List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate startDate, LocalDate endDate);
 
     FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom);
 
