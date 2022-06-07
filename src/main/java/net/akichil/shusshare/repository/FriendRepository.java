@@ -15,7 +15,7 @@ public interface FriendRepository {
 
     List<FriendDetail> findFriendsToUser(Integer id);
 
-    List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate date);
+    List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate startDate, LocalDate endDate);
 
     FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom);
 

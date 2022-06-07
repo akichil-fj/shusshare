@@ -36,8 +36,8 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate date) {
-        return sqlSession.getMapper(FriendMapper.class).findGoOfficeFriends(id, date);
+    public List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate startDate, LocalDate endDate) {
+        return sqlSession.getMapper(FriendMapper.class).findGoOfficeFriends(id, startDate, endDate);
     }
 
     @Override

@@ -55,7 +55,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<FriendDetail> findGoOfficeFriend(Integer id) {
         LocalDate today = LocalDate.now();
-        return friendRepository.findGoOfficeFriend(id, today);
+        return friendRepository.findGoOfficeFriend(id, today, null);
     }
 
     @Override

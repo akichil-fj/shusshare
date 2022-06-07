@@ -94,12 +94,12 @@ public class FriendServiceImplTest {
         final LocalDate nowDate = LocalDate.now();
         List<FriendDetail> friends = List.of(new FriendDetail(), new FriendDetail());
 
-        Mockito.doReturn(friends).when(friendRepository).findGoOfficeFriend(accountId, nowDate);
+        Mockito.doReturn(friends).when(friendRepository).findGoOfficeFriend(accountId, nowDate, null);
 
         List<FriendDetail> results = target.findGoOfficeFriend(accountId);
 
         assertEquals(2, results.size());
-        Mockito.verify(friendRepository, Mockito.times(1)).findGoOfficeFriend(accountId, nowDate);
+        Mockito.verify(friendRepository, Mockito.times(1)).findGoOfficeFriend(accountId, nowDate, null);
     }
 
     @Test

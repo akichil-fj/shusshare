@@ -140,8 +140,14 @@
             f.account_id_from = #{accountId}
             AND
             a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
-            AND
-            s.date = #{date}
+            <if test="startDate != null">
+                AND
+                #{startDate} &lt;= date
+            </if>
+            <if test="endDate != null">
+                AND
+                date &lt;= #{endDate}
+            </if>
     </select>
 
     <insert id="insert">

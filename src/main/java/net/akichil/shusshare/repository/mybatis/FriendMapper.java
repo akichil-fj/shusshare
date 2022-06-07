@@ -19,7 +19,8 @@ public interface FriendMapper {
     List<FriendDetail> findFriendsToUser(Integer id);
 
     List<FriendDetail> findGoOfficeFriends(@Param("accountId") Integer accountId,
-                                           @Param("date") LocalDate date);
+                                           @Param("startDate") LocalDate startDate,
+                                           @Param("endDate") LocalDate endDate);
 
     FriendDetail findFriendByAccountId(@Param(value = "accountId") Integer accountId,
                                        @Param(value = "accountIdFrom") Integer accountIdFrom);
