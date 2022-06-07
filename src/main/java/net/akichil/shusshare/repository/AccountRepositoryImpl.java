@@ -1,10 +1,13 @@
 package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.entity.Account;
+import net.akichil.shusshare.entity.AccountSelector;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.repository.mybatis.AccountMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
@@ -13,6 +16,11 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     public AccountRepositoryImpl(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
+    }
+
+    @Override
+    public List<Account> findList(AccountSelector selector) {
+        return sqlSession.getMapper(AccountMapper.class).findList(selector);
     }
 
     @Override

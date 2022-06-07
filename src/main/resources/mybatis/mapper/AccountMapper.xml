@@ -12,6 +12,23 @@
         <result property="shusshaCount" column="shussha_count"/>
     </resultMap>
 
+    <select id="findList" resultMap="Account">
+        SELECT
+            account_id,
+            user_id,
+            user_name,
+            password,
+            profile_photo_url,
+            status,
+            shussha_count
+        FROM
+            account
+        WHERE
+            user_id = #{userId}
+            AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+    </select>
+
     <select id="findOne" resultMap="Account">
         SELECT
             account_id,
