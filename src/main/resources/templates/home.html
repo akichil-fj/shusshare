@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <th:block th:replace="_common::css"/>
 </head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
 <body>
-Home
+<div class="container-md mt-5" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <h2>日付</h2>
+        </div>
+        <div class="col-md-2 col-2">
+            <img src="icon.png" class="img-fluid rounded-circle bg-info"/>
+        </div>
+        <div class="col-md-7 col-6">
+            <h3 th:text="${account.userName}"/>
+            <p class="fs-6 text-secondary mb-0" th:text="${account.userId}"/>
+        </div>
+        <div class="col-md-3 col-4">
+            <button type="button" class="btn btn-primary" th:if="${shussha == null}">
+                出社する！
+            </button>
+            <button type="button" class="btn btn-danger" th:if="${shussha != null}">
+                取り消し
+            </button>
+            <p class="mb-0" th:text="出社回数： + ${account.shusshaCount} + 回"/>
+        </div>
+
+        <div class="col-md-12 mt-5">
+            <h2>出社中のユーザー</h2>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="friend:${goOfficeFriend}">
+                    <divc class="d-flex flex-row align-items-center">
+                        <img src="icon.png" class="img-fluid rounded-circle bg-info" width="40">
+                        <div class="mx-2" th:text="${friend.userName}"/>
+                        <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
+                    </divc>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 </body>
 </html>
