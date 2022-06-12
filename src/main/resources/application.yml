@@ -6,6 +6,8 @@ spring:
     hikari:
       maximum-pool-size: 4
       minimum-idle: 1
+  thymeleaf:
+    cache: false
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
