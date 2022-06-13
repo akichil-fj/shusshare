@@ -10,6 +10,7 @@
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
         <result property="shusshaCount" column="shussha_count"/>
+        <result property="lockVersion" column="lock_version"/>
     </resultMap>
 
     <select id="findList" resultMap="Account">
@@ -20,7 +21,8 @@
             password,
             profile_photo_url,
             status,
-            shussha_count
+            shussha_count,
+            lock_version
         FROM
             account
         WHERE
@@ -37,7 +39,8 @@
             password,
             profile_photo_url,
             status,
-            shussha_count
+            shussha_count,
+            lock_version
         FROM
             account
         WHERE
