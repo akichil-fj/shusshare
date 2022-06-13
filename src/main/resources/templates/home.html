@@ -40,16 +40,17 @@
             <h2>出社中のユーザー</h2>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item" th:each="friend:${goOfficeFriend}">
-                    <divc class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-row align-items-center">
                         <img src="icon.png" class="img-fluid rounded-circle" width="40"
                              th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                         <div class="mx-2" th:text="${friend.userName}"/>
                         <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
-                    </divc>
+                    </div>
                 </li>
             </ul>
         </div>
     </div>
 </div>
+<th:block th:replace="_common::script"/>
 </body>
 </html>
