@@ -28,7 +28,8 @@ public class SecurityConfig {
         // 認可
         http.authorizeRequests()
                 .antMatchers("/login", "/logout", "/register").permitAll()
-                .antMatchers("/home", "/mypage").hasAuthority("USER");
+                .antMatchers("/home", "/mypage").hasAuthority("USER")
+                .anyRequest().authenticated();
 
         return http.build();
     }
