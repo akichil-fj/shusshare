@@ -55,9 +55,9 @@
                                 <div class="mx-2 text-secondary" th:text="${friend.userId}"/>
                                 <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
                                 <div class="flex-fill"></div>
-                                <button class="btn btn-danger"
-                                        th:href="@{/friend/remove(accountId=${friend.accountId})}">削除
-                                </button>
+                                <form th:action="@{/friend/remove(accountId=${friend.accountId})}" method="post">
+                                    <button type="submit" class="btn btn-danger">削除</button>
+                                </form>
                             </div>
                         </li>
                     </ul>
