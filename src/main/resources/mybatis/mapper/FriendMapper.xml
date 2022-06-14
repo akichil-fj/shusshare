@@ -24,14 +24,18 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             LEFT OUTER JOIN
                 (SELECT
                     account_id_from,
                     account_id_to,
-                    status
+                    status,
+                    lock_version,
+                    updated_at
                 FROM
                     friend
                 WHERE
@@ -62,7 +66,9 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             INNER JOIN friend f
@@ -80,7 +86,9 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             INNER JOIN friend f
@@ -100,14 +108,18 @@
             a.shussha_count AS shussha_count,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
-            f.status AS status
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             LEFT OUTER JOIN
             (SELECT
                 account_id_from,
                 account_id_to,
-                status
+                status,
+                lock_version,
+                updated_at
             FROM
                 friend
             WHERE
@@ -129,7 +141,9 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             INNER JOIN friend f
