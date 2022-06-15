@@ -6,6 +6,7 @@ import net.akichil.shusshare.helper.MessageSourceHelper;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.validation.AddGroup;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +24,12 @@ public class RegisterController {
 
     private final MessageSourceHelper messageSourceHelper;
 
-    public RegisterController(AccountService accountService, MessageSourceHelper messageSourceHelper) {
+    private final PasswordEncoder passwordEncoder;
+
+    public RegisterController(AccountService accountService, MessageSourceHelper messageSourceHelper, PasswordEncoder passwordEncoder) {
         this.accountService = accountService;
         this.messageSourceHelper = messageSourceHelper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(path = "")
@@ -40,6 +44,9 @@ public class RegisterController {
         if (bindingResult.hasErrors()) {
             return "register";
         }
+
+        // パスワードをハッシュ化
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
 
         if (account.getIsPrivate()) {
             account.setStatus(AccountStatus.PRIVATE);
