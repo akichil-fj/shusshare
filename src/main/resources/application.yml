@@ -8,6 +8,8 @@ spring:
       minimum-idle: 1
   thymeleaf:
     cache: false
+  messages:
+    basename: messages/messages, messages/ValidationMessages
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
