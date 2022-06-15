@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>新規登録</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-5" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <h2>ユーザ登録</h2>
+        </div>
+
+        <form th:action="@{/register}" th:method="post" th:object="${account}">
+            <div class="my-3 form-group">
+                <label for="inputUserId" class="form-label">ユーザID</label>
+                <input id="inputUserId" class="form-control" th:field="*{userId}"
+                       th:classappend="${#fields.hasErrors('userId')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('userId')}"
+                      th:errors="*{userId}"> userId error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="inputUserName" class="form-label">ユーザ名</label>
+                <input id="inputUserName" class="form-control" th:field="*{userName}"
+                       th:classappend="${#fields.hasErrors('userName')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('userName')}"
+                      th:errors="*{userName}"> userName error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="inputPassword" class="form-label">パスワード</label>
+                <input id="inputPassword" type="password" class="form-control" th:field="*{password}"
+                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"/>
+                <span class="text-danger" id="passwordErrorMsg" th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}"> userName error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="inputConfirmPassword" class="form-label">確認用パスワード</label>
+                <input id="inputConfirmPassword" type="password" class="form-control" th:field="*{confirmPassword}"
+                       th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}"
+                      th:errors="*{confirmPassword}"> userName error</span>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" th:field="*{isPrivate}"/>
+                <label class="form-check-label" for="flexSwitchCheckDefault">非公開アカウントにする</label>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">登録</button>
+        </form>
+    </div>
+</div>
+<th:block th:replace="_common::script"/>
+</body>
+</html>
