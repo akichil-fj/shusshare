@@ -35,8 +35,14 @@ public class FriendController {
         return "friend";
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/allow")
     public String allow(@RequestParam Integer accountId, @AuthenticationPrincipal LoginUser loginUser) {
+        friendService.allow(accountId, loginUser.getAccountId());
+        return "redirect:/friend";
+    }
+
+    @PostMapping(path = "/add")
+    public String add(@RequestParam Integer accountId, @AuthenticationPrincipal LoginUser loginUser) {
         friendService.request(accountId, loginUser.getAccountId());
         return "redirect:/friend";
     }
