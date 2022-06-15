@@ -2,9 +2,12 @@ package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.entity.AccountForUserEdit;
 import net.akichil.shusshare.entity.AccountStatus;
+import net.akichil.shusshare.helper.MessageSourceHelper;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.validation.AddGroup;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +21,11 @@ public class RegisterController {
 
     private final AccountService accountService;
 
-    public RegisterController(AccountService accountService) {
+    private final MessageSourceHelper messageSourceHelper;
+
+    public RegisterController(AccountService accountService, MessageSourceHelper messageSourceHelper) {
         this.accountService = accountService;
+        this.messageSourceHelper = messageSourceHelper;
     }
 
     @GetMapping(path = "")
@@ -29,7 +35,8 @@ public class RegisterController {
 
     @PostMapping(path = "")
     public String add(@Validated(AddGroup.class) @ModelAttribute(name = "account") AccountForUserEdit account,
-                      BindingResult bindingResult) {
+                      BindingResult bindingResult,
+                      Model model) {
         if (bindingResult.hasErrors()) {
             return "register";
         }
@@ -39,7 +46,13 @@ public class RegisterController {
         } else {
             account.setStatus(AccountStatus.NORMAL);
         }
-        accountService.add(account);
+        try {
+            accountService.add(account);
+        } catch (DataIntegrityViolationException exception) {
+            model.addAttribute("errorMsg", messageSourceHelper.getMessage("account.register.duplicate"));
+            return "register";
+        }
+
         return "redirect:/register/success";
     }
 

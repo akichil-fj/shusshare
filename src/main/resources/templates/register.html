@@ -9,14 +9,16 @@
     <th:block th:replace="header::header"/>
 </header>
 <body>
-<div class="container-md mt-5" style="max-width: 720px;">
+<div class="container-md mt-5 mb-3" style="max-width: 720px;">
     <div class="row align-items-center">
         <div class="col-12">
             <h2>ユーザ登録</h2>
         </div>
-
+        <div class="col-12 mt-2 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}">
+            <th:block th:text="${errorMsg}"/>
+        </div>
         <form th:action="@{/register}" th:method="post" th:object="${account}">
-            <div class="my-3 form-group">
+            <div class="mb-3 form-group">
                 <label for="inputUserId" class="form-label">ユーザID</label>
                 <input id="inputUserId" class="form-control" th:field="*{userId}"
                        th:classappend="${#fields.hasErrors('userId')} ? 'is-invalid'"/>
