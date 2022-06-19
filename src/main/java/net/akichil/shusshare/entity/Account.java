@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.akichil.shusshare.validation.AddGroup;
+import net.akichil.shusshare.validation.SetGroup;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -23,11 +24,11 @@ public class Account {
     /**
      * ユーザID
      */
-    @NotNull(groups = {AddGroup.class})
+    @NotNull(groups = {AddGroup.class, SetGroup.class})
     @Pattern(regexp = "^\\w{1,15}$", groups = {AddGroup.class}, message = "{net.akichil.validation.constraints.Pattern.userId.message}")
     private String userId;
 
-    @NotNull(groups = {AddGroup.class})
+    @NotNull(groups = {AddGroup.class, SetGroup.class})
     @Size(min = 1, max = 30, groups = {AddGroup.class})
     private String userName;
 

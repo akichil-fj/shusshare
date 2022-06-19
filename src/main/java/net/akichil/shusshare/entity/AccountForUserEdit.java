@@ -22,4 +22,15 @@ public class AccountForUserEdit extends Account {
 
     private Boolean isPrivate;
 
+    public void set(Account account) {
+        setAccountId(account.getAccountId());
+        setUserId(account.getUserId());
+        setUserName(account.getUserName());
+        setPassword(account.getPassword());
+        setProfilePhotoUrl(account.getProfilePhotoUrl());
+        setStatus(account.getStatus());
+        setLockVersion(account.getLockVersion());
+        setIsPrivate(account.getStatus() == AccountStatus.PRIVATE);
+    }
+
 }
