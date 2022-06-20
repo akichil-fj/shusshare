@@ -77,7 +77,7 @@ public class MyPageController {
 
     @PostMapping(path = "/edit")
     public String edit(@AuthenticationPrincipal LoginUser loginUser,
-                       @ModelAttribute(name = "account") @Validated({SetGroup.class}) AccountForUserEdit accountForUserEdit,
+                       @ModelAttribute(name = "account") @Validated(SetGroup.class) AccountForUserEdit accountForUserEdit,
                        BindingResult bindingResult,
                        RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) {

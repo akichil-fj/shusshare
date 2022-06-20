@@ -25,7 +25,7 @@ public class Account {
      * ユーザID
      */
     @NotNull(groups = {AddGroup.class, SetGroup.class})
-    @Pattern(regexp = "^\\w{1,15}$", groups = {AddGroup.class}, message = "{net.akichil.validation.constraints.Pattern.userId.message}")
+    @Pattern(regexp = "^\\w{1,15}$", groups = {AddGroup.class, SetGroup.class}, message = "{net.akichil.validation.constraints.Pattern.userId.message}")
     private String userId;
 
     @NotNull(groups = {AddGroup.class, SetGroup.class})
