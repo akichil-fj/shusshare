@@ -33,6 +33,15 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
+    public Account findOne(String userId) {
+        Account account = sqlSession.getMapper(AccountMapper.class).findOneByUserId(userId);
+        if (account == null) {
+            throw new ResourceNotFoundException();
+        }
+        return account;
+    }
+
+    @Override
     public void add(Account account) {
         sqlSession.getMapper(AccountMapper.class).add(account);
     }

@@ -11,6 +11,8 @@ public interface AccountRepository {
 
     Account findOne(Integer id);
 
+    Account findOne(String userId);
+
     void add(Account account);
 
     void set(Account account);

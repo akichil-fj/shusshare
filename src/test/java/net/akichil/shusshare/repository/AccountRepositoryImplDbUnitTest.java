@@ -16,7 +16,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.sql.DataSource;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,6 +81,41 @@ public class AccountRepositoryImplDbUnitTest {
             final Integer accountId = 3;
 
             assertThrows(ResourceNotFoundException.class, () -> target.findOne(accountId));
+        }
+
+        /**
+         * アカウント取得テスト
+         */
+        @Test
+        public void testFindOneByUserId() {
+            final String userId = "test_fuga";
+
+            final Account findResult = target.findOne(userId);
+
+            assertEquals(2, findResult.getAccountId());
+            assertEquals("ふが山フガ子", findResult.getUserName());
+            assertEquals(AccountStatus.NORMAL, findResult.getStatus());
+            assertEquals(2, findResult.getShusshaCount());
+        }
+
+        /**
+         * アカウントが存在しない場合
+         */
+        @Test
+        public void testNotFoundByUserId() {
+            final String userId = "xyz";
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(userId));
+        }
+
+        /**
+         * 削除済みユーザを検索
+         */
+        @Test
+        public void testNotFoundDeletedByUserId() {
+            final String userId = "xyz";
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(userId));
         }
 
     }

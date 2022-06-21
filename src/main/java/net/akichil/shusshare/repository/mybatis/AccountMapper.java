@@ -13,6 +13,8 @@ public interface AccountMapper {
 
     Account findOne(Integer id);
 
+    Account findOneByUserId(String userId);
+
     int add(Account account);
 
     int set(Account account);

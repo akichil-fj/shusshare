@@ -49,6 +49,24 @@
             status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
+    <select id="findOneByUserId" resultMap="Account">
+        SELECT
+            account_id,
+            user_id,
+            user_name,
+            password,
+            profile_photo_url,
+            status,
+            shussha_count,
+            lock_version
+        FROM
+            account
+        WHERE
+            user_id = #{userId}
+            AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+    </select>
+
     <insert id="add" useGeneratedKeys="true" keyProperty="accountId" keyColumn="account_id">
         INSERT INTO account(
             user_id,
