@@ -6,6 +6,8 @@ public interface AccountService {
 
     Account get(Integer accountId);
 
+    Account get(String userId);
+
     void add(Account account);
 
     void set(Account account);

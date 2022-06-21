@@ -19,6 +19,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account get(String userId) {
+        return accountRepository.findOne(userId);
+    }
+
+    @Override
     public void add(Account account) {
         accountRepository.add(account);
     }
