@@ -17,6 +17,8 @@ public interface FriendService {
 
     FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom);
 
+    FriendDetail findFriendByUserId(String userId, Integer accountIdFrom);
+
     void add(Friend friend);
 
     void set(Friend friend);

@@ -50,6 +50,15 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
+    public FriendDetail findFriendByAccountId(String userId, Integer accountIdFrom) {
+        FriendDetail friend = sqlSession.getMapper(FriendMapper.class).findFriendByUserId(userId, accountIdFrom);
+        if (friend == null) {
+            throw new ResourceNotFoundException();
+        }
+        return friend;
+    }
+
+    @Override
     public void add(Friend friend) {
         sqlSession.getMapper(FriendMapper.class).insert(friend);
     }

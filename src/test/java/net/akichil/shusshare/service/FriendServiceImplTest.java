@@ -117,6 +117,20 @@ public class FriendServiceImplTest {
     }
 
     @Test
+    public void testFindFriendByUserId() {
+        final String userId = "user_id";
+        final Integer accountIdFrom = 3;
+        final FriendDetail friendDetail = new FriendDetail();
+
+        Mockito.doReturn(friendDetail).when(friendRepository).findFriendByAccountId(userId, accountIdFrom);
+
+        FriendDetail result = target.findFriendByUserId(userId, accountIdFrom);
+
+        assertNotNull(result);
+        Mockito.verify(friendRepository, Mockito.times(1)).findFriendByAccountId(userId, accountIdFrom);
+    }
+
+    @Test
     public void testAdd() {
         final Friend friend = new Friend();
 

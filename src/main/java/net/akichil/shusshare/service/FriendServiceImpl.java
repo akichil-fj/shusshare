@@ -64,6 +64,11 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
+    public FriendDetail findFriendByUserId(String userId, Integer accountIdFrom) {
+        return friendRepository.findFriendByAccountId(userId, accountIdFrom);
+    }
+
+    @Override
     public void add(Friend friend) {
         friendRepository.add(friend);
     }

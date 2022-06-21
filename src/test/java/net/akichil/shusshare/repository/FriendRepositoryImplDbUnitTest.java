@@ -148,6 +148,42 @@ public class FriendRepositoryImplDbUnitTest {
             assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(accountId, accountIdFrom));
         }
 
+        /**
+         * user_idでフレンド検索
+         */
+        @Test
+        public void testFindFriendByUserId() {
+            final String userId = "test_fuga";
+            final Integer accountIdFrom = 1;
+
+            FriendDetail findResult = target.findFriendByAccountId(userId, accountIdFrom);
+
+            assertEquals(userId, findResult.getUserId());
+            assertEquals(FriendStatus.FOLLOWED, findResult.getStatus());
+        }
+
+        /**
+         * account_idが存在しない
+         */
+        @Test
+        public void testFindFriendNotFoundByUserId() {
+            final String userId = "xxxxxxxxxxxx";
+            final Integer accountIdFrom = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(userId, accountIdFrom));
+        }
+
+        /**
+         * 削除済みのaccount_idを検索
+         */
+        @Test
+        public void testFindFriendDeletedByUserId() {
+            final String userId = "sssssssssssss";
+            final Integer accountIdFrom = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(userId, accountIdFrom));
+        }
+
         @Test
         public void testFindGoOfficeFriend() {
             final Integer id = 2;
