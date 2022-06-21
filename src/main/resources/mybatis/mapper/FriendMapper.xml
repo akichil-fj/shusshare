@@ -112,20 +112,7 @@
             f.lock_version AS lock_version,
             f.updated_at AS updated_at
         FROM
-            account a
-            LEFT OUTER JOIN
-            (SELECT
-                account_id_from,
-                account_id_to,
-                status,
-                lock_version,
-                updated_at
-            FROM
-                friend
-            WHERE
-                account_id_from = #{accountIdFrom}
-            ) AS f
-            ON a.account_id = f.account_id_to
+            <include refid="joinAccountFriend"/>
         WHERE
             a.account_id = #{accountId}
             AND
