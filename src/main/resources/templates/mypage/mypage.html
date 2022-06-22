@@ -38,14 +38,14 @@
         <div class="col-md-12 mt-5">
             <h4>出社予定を作成</h4>
             <form class="row align-items-center" th:action="@{/mypage/shussha/create}" th:method="post">
-                <div class="col-4 form-floating">
+                <div class="col-12 col-sm-5 form-floating">
                     <input id="shussha-date" class="form-control" placeholder="" th:value="${date}" name="date"
                            th:classappend="${#fields.hasErrors('date')} ? 'is-invalid'"/>
                     <label for="shussha-date">日時(yyyy-mm-dd)</label>
                     <span class="text-danger" th:if="${#fields.hasErrors('date')}"
                           th:errors="${date}">date format error</span>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <button type="submit" class="btn btn-primary">追加</button>
                 </div>
             </form>
