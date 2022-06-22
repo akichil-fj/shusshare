@@ -29,4 +29,6 @@ public interface FriendService {
 
     void allow(Integer accountIdFrom, Integer accountIdTo);
 
+    void deny(Integer accountIdFrom, Integer accountIdTo);
+
 }

@@ -238,4 +238,24 @@ public class FriendServiceImplTest {
         Mockito.verify(friendRepository, Mockito.times(1)).set(Mockito.argThat(matcher));
     }
 
+    @Test
+    public void testDeny() {
+        final Integer accountId = 1;
+        final Integer accountIdFrom = 3;
+        ArgumentMatcher<Friend> matcher = argument -> {
+            assertEquals(accountId, argument.getAccountIdTo());
+            assertEquals(accountIdFrom, argument.getAccountIdFrom());
+            assertEquals(FriendStatus.REJECTED, argument.getStatus());
+            return true;
+        };
+        FriendDetail friendDetail = new FriendDetail();
+        friendDetail.setAccountIdFrom(accountIdFrom);
+        friendDetail.setAccountIdTo(accountId);
+        Mockito.doReturn(friendDetail).when(friendRepository).findFriendByAccountId(accountIdFrom, accountId);
+
+        target.deny(accountId, accountIdFrom);
+
+        Mockito.verify(friendRepository, Mockito.times(1)).set(Mockito.argThat(matcher));
+    }
+
 }

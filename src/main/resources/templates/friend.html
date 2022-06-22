@@ -38,9 +38,9 @@
                                 <div class="mx-2" th:text="${friend.userName}"/>
                                 <div class="mx-2" th:text="${friend.userId}"/>
                                 <div class="flex-fill"></div>
-                                <button class="btn btn-danger"
-                                        th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath=/friend)}">キャンセル
-                                </button>
+                                <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}" method="post">
+                                    <button type="submit" class="btn btn-danger">キャンセル</button>
+                                </form>
                             </div>
                         </li>
                     </ul>
@@ -81,7 +81,7 @@
                                       method="post">
                                     <button class="btn btn-info" type="submit">承認</button>
                                 </form>
-                                <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}"
+                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend')}"
                                       method="post">
                                     <button class="btn btn-danger" type="submit">拒否</button>
                                 </form>
@@ -98,9 +98,10 @@
                                 <div class="mx-2" th:text="${friend.userName}"/>
                                 <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
                                 <div class="flex-fill"></div>
-                                <button class="btn btn-danger"
-                                        th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}">拒否
-                                </button>
+                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend')}"
+                                      method="post">
+                                    <button class="btn btn-danger" type="submit">拒否</button>
+                                </form>
                             </div>
                         </li>
                     </ul>

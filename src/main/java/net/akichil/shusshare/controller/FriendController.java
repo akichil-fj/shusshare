@@ -55,6 +55,20 @@ public class FriendController {
         return "redirect:" + encodedPath;
     }
 
+    @PostMapping(value = "/deny")
+    public String deny(@RequestParam Integer accountId, @RequestParam String redirectPath,
+                        @AuthenticationPrincipal LoginUser loginUser, RedirectAttributes attributes) {
+        String encodedPath;
+        try {
+            encodedPath = new URI(redirectPath).toASCIIString();
+        } catch (URISyntaxException e) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("friend.deny.error.redirect"));
+            return "redirect:/error";
+        }
+        friendService.deny(accountId, loginUser.getAccountId());
+        return "redirect:" + encodedPath;
+    }
+
     @GetMapping(path = "/find")
     public String find(Model model, UserSelector selector, @AuthenticationPrincipal LoginUser loginUser) {
         selector.setAccountIdFrom(loginUser.getAccountId()); // 閲覧者を入れる

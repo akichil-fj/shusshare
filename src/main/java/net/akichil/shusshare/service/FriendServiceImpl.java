@@ -109,4 +109,12 @@ public class FriendServiceImpl implements FriendService {
         set(friend);
     }
 
+    @Override
+    public void deny(Integer accountIdFrom, Integer accountIdTo) {
+        FriendDetail friend = friendRepository.findFriendByAccountId(accountIdTo, accountIdFrom);
+
+        friend.setStatus(FriendStatus.REJECTED);
+        set(friend);
+    }
+
 }
