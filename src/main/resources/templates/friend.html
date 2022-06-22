@@ -75,7 +75,7 @@
                                 <img src="icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="mx-2" th:text="${friend.userName}"/>
-                                <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
+                                <div class="mx-2 text-secondary" th:text="${friend.userId}"/>
                                 <div class="flex-fill"></div>
                                 <form th:action="@{/friend/allow(accountId=${friend.accountId}, redirectPath='/friend')}"
                                       method="post">
@@ -96,7 +96,7 @@
                                 <img src="icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="mx-2" th:text="${friend.userName}"/>
-                                <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
+                                <div class="mx-2 text-secondary" th:text="${friend.userId}"/>
                                 <div class="flex-fill"></div>
                                 <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend')}"
                                       method="post">
