@@ -21,8 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = ShusshareApplication.class)
 @AutoConfigureMockMvc
@@ -104,60 +103,68 @@ public class FriendControllerTest {
     @TestWithUser
     public void testAdd() throws Exception {
         Integer friendAccountId = 3;
+        String redirectPath = "/friend/パス";
+        String encodedPath = "/friend/%E3%83%91%E3%82%B9"; // "/friend/パス"
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/add")
                         .param("accountId", friendAccountId.toString())
+                        .param("redirectPath", redirectPath)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(view().name("redirect:/friend"));
+                .andExpect(view().name("redirect:" + encodedPath));
 
         Mockito.verify(friendService, Mockito.times(1)).request(friendAccountId, 1);
+    }
+
+    @Test
+    @TestWithUser
+    public void testAddFailByWrongURI() throws Exception {
+        Integer friendAccountId = 3;
+        String redirectPath = "/friend/:?##?&&";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/add")
+                        .param("accountId", friendAccountId.toString())
+                        .param("redirectPath", redirectPath)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(flash().attribute("errorMsg", "リダイレクトURLでエラーが発生しました。"))
+                .andExpect(view().name("redirect:/error"));
+
+        Mockito.verify(friendService, Mockito.times(0)).request(friendAccountId, 1);
     }
 
     @Test
     @TestWithUser
     public void testRemove() throws Exception {
         Integer friendAccountId = 3;
+        String redirectPath = "/friend/パス";
+        String encodedPath = "/friend/%E3%83%91%E3%82%B9"; // "/friend/パス"
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/remove")
                         .param("accountId", friendAccountId.toString())
+                        .param("redirectPath", redirectPath)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(view().name("redirect:/friend"));
+                .andExpect(view().name("redirect:" + encodedPath));
 
         Mockito.verify(friendService, Mockito.times(1)).remove(friendAccountId, 1);
     }
 
     @Test
     @TestWithUser
-    public void testAddFromFind() throws Exception {
+    public void testRemoveFailByWrongUri() throws Exception {
         Integer friendAccountId = 3;
-        String keyword = "user";
+        String redirectPath = "/friend/??&&##";
 
-        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/find/add")
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/remove")
                         .param("accountId", friendAccountId.toString())
-                        .param("keyword", keyword)
+                        .param("redirectPath", redirectPath)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(view().name("redirect:/friend/find?userName=" + keyword));
+                .andExpect(flash().attribute("errorMsg", "リダイレクトURLでエラーが発生しました。"))
+                .andExpect(view().name("redirect:/error"));
 
-        Mockito.verify(friendService, Mockito.times(1)).request(friendAccountId, 1);
-    }
-
-    @Test
-    @TestWithUser
-    public void testRemoveFromFind() throws Exception {
-        Integer friendAccountId = 3;
-        String keyword = "user";
-
-        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/find/remove")
-                        .param("accountId", friendAccountId.toString())
-                        .param("keyword", keyword)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(view().name("redirect:/friend/find?userName=" + keyword));
-
-        Mockito.verify(friendService, Mockito.times(1)).remove(friendAccountId, 1);
+        Mockito.verify(friendService, Mockito.times(0)).remove(friendAccountId, 1);
     }
 
 

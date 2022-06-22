@@ -34,19 +34,17 @@
                         <div class="mx-2 text-secondary" th:text="${user.userId}"/>
                         <div class="flex-fill"></div>
                         <form th:if="${user.status.name()} == NONE" method="post"
-                              th:action="@{/friend/find/add(accountId=${user.accountId}, keyword=${keyword})}">
+                              th:action="@{/friend/add(accountId=${user.accountId}, redirectPath=${'/friend/find?userName=' + keyword})}">
                             <button type="submit" class="btn btn-info">フォロー</button>
                         </form>
                         <form th:if="${user.status.name()} == FOLLOWED" method="post"
-                              th:action="@{/friend/find/remove(accountId=${user.accountId}, keyword=${keyword})}">
+                              th:action="@{/friend/remove(accountId=${user.accountId}, redirectPath=${'/friend/find?userName=' + keyword})}">
                             <button type="submit" class="btn btn-info">フォロー中</button>
                         </form>
                         <form th:if="${user.status.name()} == REQUESTED" method="post"
-                              th:action="@{/friend/find/remove(accountId=${user.accountId}, keyword=${keyword})}">
+                              th:action="@{/friend/remove(accountId=${user.accountId}, redirectPath=${'/friend/find?userName=' + keyword})}">
                             <button type="submit" class="btn btn-info">承認待ち</button>
                         </form>
-
-<!--                        <div class="mx-2" th:text="${user.status}"/>-->
                     </div>
                 </li>
             </ul>

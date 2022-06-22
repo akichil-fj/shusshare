@@ -39,7 +39,7 @@
                                 <div class="mx-2" th:text="${friend.userId}"/>
                                 <div class="flex-fill"></div>
                                 <button class="btn btn-danger"
-                                        th:href="@{/friend/remove(accountId=${friend.accountId})}">キャンセル
+                                        th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath=/friend)}">キャンセル
                                 </button>
                             </div>
                         </li>
@@ -55,7 +55,7 @@
                                 <div class="mx-2 text-secondary" th:text="${friend.userId}"/>
                                 <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
                                 <div class="flex-fill"></div>
-                                <form th:action="@{/friend/remove(accountId=${friend.accountId})}" method="post">
+                                <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}" method="post">
                                     <button type="submit" class="btn btn-danger">削除</button>
                                 </form>
                             </div>
@@ -78,10 +78,10 @@
                                 <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
                                 <div class="flex-fill"></div>
                                 <button class="btn btn-info"
-                                        th:href="@{/friend/allow(accountId=${friend.accountId})}">承認
+                                        th:action="@{/friend/allow(accountId=${friend.accountId}, redirectPath='/friend')}">承認
                                 </button>
                                 <button class="btn btn-danger"
-                                        th:href="@{/friend/remove(accountId=${friend.accountId})}">拒否
+                                        th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}">拒否
                                 </button>
                             </div>
                         </li>
@@ -97,7 +97,7 @@
                                 <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
                                 <div class="flex-fill"></div>
                                 <button class="btn btn-danger"
-                                        th:href="@{/friend/remove(accountId=${friend.accountId})}">拒否
+                                        th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}">拒否
                                 </button>
                             </div>
                         </li>
