@@ -75,6 +75,8 @@
             ON a.account_id = f.account_id_to
         WHERE
             f.account_id_from = #{id}
+            and
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
     <select id="findFriendsToUser" resultMap="FriendDetail">
@@ -135,8 +137,8 @@
             <include refid="joinAccountFriend"/>
         WHERE
             a.user_id = #{userId}
-        AND
-        a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+            AND
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
     <sql id="joinAccountFriend">

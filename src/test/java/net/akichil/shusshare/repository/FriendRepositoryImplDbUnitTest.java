@@ -89,7 +89,7 @@ public class FriendRepositoryImplDbUnitTest {
 
             List<FriendDetail> findResults = target.findFriendFromUser(id);
 
-            assertEquals(3, findResults.size());
+            assertEquals(2, findResults.size());
             FriendDetail result0 = findResults.get(0);
             assertEquals(1, result0.getAccountId());
             assertEquals("test_hoge", result0.getUserId());
