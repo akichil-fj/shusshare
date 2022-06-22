@@ -54,7 +54,7 @@ public class FriendControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(view().name("friend"))
+                .andExpect(view().name("friend/friend"))
                 .andExpect(model().attribute("following", following))
                 .andExpect(model().attribute("followers", followers))
                 .andExpect(model().attribute("requesting", requesting))

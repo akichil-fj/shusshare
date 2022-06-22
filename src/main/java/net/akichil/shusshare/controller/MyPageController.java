@@ -43,7 +43,7 @@ public class MyPageController {
     public String get(@AuthenticationPrincipal LoginUser loginUser, Model model,
                       @ModelAttribute("date") String date) {
         model.addAttribute("account", accountService.get(loginUser.getAccountId()));
-        return "mypage";
+        return "mypage/mypage";
     }
 
     @PostMapping(path = "/shussha/create")

@@ -56,7 +56,7 @@ public class MyPageControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(view().name("mypage"))
+                .andExpect(view().name("mypage/mypage"))
                 .andExpect(model().attribute("account", account));
 
         Mockito.verify(accountService, Mockito.times(1)).get(accountId);

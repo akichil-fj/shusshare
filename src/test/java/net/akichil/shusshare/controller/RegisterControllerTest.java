@@ -45,7 +45,7 @@ public class RegisterControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(view().name("register"));
+                .andExpect(view().name("register/register"));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class RegisterControllerTest {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(model().attribute("errorMsg", "すでに登録ずみのユーザIDです。"))
-                .andExpect(view().name("register"));
+                .andExpect(view().name("register/register"));
 
         Mockito.verify(accountService, Mockito.times(1)).add(ArgumentMatchers.any(Account.class));
     }
@@ -155,7 +155,7 @@ public class RegisterControllerTest {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(view().name("register"));
+                .andExpect(view().name("register/register"));
 
         Mockito.verify(accountService, Mockito.times(0)).add(ArgumentMatchers.any(Account.class));
     }
@@ -179,7 +179,7 @@ public class RegisterControllerTest {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(view().name("register"));
+                .andExpect(view().name("register/register"));
 
         Mockito.verify(accountService, Mockito.times(0)).add(ArgumentMatchers.any(Account.class));
     }

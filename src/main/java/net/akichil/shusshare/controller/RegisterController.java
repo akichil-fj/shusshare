@@ -34,7 +34,7 @@ public class RegisterController {
 
     @GetMapping(path = "")
     public String get(@ModelAttribute(name = "account") AccountForUserEdit account) {
-        return "register";
+        return "register/register";
     }
 
     @PostMapping(path = "")
@@ -42,7 +42,7 @@ public class RegisterController {
                       BindingResult bindingResult,
                       Model model) {
         if (bindingResult.hasErrors()) {
-            return "register";
+            return "register/register";
         }
 
         // パスワードをハッシュ化
@@ -57,7 +57,7 @@ public class RegisterController {
             accountService.add(account);
         } catch (DataIntegrityViolationException exception) {
             model.addAttribute("errorMsg", messageSourceHelper.getMessage("account.register.duplicate"));
-            return "register";
+            return "register/register";
         }
 
         return "redirect:/register/success";

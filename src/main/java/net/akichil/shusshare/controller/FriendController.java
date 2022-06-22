@@ -38,7 +38,7 @@ public class FriendController {
         model.addAttribute("followers", friendList.getFollowers());
         model.addAttribute("requesting", friendList.getRequesting());
         model.addAttribute("requested", friendList.getRequested());
-        return "friend";
+        return "friend/friend";
     }
 
     @PostMapping(value = "/allow")
