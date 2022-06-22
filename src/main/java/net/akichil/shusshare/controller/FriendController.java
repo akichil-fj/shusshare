@@ -73,4 +73,16 @@ public class FriendController {
         return "redirect:/friend/find?userName=" + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
     }
 
+    @PostMapping(path = "/user/add")
+    public String add(@RequestParam Integer accountId, @RequestParam String redirectPath, @AuthenticationPrincipal LoginUser loginUser) {
+        friendService.request(accountId, loginUser.getAccountId());
+        return "redirect:" + redirectPath;
+    }
+
+    @PostMapping(value = "/user/remove")
+    public String remove(@RequestParam Integer accountId, @RequestParam String redirectPath, @AuthenticationPrincipal LoginUser loginUser) {
+        friendService.remove(accountId, loginUser.getAccountId());
+        return "redirect:" + redirectPath;
+    }
+
 }
