@@ -228,6 +228,10 @@ public class FriendServiceImplTest {
             assertEquals(FriendStatus.FOLLOWED, argument.getStatus());
             return true;
         };
+        FriendDetail friendDetail = new FriendDetail();
+        friendDetail.setAccountIdFrom(accountIdFrom);
+        friendDetail.setAccountIdTo(accountId);
+        Mockito.doReturn(friendDetail).when(friendRepository).findFriendByAccountId(accountIdFrom, accountId);
 
         target.allow(accountId, accountIdFrom);
 

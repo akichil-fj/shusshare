@@ -102,10 +102,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public void allow(Integer accountId, Integer accountIdFrom) {
-        Friend friend = new Friend();
-        friend.setAccountIdTo(accountId);
-        friend.setAccountIdFrom(accountIdFrom);
+    public void allow(Integer accountIdFrom, Integer accountIdTo) {
+        FriendDetail friend = friendRepository.findFriendByAccountId(accountIdTo, accountIdFrom);
         friend.setStatus(FriendStatus.FOLLOWED);
 
         set(friend);

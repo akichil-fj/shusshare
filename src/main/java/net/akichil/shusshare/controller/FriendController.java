@@ -42,9 +42,17 @@ public class FriendController {
     }
 
     @PostMapping(value = "/allow")
-    public String allow(@RequestParam Integer accountId, @AuthenticationPrincipal LoginUser loginUser) {
+    public String allow(@RequestParam Integer accountId, @RequestParam String redirectPath,
+                        @AuthenticationPrincipal LoginUser loginUser, RedirectAttributes attributes) {
+        String encodedPath;
+        try {
+            encodedPath = new URI(redirectPath).toASCIIString();
+        } catch (URISyntaxException e) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("friend.allow.error.redirect"));
+            return "redirect:/error";
+        }
         friendService.allow(accountId, loginUser.getAccountId());
-        return "redirect:/friend";
+        return "redirect:" + encodedPath;
     }
 
     @GetMapping(path = "/find")

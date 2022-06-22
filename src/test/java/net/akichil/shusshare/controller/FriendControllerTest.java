@@ -89,14 +89,34 @@ public class FriendControllerTest {
     @TestWithUser
     public void testAllow() throws Exception {
         Integer friendAccountId = 3;
+        String redirectPath = "/friend/パス";
+        String encodedPath = "/friend/%E3%83%91%E3%82%B9"; // "/friend/パス"
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/allow")
                         .param("accountId", friendAccountId.toString())
+                        .param("redirectPath", redirectPath)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(view().name("redirect:/friend"));
+                .andExpect(view().name("redirect:" + encodedPath));
 
         Mockito.verify(friendService, Mockito.times(1)).allow(friendAccountId, 1);
+    }
+
+    @Test
+    @TestWithUser
+    public void testAllowFailByWrongUrl() throws Exception {
+        Integer friendAccountId = 3;
+        String redirectPath = "/??///&&##";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/allow")
+                        .param("accountId", friendAccountId.toString())
+                        .param("redirectPath", redirectPath)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(flash().attribute("errorMsg", "リダイレクトURLでエラーが発生しました。"))
+                .andExpect(view().name("redirect:/error"));
+
+        Mockito.verify(friendService, Mockito.times(0)).allow(friendAccountId, 1);
     }
 
     @Test
