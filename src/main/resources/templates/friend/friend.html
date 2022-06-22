@@ -16,7 +16,7 @@
         </div>
         <ul class="nav nav-tabs nav-fill">
             <li class="nav-item">
-                <a type="button" class="nav-link active" id="following-tab" data-bs-toggle="tab"
+                <a type="button" class="nav-link" id="following-tab" data-bs-toggle="tab"
                         aria-controls="following" href="#following">フォロー中
                 </a>
             </li>
@@ -27,7 +27,7 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane active" id="following" role="tabpanel" aria-labelledby="following-tab">
+            <div class="tab-pane" id="following" role="tabpanel" aria-labelledby="following-tab">
                 <div class="border rounded bg-light my-2 p-1" th:if="${requesting.size != 0}">
                     <h5 class="mt-1">フォロー申請中</h5>
                     <ul class="list-group list-group-flush">
@@ -86,11 +86,11 @@
                                     <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
                                 </div>
                                 <div class="flex-fill"></div>
-                                <form th:action="@{/friend/allow(accountId=${friend.accountId}, redirectPath='/friend')}"
+                                <form th:action="@{/friend/allow(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
                                       method="post">
                                     <button class="btn btn-info" type="submit">承認</button>
                                 </form>
-                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend')}"
+                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
                                       method="post">
                                     <button class="btn btn-danger" type="submit">拒否</button>
                                 </form>
@@ -110,7 +110,7 @@
                                     <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
                                 </div>
                                 <div class="flex-fill"></div>
-                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend')}"
+                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
                                       method="post">
                                     <button class="btn btn-danger" type="submit">拒否</button>
                                 </form>
@@ -127,5 +127,20 @@
 
 </div>
 <th:block th:replace="_common::script"/>
+<script>
+var url = window.location.href;
+console.log(url);
+if (url.match('#')) {
+    var activeTab = url.substring(url.indexOf("#") + 1);
+    var toActivePane = document.getElementById(activeTab);
+    var toActiveTab = document.getElementById(activeTab +  '-tab');
+} else {
+    var toActivePane = document.getElementById('following');
+    var toActiveTab = document.getElementById('following-tab');
+}
+console.log(toActiveTab)
+toActivePane.className += ' active'
+toActiveTab.className += ' active'
+</script>
 </body>
 </html>
