@@ -1,10 +1,7 @@
 package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Friend;
-import net.akichil.shusshare.entity.FriendDetail;
-import net.akichil.shusshare.entity.FriendStatus;
-import net.akichil.shusshare.entity.UserSelector;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
 import net.akichil.shusshare.repository.dbunitUtil.DbUnitUtil;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
@@ -20,8 +17,7 @@ import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = ShusshareApplication.class)
 public class FriendRepositoryImplDbUnitTest {
@@ -62,6 +58,7 @@ public class FriendRepositoryImplDbUnitTest {
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
+            assertNotNull(findResults.get(0).getAccountStatus());
         }
 
         /**
@@ -77,6 +74,7 @@ public class FriendRepositoryImplDbUnitTest {
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
+            assertNotNull(findResults.get(0).getAccountStatus());
         }
 
         /**
@@ -93,6 +91,7 @@ public class FriendRepositoryImplDbUnitTest {
             FriendDetail result0 = findResults.get(0);
             assertEquals(1, result0.getAccountId());
             assertEquals("test_hoge", result0.getUserId());
+            assertEquals(AccountStatus.NORMAL, result0.getAccountStatus());
         }
 
         /**
@@ -110,6 +109,7 @@ public class FriendRepositoryImplDbUnitTest {
             assertEquals(1, result0.getAccountId());
             assertEquals("ほげ山ほげお", result0.getUserName());
             assertEquals(FriendStatus.FOLLOWED, result0.getStatus());
+            assertEquals(AccountStatus.NORMAL, result0.getAccountStatus());
         }
 
         /**
@@ -124,6 +124,7 @@ public class FriendRepositoryImplDbUnitTest {
 
             assertEquals(accountId, findResult.getAccountId());
             assertEquals(FriendStatus.FOLLOWED, findResult.getStatus());
+            assertEquals(AccountStatus.NORMAL, findResult.getAccountStatus());
         }
 
         /**

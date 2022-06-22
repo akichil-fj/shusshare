@@ -11,6 +11,7 @@
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
         <result property="shusshaCount" column="shussha_count"/>
+        <result property="accountStatus" column="account_status"/>
         <result property="lockVersion" column="lock_version"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -24,6 +25,7 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.status AS status,
             f.lock_version AS lock_version,
             f.updated_at AS updated_at
@@ -66,6 +68,7 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.status AS status,
             f.lock_version AS lock_version,
             f.updated_at AS updated_at
@@ -88,6 +91,7 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.status AS status,
             f.lock_version AS lock_version,
             f.updated_at AS updated_at
@@ -108,6 +112,7 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
             f.status AS status,
@@ -128,6 +133,7 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
             f.status AS status,
@@ -167,6 +173,7 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.status AS status,
             f.lock_version AS lock_version,
             f.updated_at AS updated_at
