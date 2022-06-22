@@ -30,8 +30,11 @@
                     <div class="d-flex flex-row align-items-center">
                         <img src="/icon.png" class="img-fluid rounded-circle" width="40"
                              th:style="|background: ${@colorUtil.generateColorCode(user.userId)}|">
-                        <div class="mx-2" th:text="${user.userName}"/>
-                        <div class="mx-2 text-secondary" th:text="${user.userId}"/>
+                        <div class="ms-2" th:text="${user.userName}"/>
+                        <div class="ms-2 text-secondary" th:text="${user.userId}"/>
+                        <div class="ms-2">
+                            <i class="bi bi-lock-fill" th:if="${user.accountStatus.name()} == PRIVATE"></i>
+                        </div>
                         <div class="flex-fill"></div>
                         <form th:if="${user.status.name()} == NONE" method="post"
                               th:action="@{/friend/add(accountId=${user.accountId}, redirectPath=${'/friend/find?userName=' + keyword})}">
