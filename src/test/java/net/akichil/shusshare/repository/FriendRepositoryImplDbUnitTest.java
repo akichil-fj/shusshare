@@ -17,7 +17,8 @@ import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = ShusshareApplication.class)
 public class FriendRepositoryImplDbUnitTest {
@@ -58,7 +59,7 @@ public class FriendRepositoryImplDbUnitTest {
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
-            assertNotNull(findResults.get(0).getAccountStatus());
+            assertEquals(AccountStatus.NORMAL, findResults.get(0).getAccountStatus());
         }
 
         /**
@@ -74,7 +75,7 @@ public class FriendRepositoryImplDbUnitTest {
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
-            assertNotNull(findResults.get(0).getAccountStatus());
+            assertEquals(AccountStatus.PRIVATE, findResults.get(1).getAccountStatus());
         }
 
         /**
