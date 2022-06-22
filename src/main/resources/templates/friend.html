@@ -16,22 +16,22 @@
         </div>
         <ul class="nav nav-tabs nav-fill">
             <li class="nav-item">
-                <button type="button" class="nav-link active" id="following-tab" data-bs-toggle="tab"
+                <a type="button" class="nav-link active" id="following-tab" data-bs-toggle="tab"
                         aria-controls="following" href="#following">フォロー中
-                </button>
+                </a>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" id="followers-tab" data-bs-toggle="tab" aria-controls="followers"
+                <a type="button" class="nav-link" id="followers-tab" data-bs-toggle="tab" aria-controls="followers"
                         href="#followers">フォロワー
-                </button>
+                </a>
             </li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="following" role="tabpanel" aria-labelledby="following-tab">
-                <th:block th:if="${requesting.size != 0}">
+                <div class="border rounded bg-light my-2 p-1" th:if="${requesting.size != 0}">
                     <h5 class="mt-1">フォロー申請中</h5>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" th:each="friend:${requesting}">
+                        <li class="list-group-item bg-transparent" th:each="friend:${requesting}">
                             <div class="d-flex flex-row align-items-center">
                                 <img src="icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
@@ -44,7 +44,7 @@
                             </div>
                         </li>
                     </ul>
-                </th:block>
+                </div>
                 <th:block th:if="${following.size != 0}">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="friend:${following}">
@@ -67,10 +67,10 @@
                 </th:block>
             </div>
             <div class="tab-pane" id="followers" role="tabpanel" aria-labelledby="followers-tab">
-                <th:block th:if="${requested.size != 0}">
+                <div class="border rounded bg-light my-2 p-1" th:if="${requested.size != 0}">
                     <h5 class="mt-1">フォローリクエスト</h5>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" th:each="friend:${requested}">
+                        <li class="list-group-item bg-transparent" th:each="friend:${requested}">
                             <div class="d-flex flex-row align-items-center">
                                 <img src="icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
@@ -88,7 +88,7 @@
                             </div>
                         </li>
                     </ul>
-                </th:block>
+                </div>
                 <th:block th:if="${followers.size != 0}">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="friend:${followers}">
