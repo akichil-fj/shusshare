@@ -187,12 +187,12 @@ public class FriendRepositoryImplDbUnitTest {
         @Test
         public void testFindGoOfficeFriend() {
             final Integer id = 2;
-            final LocalDate date = LocalDate.of(2022, 6, 5);
+            final LocalDate date = LocalDate.of(2022, 6, 6);
 
             List<FriendDetail> findResults = target.findGoOfficeFriend(id, date, date);
 
             assertEquals(1, findResults.size());
-            assertEquals(1, findResults.get(0).getAccountId());
+            assertEquals(4, findResults.get(0).getAccountId());
         }
 
         @Test
@@ -202,7 +202,7 @@ public class FriendRepositoryImplDbUnitTest {
 
             List<FriendDetail> findResults = target.findGoOfficeFriend(id, date, null);
 
-            assertEquals(3, findResults.size());
+            assertEquals(1, findResults.size());
         }
     }
 

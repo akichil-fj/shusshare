@@ -178,6 +178,8 @@
             f.account_id_from = #{accountId}
             AND
             a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+            AND
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
             <if test="startDate != null">
                 AND
                 #{startDate} &lt;= date
