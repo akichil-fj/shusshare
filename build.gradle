@@ -3,11 +3,20 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'application'
 }
 
 group = 'net.akichil'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+distTar.enabled = false
+
+distZip {
+	baseName = 'shusshare'
+	version = ''
+}
+
 
 configurations {
 	compileOnly {
