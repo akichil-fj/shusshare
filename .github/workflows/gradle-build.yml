@@ -9,13 +9,6 @@ name: Test with Gradle
 
 on:
   workflow_call:
-    inputs:
-      username:
-        required: true
-        type: string
-    secrets:
-      envPAT:
-        required: true
   pull_request:
     branches: [ "main" ]
 
