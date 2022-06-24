@@ -2,6 +2,7 @@ package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.ShusshareApplication;
 import net.akichil.shusshare.entity.Account;
+import net.akichil.shusshare.entity.AccountStatus;
 import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.Shussha;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
@@ -53,6 +54,9 @@ public class HomeControllerTest {
         ArrayList<FriendDetail> friends = new ArrayList<>();
         Account account = new Account();
         account.setUserId("user");
+        account.setUserName("user_name");
+        account.setStatus(AccountStatus.NORMAL);
+        account.setShusshaCount(3);
         Shussha shussha = new Shussha();
 
         Mockito.doReturn(friends).when(friendService).findGoOfficeFriend(accountId);
@@ -79,6 +83,9 @@ public class HomeControllerTest {
         ArrayList<FriendDetail> friends = new ArrayList<>();
         Account account = new Account();
         account.setUserId("user");
+        account.setUserName("user_name");
+        account.setStatus(AccountStatus.NORMAL);
+        account.setShusshaCount(3);
 
         Mockito.doReturn(friends).when(friendService).findGoOfficeFriend(accountId);
         Mockito.doReturn(account).when(accountService).get(accountId);

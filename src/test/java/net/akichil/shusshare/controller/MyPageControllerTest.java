@@ -50,6 +50,9 @@ public class MyPageControllerTest {
         Account account = new Account();
         account.setAccountId(accountId);
         account.setUserId("user");
+        account.setUserName("user_name");
+        account.setStatus(AccountStatus.NORMAL);
+        account.setShusshaCount(3);
 
         Mockito.doReturn(account).when(accountService).get(accountId);
 
