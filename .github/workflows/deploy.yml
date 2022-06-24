@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/gradle-build.yml
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +23,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
-          name: ed25519
+          name: id_ed25519
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Copy
         run: |
