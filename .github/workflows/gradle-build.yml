@@ -8,8 +8,14 @@
 name: Test with Gradle
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+    secrets:
+      envPAT:
+        required: true
   pull_request:
     branches: [ "main" ]
 
@@ -36,3 +42,8 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifact
+        path: build/distrobutions/shusshare.zip
