@@ -39,4 +39,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: build-artifact
-        path: build/distrobutions/shusshare.zip
+        path: build/distrbutions/shusshare.zip
