@@ -17,6 +17,8 @@ public interface FriendService {
 
     FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom);
 
+    FriendDetail findFriendByUserId(String userId, Integer accountIdFrom);
+
     void add(Friend friend);
 
     void set(Friend friend);
@@ -25,6 +27,8 @@ public interface FriendService {
 
     void request(Integer accountId, Integer accountIdFrom);
 
-    void allow(Integer accountId, Integer accountIdFrom);
+    void allow(Integer accountIdFrom, Integer accountIdTo);
+
+    void deny(Integer accountIdFrom, Integer accountIdTo);
 
 }

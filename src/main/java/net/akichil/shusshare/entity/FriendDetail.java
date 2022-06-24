@@ -25,4 +25,6 @@ public class FriendDetail extends Friend {
 
     private Integer shusshaCount;
 
+    private AccountStatus accountStatus;
+
 }

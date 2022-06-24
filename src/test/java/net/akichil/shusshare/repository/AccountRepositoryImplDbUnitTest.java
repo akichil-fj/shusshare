@@ -2,6 +2,7 @@ package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
 import net.akichil.shusshare.entity.Account;
+import net.akichil.shusshare.entity.AccountSelector;
 import net.akichil.shusshare.entity.AccountStatus;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
 import net.akichil.shusshare.repository.dbunitUtil.DbUnitUtil;
@@ -15,6 +16,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,10 +35,24 @@ public class AccountRepositoryImplDbUnitTest {
     public class FindTest {
 
         /**
+         * アカウントリスト取得テスト
+         */
+        @Test
+        public void testFindList() {
+            AccountSelector selector = new AccountSelector();
+            selector.setUserId("test_fuga");
+
+            List<Account> result = target.findList(selector);
+
+            assertEquals(1, result.size());
+            assertEquals("ふが山フガ子", result.get(0).getUserName());
+        }
+
+        /**
          * アカウント取得テスト
          */
         @Test
-        public void testFind() {
+        public void testFindOne() {
             final Integer accountId = 1;
 
             final Account findResult = target.findOne(accountId);
@@ -65,6 +81,41 @@ public class AccountRepositoryImplDbUnitTest {
             final Integer accountId = 3;
 
             assertThrows(ResourceNotFoundException.class, () -> target.findOne(accountId));
+        }
+
+        /**
+         * アカウント取得テスト
+         */
+        @Test
+        public void testFindOneByUserId() {
+            final String userId = "test_fuga";
+
+            final Account findResult = target.findOne(userId);
+
+            assertEquals(2, findResult.getAccountId());
+            assertEquals("ふが山フガ子", findResult.getUserName());
+            assertEquals(AccountStatus.NORMAL, findResult.getStatus());
+            assertEquals(2, findResult.getShusshaCount());
+        }
+
+        /**
+         * アカウントが存在しない場合
+         */
+        @Test
+        public void testNotFoundByUserId() {
+            final String userId = "xyz";
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(userId));
+        }
+
+        /**
+         * 削除済みユーザを検索
+         */
+        @Test
+        public void testNotFoundDeletedByUserId() {
+            final String userId = "xyz";
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(userId));
         }
 
     }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${user != null}" th:text="${user.userName}"/>
+    <title th:if="${user == null}">エラー</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-5" style="max-width: 720px;">
+    <div class="col-12 mt-2 alert alert-success" id="msg" role="alert" th:if="${msg != null}">
+        <th:block th:text="${msg}"/>
+    </div>
+    <div class="col-12 mt-2 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}">
+        <th:block th:text="${errorMsg}"/>
+    </div>
+    <div class="row align-items-center" th:if="${user != null}">
+        <div class="col-12">
+            <h2>ユーザプロフィール</h2>
+        </div>
+        <div class="col-md-2 col-2">
+            <img src="/icon.png" class="img-fluid rounded-circle"
+                 th:style="|background: ${@colorUtil.generateColorCode(user.userId)}|"/>
+        </div>
+        <div class="col-md-7 col-6">
+            <h3 th:text="${user.userName}"/>
+            <p class="fs-6 text-secondary mb-0" th:text="${user.userId}"/>
+        </div>
+        <div class="col-md-3 col-4">
+            <form th:if="${user.status.name() == 'NONE' && !isMyself}" method="post"
+                  th:action="@{/friend/user/add(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
+                <button type="submit" class="btn btn-info">フォロー</button>
+            </form>
+            <form th:if="${user.status.name()} == FOLLOWED" method="post"
+                  th:action="@{/friend/user/remove(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
+                <button type="submit" class="btn btn-info">フォロー中</button>
+            </form>
+            <form th:if="${user.status.name()} == REQUESTED" method="post"
+                  th:action="@{/friend/user/remove(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
+                <button type="submit" class="btn btn-info">承認待ち</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+<th:block th:replace="_common::script"/>
+</body>
+</html>

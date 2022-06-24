@@ -6,7 +6,10 @@ import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,6 +48,21 @@ public class AccountServiceImplTest {
         assertEquals(account, result);
         Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
     }
+
+    @Test
+    public void testGetByUserId() {
+        final String userId = "user";
+        Account account = new Account();
+        account.setUserId(userId);
+
+        Mockito.doReturn(account).when(accountRepository).findOne(userId);
+
+        Account result = target.get(userId);
+
+        assertEquals(account, result);
+        Mockito.verify(accountRepository, Mockito.times(1)).findOne(userId);
+    }
+
 
     @Test
     public void testAdd() {

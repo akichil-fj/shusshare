@@ -25,6 +25,9 @@ public interface FriendMapper {
     FriendDetail findFriendByAccountId(@Param(value = "accountId") Integer accountId,
                                        @Param(value = "accountIdFrom") Integer accountIdFrom);
 
+    FriendDetail findFriendByUserId(@Param(value = "userId") String userId,
+                                       @Param(value = "accountIdFrom") Integer accountIdFrom);
+
     void insert(Friend friend);
 
     int update(Friend friend);

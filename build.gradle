@@ -3,11 +3,20 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'application'
 }
 
 group = 'net.akichil'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+distTar.enabled = false
+
+distZip {
+	baseName = 'shusshare'
+	version = ''
+}
+
 
 configurations {
 	compileOnly {
@@ -23,10 +32,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.mariadb.jdbc:mariadb-java-client'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.dbunit:dbunit:2.7.3'
@@ -57,4 +70,8 @@ jacocoTestReport {
 			excludes: [ '**/entity/*' ]
 		))
 	}
+}
+
+bootRun {
+	sourceResources sourceSets.main
 }

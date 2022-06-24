@@ -1,11 +1,15 @@
 spring:
   datasource:
-    driverClassName: com.mariadb.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/s_share?serverTimezone=JST&connectionTimezone=SERVER
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       maximum-pool-size: 4
       minimum-idle: 1
+  thymeleaf:
+    cache: false
+  messages:
+    basename: messages/messages, messages/ValidationMessages
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml

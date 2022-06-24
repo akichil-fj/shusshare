@@ -10,7 +10,26 @@
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
         <result property="shusshaCount" column="shussha_count"/>
+        <result property="lockVersion" column="lock_version"/>
     </resultMap>
+
+    <select id="findList" resultMap="Account">
+        SELECT
+            account_id,
+            user_id,
+            user_name,
+            password,
+            profile_photo_url,
+            status,
+            shussha_count,
+            lock_version
+        FROM
+            account
+        WHERE
+            user_id = #{userId}
+            AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+    </select>
 
     <select id="findOne" resultMap="Account">
         SELECT
@@ -20,11 +39,30 @@
             password,
             profile_photo_url,
             status,
-            shussha_count
+            shussha_count,
+            lock_version
         FROM
             account
         WHERE
             account_id = #{accountId}
+            AND
+            status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+    </select>
+
+    <select id="findOneByUserId" resultMap="Account">
+        SELECT
+            account_id,
+            user_id,
+            user_name,
+            password,
+            profile_photo_url,
+            status,
+            shussha_count,
+            lock_version
+        FROM
+            account
+        WHERE
+            user_id = #{userId}
             AND
             status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>

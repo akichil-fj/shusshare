@@ -6,6 +6,8 @@ spring:
     hikari:
       maximum-pool-size: 4
       minimum-idle: 1
+  messages:
+    basename: messages/messages, messages/ValidationMessages
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml

@@ -33,6 +33,6 @@ create table if not exists shussha
     date           date                  default current_date,
     lock_version   int unsigned          default 0    not null,
     updated_at     timestamp(3)          default current_timestamp(3) not null,
-    foreign key (account_id) references account (account_id)
+    foreign key (account_id) references account (account_id),
+    unique key (account_id, date)
 );
-

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>マイページ</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-5" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-12 mt-2 alert alert-success" id="msg" role="alert" th:if="${msg != null}">
+            <th:block th:text="${msg}"/>
+        </div>
+        <div class="col-12 mt-2 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}">
+            <th:block th:text="${errorMsg}"/>
+        </div>
+        <div class="col-12">
+            <h2>マイページ</h2>
+        </div>
+        <div class="col-md-2 col-2">
+            <img src="icon.png" class="img-fluid rounded-circle"
+                 th:style="|background: ${@colorUtil.generateColorCode(account.userId)}|"/>
+        </div>
+        <div class="col-md-7 col-6">
+            <h3>
+                <th:block th:text="${account.userName}"/>
+                <i class="bi bi-lock-fill" th:if="${account.status.name()} == PRIVATE"></i>
+            </h3>
+            <p class="fs-6 text-secondary mb-0" th:text="${account.userId}"/>
+        </div>
+        <div class="col-md-3 col-4">
+            <a class="btn btn-primary" th:href="@{/mypage/edit}">編集</a>
+        </div>
+
+        <div class="col-md-12 mt-5">
+            <h4>出社予定を作成</h4>
+            <form class="row align-items-center" th:action="@{/mypage/shussha/create}" th:method="post">
+                <div class="col-12 col-sm-5 form-floating">
+                    <input id="shussha-date" class="form-control" placeholder="" th:value="${date}" name="date"
+                           th:classappend="${#fields.hasErrors('date')} ? 'is-invalid'"/>
+                    <label for="shussha-date">日時(yyyy-mm-dd)</label>
+                    <span class="text-danger" th:if="${#fields.hasErrors('date')}"
+                          th:errors="${date}">date format error</span>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary">追加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<th:block th:replace="_common::script"/>
+</body>
+</html>

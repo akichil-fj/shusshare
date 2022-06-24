@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Friend</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-5" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <h2>フレンド一覧</h2>
+        </div>
+        <ul class="nav nav-tabs nav-fill">
+            <li class="nav-item">
+                <a type="button" class="nav-link" id="following-tab" data-bs-toggle="tab"
+                        aria-controls="following" href="#following">フォロー中
+                </a>
+            </li>
+            <li class="nav-item">
+                <a type="button" class="nav-link" id="followers-tab" data-bs-toggle="tab" aria-controls="followers"
+                        href="#followers">フォロワー
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" id="following" role="tabpanel" aria-labelledby="following-tab">
+                <div class="border rounded bg-light my-2 p-1" th:if="${requesting.size != 0}">
+                    <h5 class="mt-1">フォロー申請中</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent" th:each="friend:${requesting}">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                     th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
+                                <div class="ms-2" th:text="${friend.userName}"/>
+                                <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
+                                <div class="ms-2">
+                                    <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
+                                </div>
+                                <div class="flex-fill"></div>
+                                <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}" method="post">
+                                    <button type="submit" class="btn btn-danger">キャンセル</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <th:block th:if="${following.size != 0}">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="friend:${following}">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                     th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
+                                <div class="ms-2" th:text="${friend.userName}"/>
+                                <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
+                                <div class="ms-2">
+                                    <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
+                                </div>
+                                <div class="mx-2 text-secondary" th:text="出社回数： + ${friend.shusshaCount}"/>
+                                <div class="flex-fill"></div>
+                                <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}" method="post">
+                                    <button type="submit" class="btn btn-danger">削除</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </th:block>
+                <th:block th:if="${following.size == 0}">
+                    <div>フォロー中のユーザはいません</div>
+                </th:block>
+            </div>
+            <div class="tab-pane" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+                <div class="border rounded bg-light my-2 p-1" th:if="${requested.size != 0}">
+                    <h5 class="mt-1">フォローリクエスト</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent" th:each="friend:${requested}">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                     th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
+                                <div class="ms-2" th:text="${friend.userName}"/>
+                                <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
+                                <div class="ms-2">
+                                    <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
+                                </div>
+                                <div class="flex-fill"></div>
+                                <form th:action="@{/friend/allow(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
+                                      method="post">
+                                    <button class="btn btn-info" type="submit">承認</button>
+                                </form>
+                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
+                                      method="post">
+                                    <button class="btn btn-danger" type="submit">拒否</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <th:block th:if="${followers.size != 0}">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="friend:${followers}">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                     th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
+                                <div class="ms-2" th:text="${friend.userName}"/>
+                                <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
+                                <div class="ms-2">
+                                    <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
+                                </div>
+                                <div class="flex-fill"></div>
+                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
+                                      method="post">
+                                    <button class="btn btn-danger" type="submit">拒否</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </th:block>
+                <th:block th:if="${followers.size == 0}">
+                    <div>フォロワーはいません</div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:replace="_common::script"/>
+<script>
+var url = window.location.href;
+console.log(url);
+if (url.match('#')) {
+    var activeTab = url.substring(url.indexOf("#") + 1);
+    var toActivePane = document.getElementById(activeTab);
+    var toActiveTab = document.getElementById(activeTab +  '-tab');
+} else {
+    var toActivePane = document.getElementById('following');
+    var toActiveTab = document.getElementById('following-tab');
+}
+console.log(toActiveTab)
+toActivePane.className += ' active'
+toActiveTab.className += ' active'
+</script>
+</body>
+</html>

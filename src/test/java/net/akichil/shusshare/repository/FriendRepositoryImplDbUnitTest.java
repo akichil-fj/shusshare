@@ -1,10 +1,7 @@
 package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Friend;
-import net.akichil.shusshare.entity.FriendDetail;
-import net.akichil.shusshare.entity.FriendStatus;
-import net.akichil.shusshare.entity.UserSelector;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
 import net.akichil.shusshare.repository.dbunitUtil.DbUnitUtil;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
@@ -62,6 +59,7 @@ public class FriendRepositoryImplDbUnitTest {
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
+            assertEquals(AccountStatus.NORMAL, findResults.get(0).getAccountStatus());
         }
 
         /**
@@ -77,6 +75,7 @@ public class FriendRepositoryImplDbUnitTest {
             final List<FriendDetail> findResults = target.findAllUser(selector);
 
             assertEquals(2, findResults.size());
+            assertEquals(AccountStatus.PRIVATE, findResults.get(1).getAccountStatus());
         }
 
         /**
@@ -89,10 +88,11 @@ public class FriendRepositoryImplDbUnitTest {
 
             List<FriendDetail> findResults = target.findFriendFromUser(id);
 
-            assertEquals(3, findResults.size());
+            assertEquals(2, findResults.size());
             FriendDetail result0 = findResults.get(0);
             assertEquals(1, result0.getAccountId());
             assertEquals("test_hoge", result0.getUserId());
+            assertEquals(AccountStatus.NORMAL, result0.getAccountStatus());
         }
 
         /**
@@ -110,6 +110,7 @@ public class FriendRepositoryImplDbUnitTest {
             assertEquals(1, result0.getAccountId());
             assertEquals("ほげ山ほげお", result0.getUserName());
             assertEquals(FriendStatus.FOLLOWED, result0.getStatus());
+            assertEquals(AccountStatus.NORMAL, result0.getAccountStatus());
         }
 
         /**
@@ -124,6 +125,7 @@ public class FriendRepositoryImplDbUnitTest {
 
             assertEquals(accountId, findResult.getAccountId());
             assertEquals(FriendStatus.FOLLOWED, findResult.getStatus());
+            assertEquals(AccountStatus.NORMAL, findResult.getAccountStatus());
         }
 
         /**
@@ -148,15 +150,51 @@ public class FriendRepositoryImplDbUnitTest {
             assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(accountId, accountIdFrom));
         }
 
+        /**
+         * user_idでフレンド検索
+         */
+        @Test
+        public void testFindFriendByUserId() {
+            final String userId = "test_fuga";
+            final Integer accountIdFrom = 1;
+
+            FriendDetail findResult = target.findFriendByAccountId(userId, accountIdFrom);
+
+            assertEquals(userId, findResult.getUserId());
+            assertEquals(FriendStatus.FOLLOWED, findResult.getStatus());
+        }
+
+        /**
+         * account_idが存在しない
+         */
+        @Test
+        public void testFindFriendNotFoundByUserId() {
+            final String userId = "xxxxxxxxxxxx";
+            final Integer accountIdFrom = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(userId, accountIdFrom));
+        }
+
+        /**
+         * 削除済みのaccount_idを検索
+         */
+        @Test
+        public void testFindFriendDeletedByUserId() {
+            final String userId = "sssssssssssss";
+            final Integer accountIdFrom = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findFriendByAccountId(userId, accountIdFrom));
+        }
+
         @Test
         public void testFindGoOfficeFriend() {
             final Integer id = 2;
-            final LocalDate date = LocalDate.of(2022, 6, 5);
+            final LocalDate date = LocalDate.of(2022, 6, 6);
 
             List<FriendDetail> findResults = target.findGoOfficeFriend(id, date, date);
 
             assertEquals(1, findResults.size());
-            assertEquals(1, findResults.get(0).getAccountId());
+            assertEquals(4, findResults.get(0).getAccountId());
         }
 
         @Test
@@ -166,7 +204,7 @@ public class FriendRepositoryImplDbUnitTest {
 
             List<FriendDetail> findResults = target.findGoOfficeFriend(id, date, null);
 
-            assertEquals(3, findResults.size());
+            assertEquals(1, findResults.size());
         }
     }
 

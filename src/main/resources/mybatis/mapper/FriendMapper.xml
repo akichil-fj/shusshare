@@ -11,6 +11,7 @@
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
         <result property="shusshaCount" column="shussha_count"/>
+        <result property="accountStatus" column="account_status"/>
         <result property="lockVersion" column="lock_version"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -24,14 +25,19 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            a.status AS account_status,
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             LEFT OUTER JOIN
                 (SELECT
                     account_id_from,
                     account_id_to,
-                    status
+                    status,
+                    lock_version,
+                    updated_at
                 FROM
                     friend
                 WHERE
@@ -62,13 +68,18 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            a.status AS account_status,
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             INNER JOIN friend f
             ON a.account_id = f.account_id_to
         WHERE
             f.account_id_from = #{id}
+            and
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
 
     <select id="findFriendsToUser" resultMap="FriendDetail">
@@ -80,7 +91,10 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            a.status AS account_status,
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             INNER JOIN friend f
@@ -98,27 +112,57 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
+            a.status AS account_status,
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
-            f.status AS status
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
-            account a
-            LEFT OUTER JOIN
-            (SELECT
-                account_id_from,
-                account_id_to,
-                status
-            FROM
-                friend
-            WHERE
-                account_id_from = #{accountIdFrom}
-            ) AS f
-            ON a.account_id = f.account_id_to
+            <include refid="joinAccountFriend"/>
         WHERE
             a.account_id = #{accountId}
             AND
             a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
     </select>
+
+    <select id="findFriendByUserId" resultMap="FriendDetail">
+        SELECT
+            a.account_id AS account_id,
+            a.user_id AS user_id,
+            a.user_name AS user_name,
+            a.profile_photo_url AS profile_photo_url,
+            a.shussha_count AS shussha_count,
+            a.status AS account_status,
+            f.account_id_from AS account_id_from,
+            f.account_id_to AS account_id_to,
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
+        FROM
+            <include refid="joinAccountFriend"/>
+        WHERE
+            a.user_id = #{userId}
+            AND
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+    </select>
+
+    <sql id="joinAccountFriend">
+        account a
+        LEFT OUTER JOIN
+        (SELECT
+            account_id_from,
+            account_id_to,
+            status,
+            lock_version,
+            updated_at
+        FROM
+            friend
+        WHERE
+            account_id_from = #{accountIdFrom}
+        ) AS f
+        ON a.account_id = f.account_id_to
+    </sql>
 
     <select id="findGoOfficeFriends" resultMap="FriendDetail">
         SELECT
@@ -129,7 +173,10 @@
             a.user_name AS user_name,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
-            f.status AS status
+            a.status AS account_status,
+            f.status AS status,
+            f.lock_version AS lock_version,
+            f.updated_at AS updated_at
         FROM
             account a
             INNER JOIN friend f
@@ -140,6 +187,8 @@
             f.account_id_from = #{accountId}
             AND
             a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
+            AND
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
             <if test="startDate != null">
                 AND
                 #{startDate} &lt;= date

@@ -64,6 +64,11 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
+    public FriendDetail findFriendByUserId(String userId, Integer accountIdFrom) {
+        return friendRepository.findFriendByAccountId(userId, accountIdFrom);
+    }
+
+    @Override
     public void add(Friend friend) {
         friendRepository.add(friend);
     }
@@ -97,12 +102,18 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public void allow(Integer accountId, Integer accountIdFrom) {
-        Friend friend = new Friend();
-        friend.setAccountIdTo(accountId);
-        friend.setAccountIdFrom(accountIdFrom);
+    public void allow(Integer accountIdFrom, Integer accountIdTo) {
+        FriendDetail friend = friendRepository.findFriendByAccountId(accountIdTo, accountIdFrom);
         friend.setStatus(FriendStatus.FOLLOWED);
 
+        set(friend);
+    }
+
+    @Override
+    public void deny(Integer accountIdFrom, Integer accountIdTo) {
+        FriendDetail friend = friendRepository.findFriendByAccountId(accountIdTo, accountIdFrom);
+
+        friend.setStatus(FriendStatus.REJECTED);
         set(friend);
     }
 
