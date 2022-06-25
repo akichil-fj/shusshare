@@ -28,7 +28,7 @@ jobs:
       - name: Copy
         run: |
           rsync -av artifact/shusshare.zip ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
-          ssh -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -r ${{ secrets.DEPLOY_PATH }}/shusshare && unzip ${{ secrets.DEPLOY_PATH }}/shusshare.zip"
+          ssh -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf ${{ secrets.DEPLOY_PATH }}/shusshare && unzip ${{ secrets.DEPLOY_PATH }}/shusshare.zip"
       - name: Reboot
         run: |
           ssh -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl restart shusshare"
