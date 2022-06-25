@@ -35,7 +35,7 @@
             <a class="btn btn-primary" th:href="@{/mypage/edit}">編集</a>
         </div>
 
-        <div class="col-md-12 mt-5">
+        <div class="col-md-12 mt-3">
             <h4>出社予定を作成</h4>
             <form class="row align-items-center" th:action="@{/mypage/shussha/create}" th:method="post">
                 <div class="col-12 col-sm-5 form-floating">
@@ -49,6 +49,43 @@
                     <button type="submit" class="btn btn-primary">追加</button>
                 </div>
             </form>
+        </div>
+
+        <div class="col-md-12 mt-4">
+            <ul class="nav nav-tabs nav-fill">
+                <li class="nav-item">
+                    <a type="button" class="nav-link active" id="past-tab" data-bs-toggle="tab"
+                       aria-controls="past" href="#past">出社履歴
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a type="button" class="nav-link" id="future-tab" data-bs-toggle="tab" aria-controls="future"
+                       href="#future">出社予定
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="past" role="tabpanel" aria-labelledby="past-tab">
+                   <ul class="list-group list-group-flush">
+                       <li class="list-group-item" th:each="shussha:${pastShussha}">
+                           <th:block th:text="${shussha.date}"></th:block>
+                       </li>
+                   </ul>
+                </div>
+                <div class="tab-pane" id="future" role="tabpanel" aria-labelledby="future-tab">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="shussha:${futureShussha}">
+                            <div class="d-flex flex-row align-items-center">
+                                <div th:text="${shussha.date}"></div>
+                                <div class="flex-fill"></div>
+                                <form th:action="@{/mypage/shussha/remove(date=${shussha.date})}" method="post">
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">取り消し</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>

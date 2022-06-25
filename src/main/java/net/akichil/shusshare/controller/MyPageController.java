@@ -69,6 +69,27 @@ public class MyPageController {
         return "redirect:/mypage";
     }
 
+    @PostMapping(path = "/shussha/remove")
+    public String removeShussa(@AuthenticationPrincipal LoginUser loginUser,
+                               @RequestParam("date") String dateString,
+                               RedirectAttributes attributes) {
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-M-d"));
+        } catch (DateTimeParseException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.remove.error.format"));
+            return "redirect:/mypage";
+        }
+        try {
+            shusshaService.remove(loginUser.getAccountId(), date);
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.remove.error.notfound"));
+            return "redirect:/mypage";
+        }
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("shussha.remove.success"));
+        return "redirect:/mypage";
+    }
+
     @GetMapping(path = "/edit")
     public String getEditPage(@AuthenticationPrincipal LoginUser loginUser, @ModelAttribute(name = "account") AccountForUserEdit accountForUserEdit) {
         Account account = accountService.get(loginUser.getAccountId());

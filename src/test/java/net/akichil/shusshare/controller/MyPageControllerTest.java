@@ -8,6 +8,7 @@ import net.akichil.shusshare.service.ShusshaService;
 import net.akichil.shusshare.test.TestWithUser;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -119,6 +120,56 @@ public class MyPageControllerTest {
                 .andExpect(flash().attribute("errorMsg", "失敗：その日の出社は登録済みです。"));
 
         Mockito.verify(shusshaService, Mockito.times(1)).add(any(Shussha.class));
+    }
+
+    @Test
+    @TestWithUser
+    public void testRemoveSuccess() throws Exception {
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.of(2022, 6,18);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
+                        .param("date", "2022-6-18")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("msg", "成功：出社登録削除"));
+
+        Mockito.verify(shusshaService, Mockito.times(1)).remove(accountId, date);
+    }
+
+    @Test
+    @TestWithUser
+    public void testRemoveFailWrongFormat() throws Exception {
+        final Integer accountId = 1;
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
+                        .param("date", "aaaaaaaaa")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("errorMsg", "失敗：日付のフォーマットを確認してください。"));
+
+        Mockito.verify(shusshaService, Mockito.times(0))
+                .remove(ArgumentMatchers.eq(accountId), ArgumentMatchers.any(LocalDate.class));
+    }
+
+    @Test
+    @TestWithUser
+    public void testRemoveFailResourceNotFound() throws Exception {
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.of(2022, 6,18);
+
+        Mockito.doThrow(ResourceNotFoundException.class).when(shusshaService).remove(accountId, date);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
+                        .param("date", "2022-6-18")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("errorMsg", "失敗：削除対象が見つかりませんでした。"));
+
+        Mockito.verify(shusshaService, Mockito.times(1)).remove(accountId, date);
     }
 
     @Test
