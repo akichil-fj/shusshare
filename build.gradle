@@ -10,11 +10,12 @@ group = 'net.akichil'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+mainClassName = 'net.akichil.shusshare.ShusshareApplication'
 distTar.enabled = false
 
 distZip {
-	baseName = 'shusshare'
-	version = ''
+	archivesBaseName = 'shusshare'
+	archiveVersion = ''
 }
 
 
