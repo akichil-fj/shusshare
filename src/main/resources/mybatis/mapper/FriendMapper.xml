@@ -16,6 +16,11 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <resultMap id="ShusshaFriends" type="net.akichil.shusshare.entity.ShusshaFriends" >
+        <id property="date" column="date"/>
+        <collection property="friends" resultMap="FriendDetail"/>
+    </resultMap>
+
     <select id="findAllUser" resultMap="FriendDetail">
         SELECT
             f.account_id_from AS account_id_from,
@@ -164,7 +169,7 @@
         ON a.account_id = f.account_id_to
     </sql>
 
-    <select id="findGoOfficeFriends" resultMap="FriendDetail">
+    <select id="findGoOfficeFriends" resultMap="ShusshaFriends">
         SELECT
             f.account_id_from AS account_id_from,
             f.account_id_to AS account_id_to,
@@ -176,7 +181,8 @@
             a.status AS account_status,
             f.status AS status,
             f.lock_version AS lock_version,
-            f.updated_at AS updated_at
+            f.updated_at AS updated_at,
+            s.date AS date
         FROM
             account a
             INNER JOIN friend f

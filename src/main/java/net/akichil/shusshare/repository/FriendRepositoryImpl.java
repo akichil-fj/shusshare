@@ -2,6 +2,7 @@ package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.entity.Friend;
 import net.akichil.shusshare.entity.FriendDetail;
+import net.akichil.shusshare.entity.ShusshaFriends;
 import net.akichil.shusshare.entity.UserSelector;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.repository.mybatis.FriendMapper;
@@ -36,7 +37,7 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<FriendDetail> findGoOfficeFriend(Integer id, LocalDate startDate, LocalDate endDate) {
+    public List<ShusshaFriends> findGoOfficeFriend(Integer id, LocalDate startDate, LocalDate endDate) {
         return sqlSession.getMapper(FriendMapper.class).findGoOfficeFriends(id, startDate, endDate);
     }
 

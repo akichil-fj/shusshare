@@ -77,7 +77,7 @@ public class HomeControllerTest {
     @TestWithUser
     public void testGetWithoutShussha() throws Exception {
         final Integer accountId = 1;
-        ArrayList<FriendDetail> friends = new ArrayList<>();
+        ArrayList<ShusshaFriends> friends = new ArrayList<>();
         Account account = new Account();
         account.setUserId("user");
         account.setUserName("user_name");
