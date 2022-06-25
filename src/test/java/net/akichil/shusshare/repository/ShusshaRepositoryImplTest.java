@@ -15,6 +15,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,6 +32,15 @@ public class ShusshaRepositoryImplTest {
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})
     @Nested
     public class FindTest {
+
+        @Test
+        public void testFindAll() {
+            final Integer accountId = 1;
+
+            List<Shussha> shusshas = target.find(accountId);
+
+            assertEquals(2, shusshas.size());
+        }
 
         @Test
         public void testFind() {

@@ -10,6 +10,19 @@
         <result property="lockVersion" column="lock_version"/>
     </resultMap>
 
+    <select id="findAll" resultMap="Shussha">
+        SELECT
+            shussha_id,
+            account_id,
+            date,
+            status,
+            lock_version
+        FROM
+            shussha
+        WHERE
+            account_id = #{accountId}
+    </select>
+
     <select id="find" resultMap="Shussha">
         SELECT
             shussha_id,
