@@ -31,7 +31,8 @@ create table if not exists shussha
     shussha_id     bigint unsigned       primary key          auto_increment,
     account_id     bigint unsigned                            not null,
     date           date                  default current_date,
-    lock_version   int unsigned          default 0    not null,
+    status         smallint unsigned     default 0            not null,
+    lock_version   int unsigned          default 0            not null,
     updated_at     timestamp(3)          default current_timestamp(3) not null,
     foreign key (account_id) references account (account_id),
     unique key (account_id, date)

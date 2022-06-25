@@ -21,6 +21,8 @@ public class Shussha {
 
     private LocalDate date;
 
+    private ShusshaStatus status;
+
     private Integer lockVersion;
 
 }

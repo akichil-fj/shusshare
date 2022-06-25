@@ -38,4 +38,13 @@ public class ShusshaRepositoryImpl implements ShusshaRepository {
             throw new ResourceNotFoundException();
         }
     }
+
+    @Override
+    public void set(Shussha shussha) {
+        final int affected = sqlSession.getMapper(ShusshaMapper.class).set(shussha);
+        if (affected != 1) {
+            throw new ResourceNotFoundException();
+        }
+    }
+
 }

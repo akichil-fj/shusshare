@@ -12,4 +12,6 @@ public interface ShusshaRepository {
 
     void remove(Shussha shussha);
 
+    void set(Shussha shussha);
+
 }

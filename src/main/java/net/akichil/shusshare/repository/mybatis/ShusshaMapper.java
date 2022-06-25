@@ -15,4 +15,6 @@ public interface ShusshaMapper {
 
     int remove(Shussha shussha);
 
+    int set(Shussha shussha);
+
 }

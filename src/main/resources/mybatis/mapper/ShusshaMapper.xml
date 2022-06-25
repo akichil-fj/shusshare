@@ -6,6 +6,7 @@
         <id property="shusshaId" column="shussha_id"/>
         <result property="accountId" column="account_id"/>
         <result property="date" column="date"/>
+        <result property="status" column="status"/>
         <result property="lockVersion" column="lock_version"/>
     </resultMap>
 
@@ -14,6 +15,7 @@
             shussha_id,
             account_id,
             date,
+            status,
             lock_version
         FROM
             shussha
@@ -26,13 +28,30 @@
     <insert id="add" useGeneratedKeys="true" keyProperty="shusshaId" keyColumn="shussha_id">
         INSERT INTO shussha(
             account_id,
-            date
+            date,
+            status
         )
         VALUES(
             #{accountId},
-            #{date}
+            #{date},
+            #{status}
         )
     </insert>
+
+    <update id="set">
+        UPDATE
+            shussha
+        SET
+            <if test="status != null">
+                status = #{status},
+            </if>
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            shussha_id = #{shusshaId}
+            AND
+            lock_version = #{lockVersion}
+    </update>
 
     <delete id="remove">
         DELETE FROM

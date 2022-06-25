@@ -2,6 +2,7 @@ package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.ShusshareApplication;
 import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.dbunitUtil.DbTestExecutionListener;
 import net.akichil.shusshare.repository.dbunitUtil.DbUnitUtil;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
@@ -62,6 +63,7 @@ public class ShusshaRepositoryImplTest {
             final Shussha insertData = new Shussha();
             insertData.setAccountId(2);
             insertData.setDate(LocalDate.of(2022, 6, 7));
+            insertData.setStatus(ShusshaStatus.TOBE);
 
             target.add(insertData);
 
@@ -100,6 +102,37 @@ public class ShusshaRepositoryImplTest {
             assertThrows(ResourceNotFoundException.class, () -> target.remove(deleteData));
         }
 
+    }
+
+    @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})
+    @Nested
+    public class UpdateTest {
+
+        private static final String UPDATE_DATA_PATH = "src/test/resources/testdata/update";
+
+        @Test
+        public void testUpdateSuccess() throws Exception {
+            final Shussha updateData = new Shussha();
+            updateData.setShusshaId(5);
+            updateData.setDate(LocalDate.of(2022, 6, 6));
+            updateData.setStatus(ShusshaStatus.DONE);
+            updateData.setLockVersion(0);
+
+            target.set(updateData);
+
+            DbUnitUtil.assertMutateResults(dataSource, "shussha", UPDATE_DATA_PATH, "updated_at");
+        }
+
+        @Test
+        public void testUpdateFailResourceNotFound() {
+            final Shussha updateData = new Shussha();
+            updateData.setShusshaId(100);
+            updateData.setDate(LocalDate.of(2022, 6, 6));
+            updateData.setStatus(ShusshaStatus.DONE);
+            updateData.setLockVersion(0);
+
+            assertThrows(ResourceNotFoundException.class, () -> target.set(updateData));
+        }
 
     }
 
