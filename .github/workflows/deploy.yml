@@ -17,7 +17,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: shusshare.zip
+          path: artifact
     
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -27,7 +27,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Copy
         run: |
-          rsync -av shusshare.zip ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
+          rsync -av artifact/shusshare.zip ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
           ssh -t ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -r ${{ secrets.DEPLOY_PATH }}/shusshare && unzip ${{ secrets.DEPLOY_PATH }}/shusshare.zip"
       - name: Reboot
         run: |
