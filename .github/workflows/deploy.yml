@@ -17,7 +17,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: shsshare.zip
+          path: shusshare.zip
     
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
