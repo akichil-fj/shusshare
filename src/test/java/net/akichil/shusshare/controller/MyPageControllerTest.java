@@ -1,10 +1,7 @@
 package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Account;
-import net.akichil.shusshare.entity.AccountForUserEdit;
-import net.akichil.shusshare.entity.AccountStatus;
-import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.ShusshaService;
@@ -71,6 +68,7 @@ public class MyPageControllerTest {
         ArgumentMatcher<Shussha> matcher = argument -> {
             assertEquals(1, argument.getAccountId());
             assertEquals(LocalDate.of(2022, 6, 18), argument.getDate());
+            assertEquals(ShusshaStatus.TOBE, argument.getStatus()); // ステータスが一致するか
             return true;
         };
 

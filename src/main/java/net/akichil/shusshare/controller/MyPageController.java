@@ -1,9 +1,6 @@
 package net.akichil.shusshare.controller;
 
-import net.akichil.shusshare.entity.Account;
-import net.akichil.shusshare.entity.AccountForUserEdit;
-import net.akichil.shusshare.entity.AccountStatus;
-import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.helper.MessageSourceHelper;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.security.LoginUser;
@@ -52,6 +49,7 @@ public class MyPageController {
                              RedirectAttributes attributes) {
         Shussha shussha = new Shussha();
         shussha.setAccountId(loginUser.getAccountId());
+        shussha.setStatus(ShusshaStatus.TOBE); // 出社予定
         try {
             shussha.setDate(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d")));
         } catch (DateTimeParseException exception) {
