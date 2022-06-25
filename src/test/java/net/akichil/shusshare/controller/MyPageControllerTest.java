@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,13 +53,22 @@ public class MyPageControllerTest {
         account.setStatus(AccountStatus.NORMAL);
         account.setShusshaCount(3);
 
+        ShusshaList shusshaList = new ShusshaList();
+        List<Shussha> pastShussha = new ArrayList<>();
+        List<Shussha> futureShussha = new ArrayList<>();
+        shusshaList.setFutureShussha(pastShussha);
+        shusshaList.setPastShussha(futureShussha);
+
         Mockito.doReturn(account).when(accountService).get(accountId);
+        Mockito.doReturn(shusshaList).when(shusshaService).list(accountId);
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("mypage/mypage"))
-                .andExpect(model().attribute("account", account));
+                .andExpect(model().attribute("account", account))
+                .andExpect(model().attribute("pastShussha", pastShussha))
+                .andExpect(model().attribute("futureShussha", futureShussha));
 
         Mockito.verify(accountService, Mockito.times(1)).get(accountId);
     }

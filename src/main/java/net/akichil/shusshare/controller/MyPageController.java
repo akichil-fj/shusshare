@@ -40,6 +40,9 @@ public class MyPageController {
     public String get(@AuthenticationPrincipal LoginUser loginUser, Model model,
                       @ModelAttribute("date") String date) {
         model.addAttribute("account", accountService.get(loginUser.getAccountId()));
+        ShusshaList shusshaList = shusshaService.list(loginUser.getAccountId());
+        model.addAttribute("pastShussha", shusshaList.getPastShussha());
+        model.addAttribute("futureShussha", shusshaList.getFutureShussha());
         return "mypage/mypage";
     }
 

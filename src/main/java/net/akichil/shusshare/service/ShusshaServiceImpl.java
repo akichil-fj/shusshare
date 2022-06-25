@@ -2,6 +2,7 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Account;
 import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.ShusshaList;
 import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
@@ -9,6 +10,8 @@ import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShusshaServiceImpl implements ShusshaService {
@@ -20,6 +23,22 @@ public class ShusshaServiceImpl implements ShusshaService {
     public ShusshaServiceImpl(ShusshaRepository shusshaRepository, AccountRepository accountRepository) {
         this.shusshaRepository = shusshaRepository;
         this.accountRepository = accountRepository;
+    }
+
+    @Override
+    public ShusshaList list(Integer accountId) {
+        ShusshaList shusshaList = new ShusshaList();
+        List<Shussha> shusshas = shusshaRepository.find(accountId);
+
+        shusshaList.setPastShussha(shusshas.stream()
+                .filter(s -> s.getDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList()));
+
+        shusshaList.setFutureShussha(shusshas.stream()
+                .filter(s -> s.getDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList()));
+
+        return shusshaList;
     }
 
     @Override

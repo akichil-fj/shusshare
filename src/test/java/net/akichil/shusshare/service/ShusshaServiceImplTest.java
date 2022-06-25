@@ -2,6 +2,7 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Account;
 import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.ShusshaList;
 import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
@@ -15,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,6 +41,27 @@ public class ShusshaServiceImplTest {
     @AfterEach
     public void afterEach() throws Exception {
         closeable.close();
+    }
+
+    @Test
+    public void testList() {
+        final Integer accountId = 1;
+        Shussha shussha1 = new Shussha(); // 翌日の出社
+        shussha1.setShusshaId(1);
+        shussha1.setDate(LocalDate.now().plusDays(1));
+        Shussha shussha2 = new Shussha(); // 前日の出社
+        shussha2.setShusshaId(2);
+        shussha2.setDate(LocalDate.now().minusDays(1));
+        List<Shussha> shusshas = List.of(shussha1, shussha2);
+
+        Mockito.doReturn(shusshas).when(shusshaRepository).find(accountId);
+
+        ShusshaList result = target.list(accountId);
+
+        assertEquals(1, result.getPastShussha().size());
+        assertEquals(1, result.getFutureShussha().size());
+        assertEquals(2, result.getPastShussha().get(0).getShusshaId());
+        assertEquals(1, result.getFutureShussha().get(0).getShusshaId());
     }
 
     @Test
