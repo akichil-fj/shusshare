@@ -5,6 +5,7 @@ import net.akichil.shusshare.entity.Shussha;
 import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
+import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,9 +31,11 @@ public class ShusshaServiceImpl implements ShusshaService {
     public void add(Shussha shussha) {
         // すでに登録済みの情報があるか？
         int shusshaId = -1;
-        Shussha existShussha = shusshaRepository.find(shussha.getAccountId(), shussha.getDate());
-        if (existShussha != null) {
+        try {
+            Shussha existShussha = shusshaRepository.find(shussha.getAccountId(), shussha.getDate());
             shusshaId = existShussha.getShusshaId();
+        } catch (ResourceNotFoundException ignored) {
+            // 登録されていなかった
         }
         // すでに登録済みなら更新、なければ登録
         if (shusshaId != -1) {

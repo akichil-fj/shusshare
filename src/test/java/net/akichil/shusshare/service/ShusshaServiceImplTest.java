@@ -5,6 +5,7 @@ import net.akichil.shusshare.entity.Shussha;
 import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
+import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,6 +70,7 @@ public class ShusshaServiceImplTest {
         Account account = new Account();
         account.setShusshaCount(shusshaCount);
 
+        Mockito.doThrow(ResourceNotFoundException.class).when(shusshaRepository).find(accountId, date);
         Mockito.doReturn(account).when(accountRepository).findOne(accountId);
 
         // when
@@ -132,6 +134,7 @@ public class ShusshaServiceImplTest {
         Account account = new Account();
         account.setShusshaCount(shusshaCount);
 
+        Mockito.doThrow(ResourceNotFoundException.class).when(shusshaRepository).find(accountId, date);
         Mockito.doReturn(account).when(accountRepository).findOne(accountId);
 
         // when
