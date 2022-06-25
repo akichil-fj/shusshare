@@ -2,6 +2,7 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Account;
 import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,27 @@ public class ShusshaServiceImpl implements ShusshaService {
 
     @Override
     public void add(Shussha shussha) {
-        shusshaRepository.add(shussha);
+        // すでに登録済みの情報があるか？
+        int shusshaId = -1;
+        Shussha existShussha = shusshaRepository.find(shussha.getAccountId(), shussha.getDate());
+        if (existShussha != null) {
+            shusshaId = existShussha.getShusshaId();
+        }
+        // すでに登録済みなら更新、なければ登録
+        if (shusshaId != -1) {
+            shusshaRepository.set(shussha);
+        } else {
+            shussha.setShusshaId(shusshaId);
+            shusshaRepository.add(shussha);
+        }
 
         // 出社回数更新(+1)
-        Account account = accountRepository.findOne(shussha.getAccountId());
-        account.setShusshaCount(account.getShusshaCount() + 1);
-        accountRepository.set(account);
+        // DONEなら+1
+        if (shussha.getStatus() == ShusshaStatus.DONE) {
+            Account account = accountRepository.findOne(shussha.getAccountId());
+            account.setShusshaCount(account.getShusshaCount() + 1);
+            accountRepository.set(account);
+        }
     }
 
     @Override

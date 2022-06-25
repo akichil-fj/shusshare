@@ -2,6 +2,7 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Account;
 import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -54,13 +55,15 @@ public class ShusshaServiceImplTest {
     }
 
     @Test
-    public void testAdd() {
+    public void testAddNew() {
         // setup
         final Integer accountId = 1;
         final LocalDate date = LocalDate.now();
+        final ShusshaStatus status = ShusshaStatus.DONE;
         Shussha shussha = new Shussha();
         shussha.setAccountId(accountId);
         shussha.setDate(date);
+        shussha.setStatus(status);
 
         final int shusshaCount = 3;
         Account account = new Account();
@@ -75,6 +78,70 @@ public class ShusshaServiceImplTest {
         assertEquals(shusshaCount + 1, account.getShusshaCount());
         Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
         Mockito.verify(accountRepository, Mockito.times(1)).set(account);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).add(shussha);
+    }
+
+    @Test
+    public void testAddUpdate() {
+        // setup
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.now();
+        final ShusshaStatus status = ShusshaStatus.DONE;
+        Shussha shussha = new Shussha();
+        shussha.setAccountId(accountId);
+        shussha.setDate(date);
+        shussha.setStatus(status);
+
+        Shussha existedShussha = new Shussha();
+        existedShussha.setShusshaId(10);
+        existedShussha.setAccountId(accountId);
+        existedShussha.setDate(date);
+        existedShussha.setStatus(ShusshaStatus.TOBE);
+
+        final int shusshaCount = 3;
+        Account account = new Account();
+        account.setShusshaCount(shusshaCount);
+
+        Mockito.doReturn(existedShussha).when(shusshaRepository).find(accountId, date);
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+
+        // when
+        target.add(shussha);
+
+        // then
+        assertEquals(shusshaCount + 1, account.getShusshaCount());
+        Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(1)).set(account);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).set(shussha);
+    }
+
+    @Test
+    public void testAddNewWithTobe() {
+        // setup
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.now();
+        final ShusshaStatus status = ShusshaStatus.TOBE;
+        Shussha shussha = new Shussha();
+        shussha.setAccountId(accountId);
+        shussha.setDate(date);
+        shussha.setStatus(status);
+
+        final int shusshaCount = 3;
+        Account account = new Account();
+        account.setShusshaCount(shusshaCount);
+
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+
+        // when
+        target.add(shussha);
+
+        // then
+        assertEquals(shusshaCount, account.getShusshaCount());
+        Mockito.verify(accountRepository, Mockito.times(0)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(0)).set(account);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
         Mockito.verify(shusshaRepository, Mockito.times(1)).add(shussha);
     }
 
