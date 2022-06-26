@@ -2,7 +2,7 @@
 <html lang="jp" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>ログイン</title>
     <th:block th:replace="_common::css"/>
 </head>
 <header>
@@ -10,7 +10,10 @@
 </header>
 <body>
 <div class="container-md mt-5 d-flex justify-content-center" style="max-width: 720px;">
-    <div class="d-flex flex-column col-sm-7 col-12 justify-content-center">
+    <div class="d-flex flex-column col-sm-7 col-12 justify-content-center border rounded p-1">
+        <div class="d-flex justify-content-center my-3">
+            <img src="/img/logo.png" class="imag-fluid" style="max-width:80%; height: auto;">
+        </div>
         <div class=" mt-2 alert alert-danger" id="errorMsg" role="alert" th:if="${param.error}">
             ユーザー名、またはパスワードが違います。
         </div>
@@ -25,7 +28,7 @@
             <button class="btn btn-primary col-12" type="submit">ログイン</button>
         </form>
         <span class="mt-5 text-secondary text-center">または</span>
-        <a href="/register" class="btn btn-info">サインアップ</a>
+        <a href="/register" class="btn btn-info mb-3">サインアップ</a>
     </div>
 </div>
 <th:block th:replace="_common::script"/>

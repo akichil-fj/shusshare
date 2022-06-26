@@ -33,7 +33,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-transparent" th:each="friend:${requesting}">
                             <div class="d-flex flex-row align-items-center">
-                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
@@ -57,7 +57,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="friend:${following}">
                             <div class="d-flex flex-row align-items-center">
-                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
@@ -88,7 +88,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-transparent" th:each="friend:${requested}">
                             <div class="d-flex flex-row align-items-center">
-                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
@@ -117,7 +117,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="friend:${followers}">
                             <div class="d-flex flex-row align-items-center">
-                                <img src="icon.png" class="img-fluid rounded-circle" width="40"
+                                <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
