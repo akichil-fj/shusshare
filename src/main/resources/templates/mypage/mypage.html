@@ -29,10 +29,13 @@
                 <th:block th:text="${account.userName}"/>
                 <i class="bi bi-lock-fill" th:if="${account.status.name()} == PRIVATE"></i>
             </h3>
-            <p class="fs-6 text-secondary mb-0" th:text="${account.userId}"/>
+            <p class="fs-6 text-secondary mb-1" th:text="${account.userId}"/>
         </div>
-        <div class="col-md-3 col-4">
+        <div class="col-md-2 col-3 d-flex justify-content-end">
             <a class="btn btn-primary" th:href="@{/mypage/edit}">編集</a>
+        </div>
+        <div class="col-12 mt-2">
+            <p th:text="${account.profile}"/>
         </div>
 
         <div class="col-md-12 mt-3">

@@ -8,6 +8,7 @@
         <result property="accountId" column="account_id"/>
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
+        <result property="profile" column="profile"/>
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
         <result property="shusshaCount" column="shussha_count"/>
@@ -28,6 +29,7 @@
             a.account_id AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
+            a.profile AS profile,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
             a.status AS account_status,
@@ -71,6 +73,7 @@
             f.account_id_to AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
+            a.profile AS profile,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
             a.status AS account_status,
@@ -94,6 +97,7 @@
             f.account_id_from AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
+            a.profile AS profile,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
             a.status AS account_status,
@@ -115,6 +119,7 @@
             a.account_id AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
+            a.profile AS profile,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
             a.status AS account_status,
@@ -136,6 +141,7 @@
             a.account_id AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
+            a.profile AS profile,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
             a.status AS account_status,
@@ -176,6 +182,7 @@
             a.account_id AS account_id,
             a.user_id AS user_id,
             a.user_name AS user_name,
+            a.profile AS profile,
             a.profile_photo_url AS profile_photo_url,
             a.shussha_count AS shussha_count,
             a.status AS account_status,

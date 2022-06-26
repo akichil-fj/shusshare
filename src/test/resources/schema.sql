@@ -7,6 +7,7 @@ create table if not exists account
     user_id            varchar(15)           unique       not null,
     user_name          varchar(30)           unique       not null,
     password           char(60)                           not null,
+    profile            text                  default '',
     profile_photo_url  varchar(300)          default null,
     updated_at         timestamp(3)          default current_timestamp(3) not null,
     lock_version       int unsigned          default 0    not null,
