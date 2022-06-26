@@ -9,12 +9,12 @@
     <th:block th:replace="header::header"/>
 </header>
 <body>
-<div class="container-md mt-5" style="max-width: 720px;">
+<div class="container-md mt-md-5 mt-sm-4 mt-2" style="max-width: 720px;">
     <div class="row align-items-center">
-        <div class="col-12 mt-2 alert alert-success" id="msg" role="alert" th:if="${msg != null}">
+        <div class="col-12 mb-4 alert alert-success" id="msg" role="alert" th:if="${msg != null}" style="margin-top: -1rem;">
             <th:block th:text="${msg}"/>
         </div>
-        <div class="col-12 mt-2 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}">
+        <div class="col-12 mb-4 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}" style="margin-top: -1rem;">
             <th:block th:text="${errorMsg}"/>
         </div>
         <div class="col-12">
