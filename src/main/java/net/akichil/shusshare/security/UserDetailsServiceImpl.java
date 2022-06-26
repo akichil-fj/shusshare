@@ -3,12 +3,8 @@ package net.akichil.shusshare.security;
 import net.akichil.shusshare.entity.Account;
 import net.akichil.shusshare.entity.AccountSelector;
 import net.akichil.shusshare.repository.AccountRepository;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public LoginUser loadUserByUsername(String username) throws UsernameNotFoundException {
+    public LoginUser loadUserByUsername(String userId) throws UsernameNotFoundException {
         AccountSelector selector = new AccountSelector();
-        selector.setUserId(username);
+        selector.setUserId(userId);
 
         List<Account> accounts = accountRepository.findList(selector);
 

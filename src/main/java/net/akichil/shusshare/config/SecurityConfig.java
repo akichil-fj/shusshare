@@ -17,12 +17,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // 認証
-        http.formLogin()//.loginPage("/login") //自作ログインページ用
+        http.formLogin().loginPage("/login") //自作ログインページ用
                 //.loginProcessingUrl("/auth/login")
                 .usernameParameter("userId")
                 .passwordParameter("password");
 
         http.logout().logoutSuccessUrl("/login")
+                .logoutUrl("/logout")
                 .deleteCookies("JSESSIONID");
 
         // 認可
