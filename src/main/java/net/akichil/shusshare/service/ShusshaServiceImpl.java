@@ -10,6 +10,7 @@ import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.exception.DataNotUpdatedException;
 import net.akichil.shusshare.service.exception.IllegalDateRegisterException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +28,7 @@ public class ShusshaServiceImpl implements ShusshaService {
         this.accountRepository = accountRepository;
     }
 
+    @Transactional
     @Override
     public ShusshaList list(Integer accountId) {
         ShusshaList shusshaList = new ShusshaList();
@@ -43,11 +45,13 @@ public class ShusshaServiceImpl implements ShusshaService {
         return shusshaList;
     }
 
+    @Transactional
     @Override
     public Shussha get(Integer accountId, LocalDate date) {
         return shusshaRepository.find(accountId, LocalDate.now());
     }
 
+    @Transactional
     @Override
     public void add(Shussha shussha) {
         // すでに登録済みの情報があるか？
@@ -88,6 +92,7 @@ public class ShusshaServiceImpl implements ShusshaService {
         }
     }
 
+    @Transactional
     @Override
     public void remove(Integer accountId, LocalDate date) {
         Shussha shussha = shusshaRepository.find(accountId, date);

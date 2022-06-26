@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="jp" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <th:block th:replace="_common::meta"/>
     <title>マイページ</title>
     <th:block th:replace="_common::css"/>
 </head>
@@ -24,7 +24,7 @@
             <img src="/img/icon.png" class="img-fluid rounded-circle"
                  th:style="|background: ${@colorUtil.generateColorCode(account.userId)}|"/>
         </div>
-        <div class="col-md-7 col-6">
+        <div class="col-md-7 col-7">
             <h3>
                 <th:block th:text="${account.userName}"/>
                 <i class="bi bi-lock-fill" th:if="${account.status.name()} == PRIVATE"></i>

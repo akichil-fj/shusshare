@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -29,9 +30,12 @@ public class SecurityConfig {
         // 認可
         http.authorizeRequests()
                 .antMatchers("/img/**", "/css/**").permitAll()
-                .antMatchers("/login", "/logout", "/register/**").permitAll()
+                .antMatchers("/login", "/logout", "/register/**", "/about/**").permitAll()
                 .antMatchers("/home", "/mypage").hasAuthority("USER")
                 .anyRequest().authenticated();
+
+        // CSRF Token
+        http.csrf().csrfTokenRepository(new CookieCsrfTokenRepository());
 
         return http.build();
     }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="_common::meta"/>
+    <title>Shusshareについて</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+
+</header>
+<body style="background-color: #f0f8ff;">
+<div class="container-md mt-md-5 mt-sm-4 mt-2" style="max-width: 720px;">
+    <h2 class="mt-2">Shusshareとは</h2>
+    <p>
+        Shsshare(出社share)は自分の出社状況をシェアできるアプリケーションです。
+    </p>
+    <p>
+        今日誰が出社しているかを一目で確認することができます。
+    </p>
+    <h2 class="mt-5">使い方</h2>
+    <p>
+        使い方は非常にシンプル。「出社する」ボタンを押すだけです。
+        これだけで、自分が出社していることをフォロワーが知ることができます。
+    </p>
+    <p>
+        さらに、マイページから今後の出社予定も登録することができます。
+    </p>
+    <p>
+        出社を、オフラインコミュニケーションのきっかけにしてみませんか。
+    </p>
+    <h4>フォローについて</h4>
+    <p>
+        他のユーザをフォローすることで、そのユーザの出社状況を確認できます。
+    </p>
+    <p>
+        自分の情報を多くの人に知られたくない場合は、アカウントを非公開にしてみてください。
+    </p>
+    <h2 class="mt-5">その他</h2>
+    <p>
+        このアプリケーションはオープンソースです。
+    </p>
+    <p>
+        <a href="https://github.com/akichil-fj/shusshare">
+            Open GitHub
+            <i class="bi bi-github"></i>
+        </a>
+    </p>
+    <div class="mt-5 d-flex flex-row flex-wrap justify-content-evenly">
+        <a class="btn btn-primary" href="/login">ログイン</a>
+        <a class="btn btn-info" href="/register">サインアップ</a>
+    </div>
+</div>
+</body>
+</html>
