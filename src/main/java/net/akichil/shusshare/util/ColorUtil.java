@@ -21,8 +21,11 @@ public class ColorUtil {
             value += b;
 
         Random random = new Random(value);
-        int randomValue = random.nextInt(0xffffff);
-        String hex = String.format("%06x", randomValue);
+        int r = random.nextInt(0x9f) + 0x60;
+        int g = random.nextInt(0x9f) + 0x60;
+        int b = random.nextInt(0x9f) + 0x60;
+        int sum = r * 0x10000 + g * 0x100 + b;
+        String hex = String.format("%06x", sum);
         return "#" + hex;
     }
 
