@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="jp" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <th:block th:replace="_common::meta"/>
     <title th:if="${user != null}" th:text="${user.userName}"/>
     <title th:if="${user == null}">エラー</title>
     <th:block th:replace="_common::css"/>
