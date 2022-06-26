@@ -21,6 +21,8 @@ public class FriendDetail extends Friend {
 
     private String userName;
 
+    private String profile;
+
     private String profilePhotoUrl;
 
     private Integer shusshaCount;
