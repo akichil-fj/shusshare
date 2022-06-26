@@ -34,7 +34,7 @@
                       th:errors="*{userName}"> userName error</span>
             </div>
             <div class="mb-3 form-group">
-                <label for="inputProfile" class="form-label">紹介文</label>
+                <label for="inputProfile" class="form-label">ひとこと</label>
                 <input id="inputProfile" class="form-control" th:field="*{profile}"
                        th:classappend="${#fields.hasErrors('profile')} ? 'is-invalid'"/>
                 <span class="text-danger" th:if="${#fields.hasErrors('profile')}"

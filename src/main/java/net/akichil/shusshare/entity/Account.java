@@ -35,6 +35,7 @@ public class Account {
     @Size(min = 4, groups = {AddGroup.class})
     private String password;
 
+    @Size(min = 0, max = 100, groups = {SetGroup.class})
     private String profile;
 
     private String profilePhotoUrl;
