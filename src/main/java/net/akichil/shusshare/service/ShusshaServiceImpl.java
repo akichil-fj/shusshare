@@ -8,6 +8,7 @@ import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.exception.DataNotUpdatedException;
+import net.akichil.shusshare.service.exception.IllegalDateRegisterException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -63,6 +64,12 @@ public class ShusshaServiceImpl implements ShusshaService {
         } catch (ResourceNotFoundException ignored) {
             // 登録されていなかった
         }
+
+        // 予定なのに今日以前
+        if (shussha.getStatus() == ShusshaStatus.TOBE && !shussha.getDate().isAfter(LocalDate.now())) {
+            throw new IllegalDateRegisterException();
+        }
+
         // すでに登録済みなら更新、なければ登録
         if (shusshaId != -1) {
             shussha.setShusshaId(shusshaId);

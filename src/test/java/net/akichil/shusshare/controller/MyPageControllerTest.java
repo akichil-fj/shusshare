@@ -5,6 +5,8 @@ import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.ShusshaService;
+import net.akichil.shusshare.service.exception.DataNotUpdatedException;
+import net.akichil.shusshare.service.exception.IllegalDateRegisterException;
 import net.akichil.shusshare.service.exception.PasswordNotMatchException;
 import net.akichil.shusshare.test.TestWithUser;
 import org.junit.jupiter.api.Test;
@@ -111,7 +113,7 @@ public class MyPageControllerTest {
     @Test
     @TestWithUser
     public void testAddFailDuplicated() throws Exception {
-        Mockito.doThrow(DataIntegrityViolationException.class).when(shusshaService).add(any(Shussha.class));
+        Mockito.doThrow(DataNotUpdatedException.class).when(shusshaService).add(any(Shussha.class));
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/create")
                         .param("date", "2022-12-1")
@@ -119,6 +121,21 @@ public class MyPageControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(view().name("redirect:/mypage"))
                 .andExpect(flash().attribute("errorMsg", "失敗：その日の出社は登録済みです。"));
+
+        Mockito.verify(shusshaService, Mockito.times(1)).add(any(Shussha.class));
+    }
+
+    @Test
+    @TestWithUser
+    public void testAddFailPastDateTobe() throws Exception {
+        Mockito.doThrow(IllegalDateRegisterException.class).when(shusshaService).add(any(Shussha.class));
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/create")
+                        .param("date", "2022-12-1")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("errorMsg", "失敗：明日以降の日付を入力してください。"));
 
         Mockito.verify(shusshaService, Mockito.times(1)).add(any(Shussha.class));
     }

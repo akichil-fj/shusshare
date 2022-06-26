@@ -7,6 +7,7 @@ import net.akichil.shusshare.security.LoginUser;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.ShusshaService;
 import net.akichil.shusshare.service.exception.DataNotUpdatedException;
+import net.akichil.shusshare.service.exception.IllegalDateRegisterException;
 import net.akichil.shusshare.service.exception.PasswordNotMatchException;
 import net.akichil.shusshare.validation.SetGroup;
 import net.akichil.shusshare.validation.SetPasswordGroup;
@@ -66,6 +67,9 @@ public class MyPageController {
             shusshaService.add(shussha);
         } catch (DataNotUpdatedException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.register.error.duplicate"));
+            return "redirect:/mypage";
+        } catch (IllegalDateRegisterException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.register.error.tobedate"));
             return "redirect:/mypage";
         }
         attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("shussha.register.success"));
