@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="flex-fill"></div>
                                 <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}" method="post">
-                                    <button type="submit" class="btn btn-danger">キャンセル</button>
+                                    <button type="submit" class="btn btn-outline-danger">キャンセル</button>
                                 </form>
                             </div>
                         </li>
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="flex-fill"></div>
                                 <form th:action="@{/friend/remove(accountId=${friend.accountId}, redirectPath='/friend')}" method="post">
-                                    <button type="submit" class="btn btn-danger">削除</button>
+                                    <button type="submit" class="btn btn-outline-info">フォロー中</button>
                                 </form>
                             </div>
                         </li>
@@ -107,7 +107,7 @@
                                 </form>
                                 <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
                                       method="post">
-                                    <button class="btn btn-danger" type="submit">拒否</button>
+                                    <button class="btn btn-danger" type="submit">ブロック</button>
                                 </form>
                             </div>
                         </li>
@@ -132,7 +132,7 @@
                                 <div class="flex-fill"></div>
                                 <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
                                       method="post">
-                                    <button class="btn btn-danger" type="submit">拒否</button>
+                                    <button class="btn btn-outline-danger" type="submit">ブロック</button>
                                 </form>
                             </div>
                         </li>

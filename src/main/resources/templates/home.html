@@ -26,17 +26,19 @@
             <p class="fs-6 text-secondary mb-0" th:text="${account.userId}"/>
         </div>
         <div class="col-md-3 col-4">
+            <div class="d-flex flex-column align-items-center">
             <form th:action="@{/home/shussha/create}" th:method="post" th:if="${shussha == null}">
                 <button type="submit" class="btn btn-primary">
                     出社する！
                 </button>
             </form>
             <form th:action="@{/home/shussha/remove}" th:method="delete" th:if="${shussha != null}">
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="btn btn-outline-danger">
                     取り消し
                 </button>
             </form>
             <p class="mb-0" th:text="出社回数： + ${account.shusshaCount} + 回"/>
+            </div>
         </div>
 
         <div class="col-md-12 mt-5">
