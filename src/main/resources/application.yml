@@ -6,8 +6,6 @@ spring:
     hikari:
       maximum-pool-size: 4
       minimum-idle: 1
-  thymeleaf:
-    cache: false
   messages:
     basename: messages/messages, messages/ValidationMessages
 
@@ -15,4 +13,9 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
 
-
+server:
+  shutdown: graceful
+  servlet:
+    session:
+      persistent: true
+      timeout: 30d
