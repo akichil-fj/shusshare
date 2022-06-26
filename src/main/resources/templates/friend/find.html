@@ -9,7 +9,7 @@
     <th:block th:replace="header::header"/>
 </header>
 <body>
-<div class="container-md mt-5" style="max-width: 720px;">
+<div class="container-md mt-md-5 mt-sm-4 mt-2" style="max-width: 720px;">
     <div class="row align-items-center">
         <div class="col-md-12">
             <h2>フレンド検索</h2>
@@ -28,11 +28,11 @@
             <ul class="list-group list-group-flush mt-3">
                 <li class="list-group-item" th:each="user:${users}">
                     <div class="d-flex flex-row align-items-center">
-                        <img src="/icon.png" class="img-fluid rounded-circle" width="40"
+                        <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                              th:style="|background: ${@colorUtil.generateColorCode(user.userId)}|">
                         <div class="d-flex flex-column ms-2">
                             <div class="d-flex flex-row">
-                                <div th:text="${user.userName}"/>
+                                <a th:text="${user.userName}" th:href="@{/user/{userId}(userId = ${user.userId})}"/>
                                 <div class="ms-2 text-secondary" th:text="${user.userId}"/>
                                 <div class="ms-2">
                                     <i class="bi bi-lock-fill" th:if="${user.accountStatus.name()} == PRIVATE"></i>
@@ -47,11 +47,11 @@
                         </form>
                         <form th:if="${user.status.name()} == FOLLOWED" method="post"
                               th:action="@{/friend/remove(accountId=${user.accountId}, redirectPath=${'/friend/find?userName=' + keyword})}">
-                            <button type="submit" class="btn btn-info">フォロー中</button>
+                            <button type="submit" class="btn btn-outline-info">フォロー中</button>
                         </form>
                         <form th:if="${user.status.name()} == REQUESTED" method="post"
                               th:action="@{/friend/remove(accountId=${user.accountId}, redirectPath=${'/friend/find?userName=' + keyword})}">
-                            <button type="submit" class="btn btn-info">承認待ち</button>
+                            <button type="submit" class="btn btn-outline-info">承認待ち</button>
                         </form>
                     </div>
                 </li>

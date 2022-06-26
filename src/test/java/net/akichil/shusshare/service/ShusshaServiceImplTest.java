@@ -7,6 +7,8 @@ import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
+import net.akichil.shusshare.service.exception.DataNotUpdatedException;
+import net.akichil.shusshare.service.exception.IllegalDateRegisterException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ShusshaServiceImplTest {
 
@@ -123,6 +126,7 @@ public class ShusshaServiceImplTest {
         existedShussha.setAccountId(accountId);
         existedShussha.setDate(date);
         existedShussha.setStatus(ShusshaStatus.TOBE);
+        existedShussha.setLockVersion(2);
 
         final int shusshaCount = 3;
         Account account = new Account();
@@ -146,7 +150,7 @@ public class ShusshaServiceImplTest {
     public void testAddNewWithTobe() {
         // setup
         final Integer accountId = 1;
-        final LocalDate date = LocalDate.now();
+        final LocalDate date = LocalDate.now().plusDays(1); //翌日
         final ShusshaStatus status = ShusshaStatus.TOBE;
         Shussha shussha = new Shussha();
         shussha.setAccountId(accountId);
@@ -169,6 +173,69 @@ public class ShusshaServiceImplTest {
         Mockito.verify(accountRepository, Mockito.times(0)).set(account);
         Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
         Mockito.verify(shusshaRepository, Mockito.times(1)).add(shussha);
+    }
+
+    @Test
+    public void testAddUpdateFailNotUpdated() {
+        // setup
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.now();
+        final ShusshaStatus status = ShusshaStatus.TOBE;
+        Shussha shussha = new Shussha();
+        shussha.setAccountId(accountId);
+        shussha.setDate(date);
+        shussha.setStatus(status);
+
+        Shussha existedShussha = new Shussha();
+        existedShussha.setShusshaId(10);
+        existedShussha.setAccountId(accountId);
+        existedShussha.setDate(date);
+        existedShussha.setStatus(ShusshaStatus.TOBE);
+        existedShussha.setLockVersion(2);
+
+        final int shusshaCount = 3;
+        Account account = new Account();
+        account.setShusshaCount(shusshaCount);
+
+        Mockito.doReturn(existedShussha).when(shusshaRepository).find(accountId, date);
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+
+        // when
+        assertThrows(DataNotUpdatedException.class, () -> target.add(shussha));
+
+        // then
+        Mockito.verify(accountRepository, Mockito.times(0)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(0)).set(account);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
+        Mockito.verify(shusshaRepository, Mockito.times(0)).set(shussha);
+    }
+
+    @Test
+    public void testAddUpdateFailByAddTobePastDate() {
+        // setup
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.now();
+        final ShusshaStatus status = ShusshaStatus.TOBE;
+        Shussha shussha = new Shussha();
+        shussha.setAccountId(accountId);
+        shussha.setDate(date);
+        shussha.setStatus(status);
+
+        final int shusshaCount = 3;
+        Account account = new Account();
+        account.setShusshaCount(shusshaCount);
+
+        Mockito.doThrow(ResourceNotFoundException.class).when(shusshaRepository).find(accountId, date);
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+
+        // when
+        assertThrows(IllegalDateRegisterException.class, () -> target.add(shussha));
+
+        // then
+        Mockito.verify(accountRepository, Mockito.times(0)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(0)).set(account);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
+        Mockito.verify(shusshaRepository, Mockito.times(0)).set(shussha);
     }
 
     @Test

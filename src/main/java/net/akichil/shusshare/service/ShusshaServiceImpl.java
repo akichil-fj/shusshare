@@ -7,6 +7,8 @@ import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.ShusshaRepository;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
+import net.akichil.shusshare.service.exception.DataNotUpdatedException;
+import net.akichil.shusshare.service.exception.IllegalDateRegisterException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -50,17 +52,30 @@ public class ShusshaServiceImpl implements ShusshaService {
     public void add(Shussha shussha) {
         // すでに登録済みの情報があるか？
         int shusshaId = -1;
+        int lockVersion = 0;
         try {
             Shussha existShussha = shusshaRepository.find(shussha.getAccountId(), shussha.getDate());
+            if (shussha.getStatus() == existShussha.getStatus()) {
+                // 更新要素がない
+                throw new DataNotUpdatedException();
+            }
             shusshaId = existShussha.getShusshaId();
+            lockVersion = existShussha.getLockVersion();
         } catch (ResourceNotFoundException ignored) {
             // 登録されていなかった
         }
+
+        // 予定なのに今日以前
+        if (shussha.getStatus() == ShusshaStatus.TOBE && !shussha.getDate().isAfter(LocalDate.now())) {
+            throw new IllegalDateRegisterException();
+        }
+
         // すでに登録済みなら更新、なければ登録
         if (shusshaId != -1) {
+            shussha.setShusshaId(shusshaId);
+            shussha.setLockVersion(lockVersion);
             shusshaRepository.set(shussha);
         } else {
-            shussha.setShusshaId(shusshaId);
             shusshaRepository.add(shussha);
         }
 

@@ -1,0 +1,57 @@
+:root{
+    --font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans", "游ゴシック体", "Yu Gothic", YuGothi, Meiryo, sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+    font-family: var(--font-family-sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-sans-serif);
+}
+
+a {
+    text-decoration:none;
+}
+
+
+.bg-dark {
+    background-color: #1e90ff !important
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255,255,255,.60);
+}
+
+nav .nav-link:hover {
+  color: rgba(255,255,255,.90);
+}
+
+.btn-primary {
+    background-color: #1e90ff;
+    border-color: #1e90ff
+}
+
+.btn-info {
+    color: #ffffff;
+    background-color: #00bfff;
+    border-color: #00bfff
+}
+
+.btn-info:hover {
+    color: #ffffff;
+    background-color: #00a8d7;
+    border-color: #00a8d7
+}
+
+.btn-outline-info {
+    color: #00bfff;
+    border-color: #00bfff
+}
+
+.btn-outline-info:hover {
+    color: #ffffff;
+    background-color: #00a8d7;
+    border-color: #00a8d7
+}

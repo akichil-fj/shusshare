@@ -1,6 +1,7 @@
 package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.ShusshareApplication;
+import net.akichil.shusshare.entity.AccountStatus;
 import net.akichil.shusshare.entity.FriendDetail;
 import net.akichil.shusshare.entity.FriendStatus;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
@@ -37,6 +38,7 @@ class UserControllerTest {
         user.setAccountId(userAccountId);
         user.setUserId(userId);
         user.setStatus(FriendStatus.NONE);
+        user.setAccountStatus(AccountStatus.PRIVATE);
         Mockito.doReturn(user).when(friendService).findFriendByUserId(userId, accountIdFrom);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/" + userId))
@@ -58,6 +60,7 @@ class UserControllerTest {
         user.setAccountId(userAccountId);
         user.setUserId(userId);
         user.setStatus(FriendStatus.NONE);
+        user.setAccountStatus(AccountStatus.NORMAL);
         Mockito.doReturn(user).when(friendService).findFriendByUserId(userId, accountIdFrom);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/" + userId))
