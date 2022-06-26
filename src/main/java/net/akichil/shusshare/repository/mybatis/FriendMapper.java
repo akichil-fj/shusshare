@@ -2,6 +2,7 @@ package net.akichil.shusshare.repository.mybatis;
 
 import net.akichil.shusshare.entity.Friend;
 import net.akichil.shusshare.entity.FriendDetail;
+import net.akichil.shusshare.entity.ShusshaFriends;
 import net.akichil.shusshare.entity.UserSelector;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,9 +19,9 @@ public interface FriendMapper {
 
     List<FriendDetail> findFriendsToUser(Integer id);
 
-    List<FriendDetail> findGoOfficeFriends(@Param("accountId") Integer accountId,
-                                           @Param("startDate") LocalDate startDate,
-                                           @Param("endDate") LocalDate endDate);
+    List<ShusshaFriends> findGoOfficeFriends(@Param("accountId") Integer accountId,
+                                             @Param("startDate") LocalDate startDate,
+                                             @Param("endDate") LocalDate endDate);
 
     FriendDetail findFriendByAccountId(@Param(value = "accountId") Integer accountId,
                                        @Param(value = "accountIdFrom") Integer accountIdFrom);

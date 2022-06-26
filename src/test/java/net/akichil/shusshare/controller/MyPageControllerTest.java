@@ -1,16 +1,14 @@
 package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Account;
-import net.akichil.shusshare.entity.AccountForUserEdit;
-import net.akichil.shusshare.entity.AccountStatus;
-import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.ShusshaService;
 import net.akichil.shusshare.test.TestWithUser;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,13 +54,22 @@ public class MyPageControllerTest {
         account.setStatus(AccountStatus.NORMAL);
         account.setShusshaCount(3);
 
+        ShusshaList shusshaList = new ShusshaList();
+        List<Shussha> pastShussha = new ArrayList<>();
+        List<Shussha> futureShussha = new ArrayList<>();
+        shusshaList.setFutureShussha(pastShussha);
+        shusshaList.setPastShussha(futureShussha);
+
         Mockito.doReturn(account).when(accountService).get(accountId);
+        Mockito.doReturn(shusshaList).when(shusshaService).list(accountId);
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("mypage/mypage"))
-                .andExpect(model().attribute("account", account));
+                .andExpect(model().attribute("account", account))
+                .andExpect(model().attribute("pastShussha", pastShussha))
+                .andExpect(model().attribute("futureShussha", futureShussha));
 
         Mockito.verify(accountService, Mockito.times(1)).get(accountId);
     }
@@ -71,6 +80,7 @@ public class MyPageControllerTest {
         ArgumentMatcher<Shussha> matcher = argument -> {
             assertEquals(1, argument.getAccountId());
             assertEquals(LocalDate.of(2022, 6, 18), argument.getDate());
+            assertEquals(ShusshaStatus.TOBE, argument.getStatus()); // ステータスが一致するか
             return true;
         };
 
@@ -110,6 +120,56 @@ public class MyPageControllerTest {
                 .andExpect(flash().attribute("errorMsg", "失敗：その日の出社は登録済みです。"));
 
         Mockito.verify(shusshaService, Mockito.times(1)).add(any(Shussha.class));
+    }
+
+    @Test
+    @TestWithUser
+    public void testRemoveSuccess() throws Exception {
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.of(2022, 6,18);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
+                        .param("date", "2022-6-18")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("msg", "成功：出社登録削除"));
+
+        Mockito.verify(shusshaService, Mockito.times(1)).remove(accountId, date);
+    }
+
+    @Test
+    @TestWithUser
+    public void testRemoveFailWrongFormat() throws Exception {
+        final Integer accountId = 1;
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
+                        .param("date", "aaaaaaaaa")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("errorMsg", "失敗：日付のフォーマットを確認してください。"));
+
+        Mockito.verify(shusshaService, Mockito.times(0))
+                .remove(ArgumentMatchers.eq(accountId), ArgumentMatchers.any(LocalDate.class));
+    }
+
+    @Test
+    @TestWithUser
+    public void testRemoveFailResourceNotFound() throws Exception {
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.of(2022, 6,18);
+
+        Mockito.doThrow(ResourceNotFoundException.class).when(shusshaService).remove(accountId, date);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
+                        .param("date", "2022-6-18")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("errorMsg", "失敗：削除対象が見つかりませんでした。"));
+
+        Mockito.verify(shusshaService, Mockito.times(1)).remove(accountId, date);
     }
 
     @Test

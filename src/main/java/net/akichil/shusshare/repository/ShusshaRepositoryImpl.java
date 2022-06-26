@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class ShusshaRepositoryImpl implements ShusshaRepository {
@@ -15,6 +16,11 @@ public class ShusshaRepositoryImpl implements ShusshaRepository {
 
     public ShusshaRepositoryImpl(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
+    }
+
+    @Override
+    public List<Shussha> find(Integer accountId) {
+        return sqlSession.getMapper(ShusshaMapper.class).findAll(accountId);
     }
 
     @Override
@@ -38,4 +44,13 @@ public class ShusshaRepositoryImpl implements ShusshaRepository {
             throw new ResourceNotFoundException();
         }
     }
+
+    @Override
+    public void set(Shussha shussha) {
+        final int affected = sqlSession.getMapper(ShusshaMapper.class).set(shussha);
+        if (affected != 1) {
+            throw new ResourceNotFoundException();
+        }
+    }
+
 }

@@ -1,9 +1,6 @@
 package net.akichil.shusshare.controller;
 
-import net.akichil.shusshare.entity.Account;
-import net.akichil.shusshare.entity.AccountForUserEdit;
-import net.akichil.shusshare.entity.AccountStatus;
-import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.helper.MessageSourceHelper;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.security.LoginUser;
@@ -43,6 +40,9 @@ public class MyPageController {
     public String get(@AuthenticationPrincipal LoginUser loginUser, Model model,
                       @ModelAttribute("date") String date) {
         model.addAttribute("account", accountService.get(loginUser.getAccountId()));
+        ShusshaList shusshaList = shusshaService.list(loginUser.getAccountId());
+        model.addAttribute("pastShussha", shusshaList.getPastShussha());
+        model.addAttribute("futureShussha", shusshaList.getFutureShussha());
         return "mypage/mypage";
     }
 
@@ -52,6 +52,7 @@ public class MyPageController {
                              RedirectAttributes attributes) {
         Shussha shussha = new Shussha();
         shussha.setAccountId(loginUser.getAccountId());
+        shussha.setStatus(ShusshaStatus.TOBE); // 出社予定
         try {
             shussha.setDate(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d")));
         } catch (DateTimeParseException exception) {
@@ -65,6 +66,27 @@ public class MyPageController {
             return "redirect:/mypage";
         }
         attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("shussha.register.success"));
+        return "redirect:/mypage";
+    }
+
+    @PostMapping(path = "/shussha/remove")
+    public String removeShussa(@AuthenticationPrincipal LoginUser loginUser,
+                               @RequestParam("date") String dateString,
+                               RedirectAttributes attributes) {
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-M-d"));
+        } catch (DateTimeParseException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.remove.error.format"));
+            return "redirect:/mypage";
+        }
+        try {
+            shusshaService.remove(loginUser.getAccountId(), date);
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.remove.error.notfound"));
+            return "redirect:/mypage";
+        }
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("shussha.remove.success"));
         return "redirect:/mypage";
     }
 

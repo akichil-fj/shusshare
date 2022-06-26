@@ -191,10 +191,12 @@ public class FriendRepositoryImplDbUnitTest {
             final Integer id = 2;
             final LocalDate date = LocalDate.of(2022, 6, 6);
 
-            List<FriendDetail> findResults = target.findGoOfficeFriend(id, date, date);
+            List<ShusshaFriends> findResults = target.findGoOfficeFriend(id, date, date);
 
             assertEquals(1, findResults.size());
-            assertEquals(4, findResults.get(0).getAccountId());
+            assertEquals(1, findResults.get(0).getFriends().size());
+            assertEquals(LocalDate.of(2022, 6, 6), findResults.get(0).getDate());
+            assertEquals(4, findResults.get(0).getFriends().get(0).getAccountId());
         }
 
         @Test
@@ -202,9 +204,12 @@ public class FriendRepositoryImplDbUnitTest {
             final Integer id = 2;
             final LocalDate date = LocalDate.of(2022, 6, 5);
 
-            List<FriendDetail> findResults = target.findGoOfficeFriend(id, date, null);
+            List<ShusshaFriends> findResults = target.findGoOfficeFriend(id, date, null);
 
             assertEquals(1, findResults.size());
+            assertEquals(1, findResults.get(0).getFriends().size());
+            assertEquals(LocalDate.of(2022, 6, 6), findResults.get(0).getDate());
+            assertEquals(4, findResults.get(0).getFriends().get(0).getAccountId());
         }
     }
 

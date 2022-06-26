@@ -7,22 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Shussha {
-
-    private Integer shusshaId;
-
-    private Integer accountId;
+public class ShusshaFriends {
 
     private LocalDate date;
 
-    private ShusshaStatus status;
-
-    private Integer lockVersion;
+    private List<FriendDetail> friends;
 
 }

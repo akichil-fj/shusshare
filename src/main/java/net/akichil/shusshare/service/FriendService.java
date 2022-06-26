@@ -1,9 +1,6 @@
 package net.akichil.shusshare.service;
 
-import net.akichil.shusshare.entity.Friend;
-import net.akichil.shusshare.entity.FriendDetail;
-import net.akichil.shusshare.entity.FriendList;
-import net.akichil.shusshare.entity.UserSelector;
+import net.akichil.shusshare.entity.*;
 
 import java.util.List;
 
@@ -13,7 +10,7 @@ public interface FriendService {
 
     FriendList findFriends(Integer id);
 
-    List<FriendDetail> findGoOfficeFriend(Integer id);
+    List<ShusshaFriends> findGoOfficeFriend(Integer id);
 
     FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom);
 

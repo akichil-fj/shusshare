@@ -6,5 +6,6 @@
     <typeHandlers>
         <typeHandler handler="net.akichil.shusshare.repository.mybatis.AccountStatusTypeHandler"/>
         <typeHandler handler="net.akichil.shusshare.repository.mybatis.FriendStatusTypeHandler"/>
+        <typeHandler handler="net.akichil.shusshare.repository.mybatis.ShusshaStatusTypeHandler"/>
     </typeHandlers>
 </configuration>

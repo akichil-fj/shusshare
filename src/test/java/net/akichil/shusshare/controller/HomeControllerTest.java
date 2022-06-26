@@ -1,10 +1,7 @@
 package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.ShusshareApplication;
-import net.akichil.shusshare.entity.Account;
-import net.akichil.shusshare.entity.AccountStatus;
-import net.akichil.shusshare.entity.FriendDetail;
-import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.FriendService;
@@ -80,7 +77,7 @@ public class HomeControllerTest {
     @TestWithUser
     public void testGetWithoutShussha() throws Exception {
         final Integer accountId = 1;
-        ArrayList<FriendDetail> friends = new ArrayList<>();
+        ArrayList<ShusshaFriends> friends = new ArrayList<>();
         Account account = new Account();
         account.setUserId("user");
         account.setUserName("user_name");
@@ -109,6 +106,7 @@ public class HomeControllerTest {
         ArgumentMatcher<Shussha> matcher = argument -> {
             assertEquals(2, argument.getAccountId());
             assertEquals(LocalDate.now(), argument.getDate()); // 日付が一致するか
+            assertEquals(ShusshaStatus.DONE, argument.getStatus()); // ステータスが一致するか
             return true;
         };
 

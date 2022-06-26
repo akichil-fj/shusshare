@@ -1,6 +1,7 @@
 package net.akichil.shusshare.controller;
 
 import net.akichil.shusshare.entity.Shussha;
+import net.akichil.shusshare.entity.ShusshaStatus;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.security.LoginUser;
 import net.akichil.shusshare.service.AccountService;
@@ -48,6 +49,7 @@ public class HomeController {
         Shussha shussha = new Shussha();
         shussha.setDate(LocalDate.now());
         shussha.setAccountId(loginUser.getAccountId());
+        shussha.setStatus(ShusshaStatus.DONE); //出社完了
         shusshaService.add(shussha);
         return "redirect:/home";
     }
