@@ -60,6 +60,7 @@ public class AccountRepositoryImplDbUnitTest {
             assertEquals("test_hoge", findResult.getUserId());
             assertEquals("ほげ山ほげお", findResult.getUserName());
             assertEquals(AccountStatus.NORMAL, findResult.getStatus());
+            assertEquals("自己紹介hoge", findResult.getProfile());
             assertEquals(2, findResult.getShusshaCount());
         }
 
@@ -135,6 +136,7 @@ public class AccountRepositoryImplDbUnitTest {
             insertData.setUserId("new_user");
             insertData.setUserName("新ユーザ");
             insertData.setPassword("password");
+            insertData.setProfile("自己紹介新ユーザ");
             insertData.setProfilePhotoUrl("https://hoge.com/sample.jpg");
             insertData.setStatus(AccountStatus.NORMAL);
 
@@ -156,7 +158,7 @@ public class AccountRepositoryImplDbUnitTest {
          */
         @Test
         public void testUpdateSuccess() throws Exception {
-            Account updateData = new Account(2, "renew_user", "更新ユーザ", "password",
+            Account updateData = new Account(2, "renew_user", "更新ユーザ", "password", "自己紹介更新",
                     null, null, 3,0);
 
             target.set(updateData);
@@ -169,7 +171,7 @@ public class AccountRepositoryImplDbUnitTest {
          */
         @Test
         public void testUpdateFailIdNotExist() {
-            Account updateData = new Account(99, "renew_user", "更新ユーザ", "password",
+            Account updateData = new Account(99, "renew_user", "更新ユーザ", "password","自己紹介更新",
                     null, null, null, 0);
 
             assertThrows(ResourceNotFoundException.class, () -> target.set(updateData));
@@ -180,7 +182,7 @@ public class AccountRepositoryImplDbUnitTest {
          */
         @Test
         public void testUpdateFailLockVersionNotMatch() {
-            Account updateData = new Account(2, "renew_user", "更新ユーザ", "password",
+            Account updateData = new Account(2, "renew_user", "更新ユーザ", "password", "自己紹介更新",
                     null, null, null, 3);
 
             assertThrows(ResourceNotFoundException.class, () -> target.set(updateData));
@@ -191,7 +193,7 @@ public class AccountRepositoryImplDbUnitTest {
          */
         @Test
         public void testUpdateFailUserIdUniqueKeyViolation() {
-            Account updateData = new Account(2, "test_hoge", "更新ユーザ", "password",
+            Account updateData = new Account(2, "test_hoge", "更新ユーザ", "password", "自己紹介更新",
                     null, null, null, 0);
 
             assertThrows(DuplicateKeyException.class, () -> target.set(updateData));

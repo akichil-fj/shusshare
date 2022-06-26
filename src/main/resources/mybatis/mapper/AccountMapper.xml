@@ -7,6 +7,7 @@
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="password" column="password"/>
+        <result property="profile" column="profile"/>
         <result property="profilePhotoUrl" column="profile_photo_url"/>
         <result property="status" column="status"/>
         <result property="shusshaCount" column="shussha_count"/>
@@ -19,6 +20,7 @@
             user_id,
             user_name,
             password,
+            profile,
             profile_photo_url,
             status,
             shussha_count,
@@ -37,6 +39,7 @@
             user_id,
             user_name,
             password,
+            profile,
             profile_photo_url,
             status,
             shussha_count,
@@ -55,6 +58,7 @@
             user_id,
             user_name,
             password,
+            profile,
             profile_photo_url,
             status,
             shussha_count,
@@ -72,6 +76,7 @@
             user_id,
             user_name,
             password,
+            profile,
             profile_photo_url,
             status
         )
@@ -79,6 +84,7 @@
             #{userId},
             #{userName},
             #{password},
+            #{profile},
             #{profilePhotoUrl},
             #{status}
         )
@@ -96,6 +102,9 @@
             </if>
             <if test="password != null">
                 password = #{password},
+            </if>
+            <if test="profile != null">
+                profile = #{profile},
             </if>
             <if test="profilePhotoUrl != null">
                 profile_photo_url = #{profilePhotoUrl},

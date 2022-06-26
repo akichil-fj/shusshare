@@ -35,6 +35,8 @@ public class Account {
     @Size(min = 4, groups = {AddGroup.class})
     private String password;
 
+    private String profile;
+
     private String profilePhotoUrl;
 
     private AccountStatus status;

@@ -27,6 +27,7 @@ public class AccountForUserEdit extends Account {
         setUserId(account.getUserId());
         setUserName(account.getUserName());
         setPassword(account.getPassword());
+        setProfile(account.getProfile());
         setProfilePhotoUrl(account.getProfilePhotoUrl());
         setStatus(account.getStatus());
         setLockVersion(account.getLockVersion());
