@@ -1,8 +1,10 @@
 package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Account;
+import net.akichil.shusshare.entity.EditPassword;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
+import net.akichil.shusshare.service.exception.PasswordNotMatchException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,6 +22,9 @@ public class AccountServiceImplTest {
 
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private AccountServiceImpl target;
@@ -105,6 +111,55 @@ public class AccountServiceImplTest {
         assertThrows(ResourceNotFoundException.class, () -> target.remove(accountId));
 
         Mockito.verify(accountRepository, Mockito.times(0)).remove(any(Account.class));
+    }
+
+    @Test
+    public void testSetPasswordSuccess() {
+        final Integer accountId = 1;
+        final String oldPassword = "old_Password";
+        final String newPassword = "new_password";
+        final String hashedPassword = "hashed_password";
+        EditPassword password = new EditPassword();
+        password.setOldPassword(oldPassword);
+        password.setNewPassword(newPassword);
+
+        Account account = new Account();
+        account.setAccountId(accountId);
+        account.setPassword(hashedPassword);
+
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+        Mockito.doReturn(true).when(passwordEncoder).matches(oldPassword, hashedPassword);
+        Mockito.doReturn(hashedPassword).when(passwordEncoder).encode(newPassword);
+
+        target.setPassword(accountId, password);
+
+        assertEquals(hashedPassword, account.getPassword()); // パスワードがハッシュ化されているか
+        Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(1)).set(account);
+    }
+
+    @Test
+    public void testSetPasswordFailNotMatchPassword() {
+        final Integer accountId = 1;
+        final String oldPassword = "old_Password";
+        final String newPassword = "new_password";
+        final String hashedPassword = "hashed_password";
+        EditPassword password = new EditPassword();
+        password.setOldPassword(oldPassword);
+        password.setNewPassword(newPassword);
+
+        Account account = new Account();
+        account.setAccountId(accountId);
+        account.setPassword(hashedPassword);
+
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+        Mockito.doReturn(false).when(passwordEncoder).matches(oldPassword, hashedPassword);
+
+        assertThrows(PasswordNotMatchException.class, () -> target.setPassword(accountId, password));
+
+        assertEquals(hashedPassword, account.getPassword()); // パスワードがハッシュ化されているか
+        Mockito.verify(accountRepository, Mockito.times(1)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(0)).set(account);
     }
 
 }

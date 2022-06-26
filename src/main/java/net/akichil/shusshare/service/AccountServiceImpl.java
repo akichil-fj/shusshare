@@ -1,7 +1,10 @@
 package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Account;
+import net.akichil.shusshare.entity.EditPassword;
 import net.akichil.shusshare.repository.AccountRepository;
+import net.akichil.shusshare.service.exception.PasswordNotMatchException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,8 +12,11 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -37,6 +43,17 @@ public class AccountServiceImpl implements AccountService {
     public void remove(Integer accountId) {
         Account account = accountRepository.findOne(accountId);
         accountRepository.remove(account);
+    }
+
+    @Override
+    public void setPassword(Integer accountId, EditPassword password) {
+        Account account = accountRepository.findOne(accountId);
+        if (!passwordEncoder.matches(password.getOldPassword(), account.getPassword())) {
+            throw new PasswordNotMatchException();
+        }
+        // パスワードをハッシュ化
+        account.setPassword(passwordEncoder.encode(password.getNewPassword()));
+        accountRepository.set(account);
     }
 
 }
