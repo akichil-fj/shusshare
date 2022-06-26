@@ -31,15 +31,15 @@
         </div>
         <div class="col-md-3 col-4">
             <form th:if="${user.status.name() == 'NONE' && !isMyself}" method="post"
-                  th:action="@{/friend/user/add(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
+                  th:action="@{/friend/add(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
                 <button type="submit" class="btn btn-info">フォロー</button>
             </form>
             <form th:if="${user.status.name()} == FOLLOWED" method="post"
-                  th:action="@{/friend/user/remove(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
+                  th:action="@{/friend/remove(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
                 <button type="submit" class="btn btn-info">フォロー中</button>
             </form>
             <form th:if="${user.status.name()} == REQUESTED" method="post"
-                  th:action="@{/friend/user/remove(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
+                  th:action="@{/friend/remove(accountId=${user.accountId}, redirectPath=${'/user/' + user.userId})}">
                 <button type="submit" class="btn btn-info">承認待ち</button>
             </form>
         </div>
