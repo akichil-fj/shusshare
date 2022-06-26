@@ -37,7 +37,7 @@
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
-                                        <div th:text="${friend.userName}"/>
+                                        <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
                                             <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
@@ -61,7 +61,7 @@
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
-                                        <div th:text="${friend.userName}"/>
+                                        <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
                                             <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
@@ -92,7 +92,7 @@
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
-                                        <div th:text="${friend.userName}"/>
+                                        <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
                                             <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
@@ -121,7 +121,7 @@
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
                                     <div class="d-flex flex-row">
-                                        <div th:text="${friend.userName}"/>
+                                        <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
                                             <i class="bi bi-lock-fill" th:if="${friend.accountStatus.name()} == PRIVATE"></i>
