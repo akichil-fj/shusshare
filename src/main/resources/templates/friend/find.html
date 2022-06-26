@@ -30,10 +30,15 @@
                     <div class="d-flex flex-row align-items-center">
                         <img src="/icon.png" class="img-fluid rounded-circle" width="40"
                              th:style="|background: ${@colorUtil.generateColorCode(user.userId)}|">
-                        <div class="ms-2" th:text="${user.userName}"/>
-                        <div class="ms-2 text-secondary" th:text="${user.userId}"/>
-                        <div class="ms-2">
-                            <i class="bi bi-lock-fill" th:if="${user.accountStatus.name()} == PRIVATE"></i>
+                        <div class="d-flex flex-column ms-2">
+                            <div class="d-flex flex-row">
+                                <div th:text="${user.userName}"/>
+                                <div class="ms-2 text-secondary" th:text="${user.userId}"/>
+                                <div class="ms-2">
+                                    <i class="bi bi-lock-fill" th:if="${user.accountStatus.name()} == PRIVATE"></i>
+                                </div>
+                            </div>
+                            <div class="small text-secondary mt-1" th:text="${user.profile}"></div>
                         </div>
                         <div class="flex-fill"></div>
                         <form th:if="${user.status.name()} == NONE" method="post"

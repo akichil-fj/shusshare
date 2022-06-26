@@ -33,6 +33,13 @@
                 <span class="text-danger" th:if="${#fields.hasErrors('userName')}"
                       th:errors="*{userName}"> userName error</span>
             </div>
+            <div class="mb-3 form-group">
+                <label for="inputProfile" class="form-label">紹介文</label>
+                <input id="inputProfile" class="form-control" th:field="*{profile}"
+                       th:classappend="${#fields.hasErrors('profile')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('profile')}"
+                      th:errors="*{profile}"> profile error</span>
+            </div>
             <div class="form-check form-switch mb-3">
                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" th:field="*{isPrivate}"/>
                 <label class="form-check-label" for="flexSwitchCheckDefault">非公開アカウントにする</label>
