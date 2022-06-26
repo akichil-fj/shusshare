@@ -6,7 +6,9 @@ import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.security.LoginUser;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.ShusshaService;
+import net.akichil.shusshare.service.exception.PasswordNotMatchException;
 import net.akichil.shusshare.validation.SetGroup;
+import net.akichil.shusshare.validation.SetPasswordGroup;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -119,6 +121,33 @@ public class MyPageController {
             return "redirect:/mypage/edit";
         }
         attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("account.edit.success"));
+        return "redirect:/mypage";
+    }
+
+    @GetMapping(path = "/edit-password")
+    public String getEditPasswordPage(@ModelAttribute(name = "password") EditPassword editPassword) {
+        return "mypage/edit-password";
+    }
+
+    @PostMapping(path = "/edit-password")
+    public String editPassword(@AuthenticationPrincipal LoginUser loginUser,
+                       @ModelAttribute(name = "password") @Validated(SetPasswordGroup.class) EditPassword editPassword,
+                       BindingResult bindingResult,
+                       RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            return "mypage/edit-password";
+        }
+
+        try {
+            accountService.setPassword(loginUser.getAccountId(), editPassword);
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("account.edit.error"));
+            return "redirect:/mypage/edit-password";
+        } catch (PasswordNotMatchException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("account.edit.password.error.notmatch"));
+            return "redirect:/mypage/edit-password";
+        }
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("account.edit.password.success"));
         return "redirect:/mypage";
     }
 

@@ -5,6 +5,7 @@ import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.service.AccountService;
 import net.akichil.shusshare.service.ShusshaService;
+import net.akichil.shusshare.service.exception.PasswordNotMatchException;
 import net.akichil.shusshare.test.TestWithUser;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
@@ -268,5 +269,115 @@ public class MyPageControllerTest {
         Mockito.verify(accountService, Mockito.times(1)).set(any(Account.class));
     }
 
+    @Test
+    @TestWithUser
+    public void testGetUpdatePassword() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX + "/edit-password")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(view().name("mypage/edit-password"));
+    }
+
+    @Test
+    @TestWithUser
+    public void testUpdatePassword() throws Exception {
+        final Integer accountId = 1;
+        final String oldPassword = "old_Password";
+        final String newPassword = "new_password";
+        final String confirmPassword = "new_password";
+
+        ArgumentMatcher<EditPassword> matcher = argument -> {
+            assertEquals(oldPassword, argument.getOldPassword());
+            assertEquals(newPassword, argument.getNewPassword());
+            return true;
+        };
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/edit-password")
+                        .param("oldPassword", oldPassword)
+                        .param("newPassword", newPassword)
+                        .param("confirmPassword", confirmPassword)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/mypage"))
+                .andExpect(flash().attribute("msg", "成功：パスワード更新"));
+
+        Mockito.verify(accountService, Mockito.times(1)).setPassword(Mockito.eq(accountId), Mockito.argThat(matcher));
+    }
+
+    @Test
+    @TestWithUser
+    public void testUpdatePasswordFailByInvalidPassword() throws Exception {
+        final Integer accountId = 1;
+        final String oldPassword = "old_Password";
+        final String newPassword = "new_password";
+        final String confirmPassword = "bad_password";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/edit-password")
+                        .param("oldPassword", oldPassword)
+                        .param("newPassword", newPassword)
+                        .param("confirmPassword", confirmPassword)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("mypage/edit-password"))
+                .andExpect(model().hasErrors());
+
+        Mockito.verify(accountService, Mockito.times(0)).setPassword(Mockito.eq(accountId), Mockito.any());
+    }
+
+    @Test
+    @TestWithUser
+    public void testUpdatePasswordFailNotMatchPassword() throws Exception {
+        final Integer accountId = 1;
+        final String oldPassword = "old_Password";
+        final String newPassword = "new_password";
+        final String confirmPassword = "new_password";
+
+        ArgumentMatcher<EditPassword> matcher = argument -> {
+            assertEquals(oldPassword, argument.getOldPassword());
+            assertEquals(newPassword, argument.getNewPassword());
+            return true;
+        };
+
+        Mockito.doThrow(PasswordNotMatchException.class).when(accountService).setPassword(Mockito.eq(accountId), Mockito.argThat(matcher));
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/edit-password")
+                        .param("oldPassword", oldPassword)
+                        .param("newPassword", newPassword)
+                        .param("confirmPassword", confirmPassword)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/mypage/edit-password"))
+                .andExpect(flash().attribute("errorMsg", "失敗：旧パスワードが一致しません"));
+
+        Mockito.verify(accountService, Mockito.times(1)).setPassword(Mockito.eq(accountId), Mockito.argThat(matcher));
+    }
+
+    @Test
+    @TestWithUser
+    public void testUpdatePasswordFailResourceNotFound() throws Exception {
+        final Integer accountId = 1;
+        final String oldPassword = "old_Password";
+        final String newPassword = "new_password";
+        final String confirmPassword = "new_password";
+
+        ArgumentMatcher<EditPassword> matcher = argument -> {
+            assertEquals(oldPassword, argument.getOldPassword());
+            assertEquals(newPassword, argument.getNewPassword());
+            return true;
+        };
+
+        Mockito.doThrow(ResourceNotFoundException.class).when(accountService).setPassword(Mockito.eq(accountId), Mockito.argThat(matcher));
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/edit-password")
+                        .param("oldPassword", oldPassword)
+                        .param("newPassword", newPassword)
+                        .param("confirmPassword", confirmPassword)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/mypage/edit-password"))
+                .andExpect(flash().attribute("errorMsg", "何らかの理由により更新に失敗しました。"));
+
+        Mockito.verify(accountService, Mockito.times(1)).setPassword(Mockito.eq(accountId), Mockito.argThat(matcher));
+    }
 
 }

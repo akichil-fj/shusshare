@@ -6,6 +6,8 @@ import lombok.Data;
 import net.akichil.shusshare.validation.CompareEquals;
 import net.akichil.shusshare.validation.SetPasswordGroup;
 
+import javax.validation.constraints.Size;
+
 /**
  * ハッシュ化前のパスワードを入れる
  */
@@ -17,6 +19,7 @@ public class EditPassword {
 
     private String oldPassword;
 
+    @Size(min = 4, groups = {SetPasswordGroup.class})
     private String newPassword;
 
     private String confirmPassword;
