@@ -26,7 +26,10 @@
                  th:style="|background: ${@colorUtil.generateColorCode(user.userId)}|"/>
         </div>
         <div class="col-md-7 col-6">
-            <h3 th:text="${user.userName}"/>
+            <h3>
+                <th:block th:text="${user.userName}"/>
+                <i class="bi bi-lock-fill" th:if="${user.accountStatus.name()} == PRIVATE"></i>
+            </h3>
             <p class="fs-6 text-secondary mb-0" th:text="${user.userId}"/>
         </div>
         <div class="col-md-3 col-4">
