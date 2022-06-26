@@ -43,7 +43,10 @@
                 <button type="submit" class="btn btn-info">承認待ち</button>
             </form>
         </div>
-
+        <div class="col-12 mt-4">
+            <h4>ひとこと</h4>
+            <p th:text="${user.profile}"/>
+        </div>
     </div>
 </div>
 <th:block th:replace="_common::script"/>
