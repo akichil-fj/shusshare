@@ -6,6 +6,7 @@ import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.service.exception.PasswordNotMatchException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -19,32 +20,38 @@ public class AccountServiceImpl implements AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Account get(Integer accountId) {
         return accountRepository.findOne(accountId);
     }
 
+    @Transactional
     @Override
     public Account get(String userId) {
         return accountRepository.findOne(userId);
     }
 
+    @Transactional
     @Override
     public void add(Account account) {
         accountRepository.add(account);
     }
 
+    @Transactional
     @Override
     public void set(Account account) {
         accountRepository.set(account);
     }
 
+    @Transactional
     @Override
     public void remove(Integer accountId) {
         Account account = accountRepository.findOne(accountId);
         accountRepository.remove(account);
     }
 
+    @Transactional
     @Override
     public void setPassword(Integer accountId, EditPassword password) {
         Account account = accountRepository.findOne(accountId);

@@ -4,6 +4,7 @@ import net.akichil.shusshare.entity.*;
 import net.akichil.shusshare.repository.AccountRepository;
 import net.akichil.shusshare.repository.FriendRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,11 +22,13 @@ public class FriendServiceImpl implements FriendService {
         this.accountRepository = accountRepository;
     }
 
+    @Transactional
     @Override
     public List<FriendDetail> findAllUser(UserSelector selector) {
         return friendRepository.findAllUser(selector);
     }
 
+    @Transactional
     @Override
     public FriendList findFriends(Integer id) {
         FriendList friendList = new FriendList();
@@ -52,38 +55,45 @@ public class FriendServiceImpl implements FriendService {
         return friendList;
     }
 
+    @Transactional
     @Override
     public List<ShusshaFriends> findGoOfficeFriend(Integer id) {
         LocalDate today = LocalDate.now();
         return friendRepository.findGoOfficeFriend(id, today, null);
     }
 
+    @Transactional
     @Override
     public FriendDetail findFriendByAccountId(Integer accountId, Integer accountIdFrom) {
         return friendRepository.findFriendByAccountId(accountId, accountIdFrom);
     }
 
+    @Transactional
     @Override
     public FriendDetail findFriendByUserId(String userId, Integer accountIdFrom) {
         return friendRepository.findFriendByAccountId(userId, accountIdFrom);
     }
 
+    @Transactional
     @Override
     public void add(Friend friend) {
         friendRepository.add(friend);
     }
 
+    @Transactional
     @Override
     public void set(Friend friend) {
         friendRepository.set(friend);
     }
 
+    @Transactional
     @Override
     public void remove(Integer accountId, Integer accountIdFrom) {
         Friend friend = friendRepository.findFriendByAccountId(accountId, accountIdFrom);
         friendRepository.remove(friend);
     }
 
+    @Transactional
     @Override
     public void request(Integer accountId, Integer accountIdFrom) {
         Friend friend = new Friend();
@@ -101,6 +111,7 @@ public class FriendServiceImpl implements FriendService {
         add(friend);
     }
 
+    @Transactional
     @Override
     public void allow(Integer accountIdFrom, Integer accountIdTo) {
         FriendDetail friend = friendRepository.findFriendByAccountId(accountIdTo, accountIdFrom);
@@ -109,6 +120,7 @@ public class FriendServiceImpl implements FriendService {
         set(friend);
     }
 
+    @Transactional
     @Override
     public void deny(Integer accountIdFrom, Integer accountIdTo) {
         FriendDetail friend = friendRepository.findFriendByAccountId(accountIdTo, accountIdFrom);
