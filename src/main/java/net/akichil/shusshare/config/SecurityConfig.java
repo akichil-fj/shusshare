@@ -30,7 +30,7 @@ public class SecurityConfig {
         // 認可
         http.authorizeRequests()
                 .antMatchers("/img/**", "/css/**").permitAll()
-                .antMatchers("/login", "/logout", "/register/**").permitAll()
+                .antMatchers("/login", "/logout", "/register/**", "/about/**").permitAll()
                 .antMatchers("/home", "/mypage").hasAuthority("USER")
                 .anyRequest().authenticated();
 
