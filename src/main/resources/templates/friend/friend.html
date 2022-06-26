@@ -36,7 +36,7 @@
                                 <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
-                                    <div class="d-flex flex-row">
+                                    <div class="d-flex flex-row flex-wrap">
                                         <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
@@ -60,7 +60,7 @@
                                 <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
-                                    <div class="d-flex flex-row">
+                                    <div class="d-flex flex-row flex-wrap">
                                         <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
@@ -91,7 +91,7 @@
                                 <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
-                                    <div class="d-flex flex-row">
+                                    <div class="d-flex flex-row flex-wrap">
                                         <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
@@ -120,7 +120,7 @@
                                 <img src="/img/icon.png" class="img-fluid rounded-circle" width="40"
                                      th:style="|background: ${@colorUtil.generateColorCode(friend.userId)}|">
                                 <div class="d-flex flex-column ms-2">
-                                    <div class="d-flex flex-row">
+                                    <div class="d-flex flex-row flex-wrap">
                                         <a th:text="${friend.userName}" th:href="@{/user/{userId}(userId = ${friend.userId})}"/>
                                         <div class="ms-2 text-secondary" th:text="${friend.userId}"/>
                                         <div class="ms-2">
