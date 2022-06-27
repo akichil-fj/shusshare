@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +37,12 @@ public class ShusshaServiceImpl implements ShusshaService {
 
         shusshaList.setPastShussha(shusshas.stream()
                 .filter(s -> s.getDate().isBefore(LocalDate.now()))
+                .sorted(Comparator.comparing(Shussha::getDate).reversed())
                 .collect(Collectors.toList()));
 
         shusshaList.setFutureShussha(shusshas.stream()
                 .filter(s -> s.getDate().isAfter(LocalDate.now()))
+                .sorted(Comparator.comparing(Shussha::getDate))
                 .collect(Collectors.toList()));
 
         return shusshaList;
