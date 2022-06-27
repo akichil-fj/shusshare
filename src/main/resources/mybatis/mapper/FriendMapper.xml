@@ -210,6 +210,8 @@
                 AND
                 date &lt;= #{endDate}
             </if>
+        ORDER BY
+            s.date ASC
     </select>
 
     <insert id="insert">

@@ -105,10 +105,12 @@
                                       method="post">
                                     <button class="btn btn-info" type="submit">承認</button>
                                 </form>
-                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
-                                      method="post">
-                                    <button class="btn btn-danger" type="submit">ブロック</button>
-                                </form>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#blockReqConfirmModal">
+                                    ブロック
+                                </button>
+                                <div class="modal fade" id="blockReqConfirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <th:block th:replace="friend/friend::dialog"/>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -130,10 +132,12 @@
                                     <div class="small text-secondary mt-1" th:text="${friend.profile}"></div>
                                 </div>
                                 <div class="flex-fill"></div>
-                                <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
-                                      method="post">
-                                    <button class="btn btn-outline-danger" type="submit">ブロック</button>
-                                </form>
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#blockFollowerConfirmModal">
+                                    ブロック
+                                </button>
+                                <div class="modal fade" id="blockFollowerConfirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <th:block th:replace="friend/friend::dialog"/>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -144,8 +148,29 @@
             </div>
         </div>
     </div>
-
 </div>
+<th:block th:if="false">
+    <th:block th:fragment="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ブロック</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>本当にブロックしますか？（ブロックは取り消せません！）</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <form th:action="@{/friend/deny(accountId=${friend.accountId}, redirectPath='/friend#followers')}"
+                          method="post">
+                        <button class="btn btn-danger" type="submit">ブロック</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</th:block>
 <th:block th:replace="_common::script"/>
 <script>
 var url = window.location.href;
