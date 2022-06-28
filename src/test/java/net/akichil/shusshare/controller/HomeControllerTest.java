@@ -55,6 +55,7 @@ public class HomeControllerTest {
         account.setStatus(AccountStatus.NORMAL);
         account.setShusshaCount(3);
         Shussha shussha = new Shussha();
+        shussha.setStatus(ShusshaStatus.DONE);
 
         Mockito.doReturn(friends).when(friendService).findGoOfficeFriend(accountId);
         Mockito.doReturn(account).when(accountService).get(accountId);
