@@ -102,8 +102,11 @@ public class ShusshaServiceImpl implements ShusshaService {
         shusshaRepository.remove(shussha);
 
         // 出社回数更新(-1)
-        Account account = accountRepository.findOne(shussha.getAccountId());
-        account.setShusshaCount(account.getShusshaCount() - 1);
-        accountRepository.set(account);
+        // DONEなら取り消しなので-1
+        if (shussha.getStatus() == ShusshaStatus.DONE) {
+            Account account = accountRepository.findOne(shussha.getAccountId());
+            account.setShusshaCount(account.getShusshaCount() - 1);
+            accountRepository.set(account);
+        }
     }
 }

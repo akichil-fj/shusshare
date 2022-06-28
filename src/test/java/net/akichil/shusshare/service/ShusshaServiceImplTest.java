@@ -239,7 +239,7 @@ public class ShusshaServiceImplTest {
     }
 
     @Test
-    public void testRemove() {
+    public void testRemoveShusshTobe() {
         // setup
         final Integer shusshaId = 2;
         final Integer accountId = 1;
@@ -247,6 +247,36 @@ public class ShusshaServiceImplTest {
         Shussha shussha = new Shussha();
         shussha.setShusshaId(shusshaId);
         shussha.setAccountId(accountId);
+        shussha.setStatus(ShusshaStatus.TOBE);
+
+        final int shusshaCount = 3;
+        Account account = new Account();
+        account.setShusshaCount(shusshaCount);
+
+        Mockito.doReturn(account).when(accountRepository).findOne(accountId);
+        Mockito.doReturn(shussha).when(shusshaRepository).find(accountId, date);
+
+        // when
+        target.remove(accountId, date);
+
+        // then
+        assertEquals(shusshaCount, account.getShusshaCount());
+        Mockito.verify(accountRepository, Mockito.times(0)).findOne(accountId);
+        Mockito.verify(accountRepository, Mockito.times(0)).set(account);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).find(accountId, date);
+        Mockito.verify(shusshaRepository, Mockito.times(1)).remove(shussha);
+    }
+
+    @Test
+    public void testRemoveShusshaDone() {
+        // setup
+        final Integer shusshaId = 2;
+        final Integer accountId = 1;
+        final LocalDate date = LocalDate.now();
+        Shussha shussha = new Shussha();
+        shussha.setShusshaId(shusshaId);
+        shussha.setAccountId(accountId);
+        shussha.setStatus(ShusshaStatus.DONE);
 
         final int shusshaCount = 3;
         Account account = new Account();
