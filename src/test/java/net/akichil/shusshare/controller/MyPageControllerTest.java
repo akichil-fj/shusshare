@@ -88,7 +88,7 @@ public class MyPageControllerTest {
         };
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/create")
-                        .param("date", "2022-6-18")
+                        .param("date", "2022/6/18")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(view().name("redirect:/mypage"))
@@ -116,7 +116,7 @@ public class MyPageControllerTest {
         Mockito.doThrow(DataNotUpdatedException.class).when(shusshaService).add(any(Shussha.class));
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/create")
-                        .param("date", "2022-12-1")
+                        .param("date", "2022/12/1")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(view().name("redirect:/mypage"))
@@ -131,7 +131,7 @@ public class MyPageControllerTest {
         Mockito.doThrow(IllegalDateRegisterException.class).when(shusshaService).add(any(Shussha.class));
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/create")
-                        .param("date", "2022-12-1")
+                        .param("date", "2022/12/1")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(view().name("redirect:/mypage"))
@@ -147,7 +147,7 @@ public class MyPageControllerTest {
         final LocalDate date = LocalDate.of(2022, 6,18);
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
-                        .param("date", "2022-6-18")
+                        .param("date", "2022/6/18")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(view().name("redirect:/mypage"))
@@ -181,7 +181,7 @@ public class MyPageControllerTest {
         Mockito.doThrow(ResourceNotFoundException.class).when(shusshaService).remove(accountId, date);
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/shussha/remove")
-                        .param("date", "2022-6-18")
+                        .param("date", "2022/6/18")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(view().name("redirect:/mypage"))

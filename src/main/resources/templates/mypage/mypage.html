@@ -44,7 +44,7 @@
                 <div class="col-12 col-sm-5 form-floating">
                     <input id="shussha-date" class="form-control" placeholder="" th:value="${date}" name="date"
                            th:classappend="${#fields.hasErrors('date')} ? 'is-invalid'"/>
-                    <label for="shussha-date">日時(yyyy-mm-dd)</label>
+                    <label for="shussha-date">日時(yyyy/mm/dd)</label>
                     <span class="text-danger" th:if="${#fields.hasErrors('date')}"
                           th:errors="${date}">date format error</span>
                 </div>
