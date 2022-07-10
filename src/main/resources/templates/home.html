@@ -49,7 +49,7 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item" th:each="shusshaFriends:${goOfficeFriend}" style="border-bottom-width: 0px;">
                     <div>
-                        <h4 th:text="${shusshaFriends.date + ' (' + #temporals.dayOfWeekNameShort(shusshaFriends.date) + ')'}"></h4>
+                        <h4 th:text="${#temporals.format(shusshaFriends.date, 'yyyy/MM/dd') + ' (' + #temporals.dayOfWeekNameShort(shusshaFriends.date) + ')'}"></h4>
                         <ul>
                             <li class="list-group-item" th:each="friend:${shusshaFriends.friends}">
                                 <div class="d-flex flex-row align-items-center">
