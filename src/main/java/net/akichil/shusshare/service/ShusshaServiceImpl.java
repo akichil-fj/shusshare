@@ -36,7 +36,8 @@ public class ShusshaServiceImpl implements ShusshaService {
         List<Shussha> shusshas = shusshaRepository.find(accountId);
 
         shusshaList.setPastShussha(shusshas.stream()
-                .filter(s -> s.getDate().isBefore(LocalDate.now()))
+                .filter(s -> s.getDate().isBefore(LocalDate.now()) || s.getDate().isEqual(LocalDate.now()))
+                .filter(s -> s.getStatus() == ShusshaStatus.DONE)
                 .sorted(Comparator.comparing(Shussha::getDate).reversed())
                 .collect(Collectors.toList()));
 

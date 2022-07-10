@@ -44,7 +44,7 @@
                 <div class="col-12 col-sm-5 form-floating">
                     <input id="shussha-date" class="form-control" placeholder="" th:value="${date}" name="date"
                            th:classappend="${#fields.hasErrors('date')} ? 'is-invalid'"/>
-                    <label for="shussha-date">日時(yyyy-mm-dd)</label>
+                    <label for="shussha-date">日時(yyyy/mm/dd)</label>
                     <span class="text-danger" th:if="${#fields.hasErrors('date')}"
                           th:errors="${date}">date format error</span>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="tab-pane active" id="past" role="tabpanel" aria-labelledby="past-tab">
                    <ul class="list-group list-group-flush">
                        <li class="list-group-item" th:each="shussha:${pastShussha}">
-                           <th:block th:text="${shussha.date}"></th:block>
+                           <th:block th:text="${#temporals.format(shussha.date, 'yyyy/MM/dd') + ' (' + #temporals.dayOfWeekNameShort(shussha.date) + ')'}"></th:block>
                        </li>
                    </ul>
                 </div>
@@ -79,7 +79,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="shussha:${futureShussha}">
                             <div class="d-flex flex-row align-items-center">
-                                <div th:text="${shussha.date}"></div>
+                                <div th:text="${#temporals.format(shussha.date, 'yyyy/MM/dd') + ' (' + #temporals.dayOfWeekNameShort(shussha.date) + ')'}"></div>
                                 <div class="flex-fill"></div>
                                 <form th:action="@{/mypage/shussha/remove(date=${shussha.date})}" method="post">
                                     <button class="btn btn-sm btn-outline-danger" type="submit">取り消し</button>

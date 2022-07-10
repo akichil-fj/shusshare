@@ -49,21 +49,31 @@ public class ShusshaServiceImplTest {
     @Test
     public void testList() {
         final Integer accountId = 1;
+        Shussha shussha0 = new Shussha(); // 今日の出社
+        shussha0.setShusshaId(0);
+        shussha0.setStatus(ShusshaStatus.DONE);
+        shussha0.setDate(LocalDate.now());
         Shussha shussha1 = new Shussha(); // 翌日の出社
         shussha1.setShusshaId(1);
+        shussha1.setStatus(ShusshaStatus.TOBE);
         shussha1.setDate(LocalDate.now().plusDays(1));
         Shussha shussha2 = new Shussha(); // 前日の出社
         shussha2.setShusshaId(2);
+        shussha2.setStatus(ShusshaStatus.DONE);
         shussha2.setDate(LocalDate.now().minusDays(1));
-        List<Shussha> shusshas = List.of(shussha1, shussha2);
+        Shussha shussha3 = new Shussha(); // 前々日の出社（出社していない）
+        shussha3.setShusshaId(3);
+        shussha3.setStatus(ShusshaStatus.TOBE);
+        shussha3.setDate(LocalDate.now().minusDays(2));
+        List<Shussha> shusshas = List.of(shussha0, shussha1, shussha2, shussha3);
 
         Mockito.doReturn(shusshas).when(shusshaRepository).find(accountId);
 
         ShusshaList result = target.list(accountId);
 
-        assertEquals(1, result.getPastShussha().size());
+        assertEquals(2, result.getPastShussha().size());
         assertEquals(1, result.getFutureShussha().size());
-        assertEquals(2, result.getPastShussha().get(0).getShusshaId());
+        assertEquals(2, result.getPastShussha().get(1).getShusshaId());
         assertEquals(1, result.getFutureShussha().get(0).getShusshaId());
     }
 

@@ -58,7 +58,7 @@ public class MyPageController {
         shussha.setAccountId(loginUser.getAccountId());
         shussha.setStatus(ShusshaStatus.TOBE); // 出社予定
         try {
-            shussha.setDate(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-M-d")));
+            shussha.setDate(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy/M/d")));
         } catch (DateTimeParseException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.register.error.format"));
             return "redirect:/mypage";
@@ -82,7 +82,7 @@ public class MyPageController {
                                RedirectAttributes attributes) {
         LocalDate date;
         try {
-            date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-M-d"));
+            date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy/M/d"));
         } catch (DateTimeParseException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("shussha.remove.error.format"));
             return "redirect:/mypage";

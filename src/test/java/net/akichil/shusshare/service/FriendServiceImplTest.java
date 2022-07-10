@@ -94,7 +94,7 @@ public class FriendServiceImplTest {
         final LocalDate nowDate = LocalDate.now();
         ShusshaFriends shusshaFriends = new ShusshaFriends();
         List<ShusshaFriends> shusshaFriendsList = List.of(shusshaFriends, new ShusshaFriends());
-        List<FriendDetail> friends = List.of(new FriendDetail(), new FriendDetail());
+        List<ShusshaFriendDetail> friends = List.of(new ShusshaFriendDetail(), new ShusshaFriendDetail());
         shusshaFriends.setFriends(friends);
         shusshaFriends.setDate(nowDate);
 
