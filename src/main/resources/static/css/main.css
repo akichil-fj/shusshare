@@ -55,3 +55,7 @@ nav .nav-link:hover {
     background-color: #00a8d7;
     border-color: #00a8d7
 }
+
+.color-done {
+    color: #32cd32;
+}

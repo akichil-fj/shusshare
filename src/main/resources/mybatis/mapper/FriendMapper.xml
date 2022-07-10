@@ -17,9 +17,13 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <resultMap id="ShusshaFriendDetail" type="net.akichil.shusshare.entity.ShusshaFriendDetail" extends="FriendDetail">
+        <result property="shusshaStatus" column="shussha_status"/>
+    </resultMap>
+
     <resultMap id="ShusshaFriends" type="net.akichil.shusshare.entity.ShusshaFriends" >
         <id property="date" column="date"/>
-        <collection property="friends" resultMap="FriendDetail"/>
+        <collection property="friends" resultMap="ShusshaFriendDetail"/>
     </resultMap>
 
     <select id="findAllUser" resultMap="FriendDetail">
@@ -189,7 +193,8 @@
             f.status AS status,
             f.lock_version AS lock_version,
             f.updated_at AS updated_at,
-            s.date AS date
+            s.date AS date,
+            s.status AS shussha_status
         FROM
             account a
             INNER JOIN friend f
