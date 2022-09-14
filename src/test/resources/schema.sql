@@ -38,3 +38,28 @@ create table if not exists shussha
     foreign key (account_id) references account (account_id),
     unique key (account_id, date)
 );
+
+create table if not exists recruitment
+(
+    recruitment_id     bigint unsigned       primary key          auto_increment,
+    created_by         bigint unsigned                            not null,
+    shussha_id         bigint unsigned                            not null,
+    title              varchar(30)                                not null,
+    genre              smallint unsigned     default 0            not null,
+    deadline           date                  default null,
+    capacity           int unsigned          default null,
+    status             smallint unsigned     default 0            not null,
+    lock_version       int unsigned          default 0            not null,
+    updated_at         timestamp(3)          default current_timestamp(3) not null,
+    foreign key (created_by) references account (account_id),
+    foreign key (shussha_id) references shussha (shussha_id)
+);
+
+create table if not exists lunch_participants
+(
+    recruitment_id     bigint unsigned                            not null,
+    account_id         bigint unsigned                            not null,
+    primary key (recruitment_id, account_id),
+    foreign key (recruitment_id) references recruitment (recruitment_id),
+    foreign key (account_id) references account (account_id)
+);
