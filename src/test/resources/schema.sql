@@ -48,6 +48,7 @@ create table if not exists recruitment
     genre              smallint unsigned     default 0            not null,
     deadline           date                  default null,
     capacity           int unsigned          default null,
+    participant_count  int unsigned          default 0            not null,
     status             smallint unsigned     default 0            not null,
     lock_version       int unsigned          default 0            not null,
     updated_at         timestamp(3)          default current_timestamp(3) not null,
