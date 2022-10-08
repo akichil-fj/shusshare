@@ -3,43 +3,43 @@
 <mapper namespace="net.akichil.shusshare.repository.mybatis.FriendMapper">
 
     <resultMap id="FriendDetail" type="net.akichil.shusshare.entity.FriendDetail">
-        <result property="accountIdFrom" column="account_id_from"/>
-        <result property="accountIdTo" column="account_id_to"/>
-        <result property="accountId" column="account_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="userName" column="user_name"/>
-        <result property="profile" column="profile"/>
-        <result property="profilePhotoUrl" column="profile_photo_url"/>
-        <result property="status" column="status"/>
-        <result property="shusshaCount" column="shussha_count"/>
-        <result property="accountStatus" column="account_status"/>
-        <result property="lockVersion" column="lock_version"/>
-        <result property="updatedAt" column="updated_at"/>
+        <result property="accountIdFrom" column="f_account_id_from"/>
+        <result property="accountIdTo" column="f_account_id_to"/>
+        <result property="accountId" column="f_account_id"/>
+        <result property="userId" column="f_user_id"/>
+        <result property="userName" column="f_user_name"/>
+        <result property="profile" column="f_profile"/>
+        <result property="profilePhotoUrl" column="f_profile_photo_url"/>
+        <result property="status" column="f_status"/>
+        <result property="shusshaCount" column="f_shussha_count"/>
+        <result property="accountStatus" column="f_account_status"/>
+        <result property="lockVersion" column="f_lock_version"/>
+        <result property="updatedAt" column="f_updated_at"/>
     </resultMap>
 
     <resultMap id="ShusshaFriendDetail" type="net.akichil.shusshare.entity.ShusshaFriendDetail" extends="FriendDetail">
-        <result property="shusshaStatus" column="shussha_status"/>
+        <result property="shusshaStatus" column="f_shussha_status"/>
     </resultMap>
 
     <resultMap id="ShusshaFriends" type="net.akichil.shusshare.entity.ShusshaFriends" >
-        <id property="date" column="date"/>
+        <id property="date" column="f_date"/>
         <collection property="friends" resultMap="ShusshaFriendDetail"/>
     </resultMap>
 
     <select id="findAllUser" resultMap="FriendDetail">
         SELECT
-            f.account_id_from AS account_id_from,
-            f.account_id_to AS account_id_to,
-            a.account_id AS account_id,
-            a.user_id AS user_id,
-            a.user_name AS user_name,
-            a.profile AS profile,
-            a.profile_photo_url AS profile_photo_url,
-            a.shussha_count AS shussha_count,
-            a.status AS account_status,
-            f.status AS status,
-            f.lock_version AS lock_version,
-            f.updated_at AS updated_at
+            f.account_id_from AS f_account_id_from,
+            f.account_id_to AS f_account_id_to,
+            a.account_id AS f_account_id,
+            a.user_id AS f_user_id,
+            a.user_name AS f_user_name,
+            a.profile AS f_profile,
+            a.profile_photo_url AS f_profile_photo_url,
+            a.shussha_count AS f_shussha_count,
+            a.status AS f_account_status,
+            f.status AS f_status,
+            f.lock_version AS f_lock_version,
+            f.updated_at AS f_updated_at
         FROM
             account a
             LEFT OUTER JOIN
@@ -72,18 +72,18 @@
 
     <select id="findFriendsFromUser" resultMap="FriendDetail">
         SELECT
-            f.account_id_from AS account_id_from,
-            f.account_id_to AS account_id_to,
-            f.account_id_to AS account_id,
-            a.user_id AS user_id,
-            a.user_name AS user_name,
-            a.profile AS profile,
-            a.profile_photo_url AS profile_photo_url,
-            a.shussha_count AS shussha_count,
-            a.status AS account_status,
-            f.status AS status,
-            f.lock_version AS lock_version,
-            f.updated_at AS updated_at
+            f.account_id_from AS f_account_id_from,
+            f.account_id_to AS f_account_id_to,
+            f.account_id_to AS f_account_id,
+            a.user_id AS f_user_id,
+            a.user_name AS f_user_name,
+            a.profile AS f_profile,
+            a.profile_photo_url AS f_profile_photo_url,
+            a.shussha_count AS f_shussha_count,
+            a.status AS f_account_status,
+            f.status AS f_status,
+            f.lock_version AS f_lock_version,
+            f.updated_at AS f_updated_at
         FROM
             account a
             INNER JOIN friend f
@@ -96,18 +96,18 @@
 
     <select id="findFriendsToUser" resultMap="FriendDetail">
         SELECT
-            f.account_id_from AS account_id_from,
-            f.account_id_to AS account_id_to,
-            f.account_id_from AS account_id,
-            a.user_id AS user_id,
-            a.user_name AS user_name,
-            a.profile AS profile,
-            a.profile_photo_url AS profile_photo_url,
-            a.shussha_count AS shussha_count,
-            a.status AS account_status,
-            f.status AS status,
-            f.lock_version AS lock_version,
-            f.updated_at AS updated_at
+            f.account_id_from AS f_account_id_from,
+            f.account_id_to AS f_account_id_to,
+            f.account_id_from AS f_account_id,
+            a.user_id AS f_user_id,
+            a.user_name AS f_user_name,
+            a.profile AS f_profile,
+            a.profile_photo_url AS f_profile_photo_url,
+            a.shussha_count AS f_shussha_count,
+            a.status AS f_account_status,
+            f.status AS f_status,
+            f.lock_version AS f_lock_version,
+            f.updated_at AS f_updated_at
         FROM
             account a
             INNER JOIN friend f
@@ -120,18 +120,18 @@
 
     <select id="findFriendByAccountId" resultMap="FriendDetail">
         SELECT
-            a.account_id AS account_id,
-            a.user_id AS user_id,
-            a.user_name AS user_name,
-            a.profile AS profile,
-            a.profile_photo_url AS profile_photo_url,
-            a.shussha_count AS shussha_count,
-            a.status AS account_status,
-            f.account_id_from AS account_id_from,
-            f.account_id_to AS account_id_to,
-            f.status AS status,
-            f.lock_version AS lock_version,
-            f.updated_at AS updated_at
+            a.account_id AS f_account_id,
+            a.user_id AS f_user_id,
+            a.user_name AS f_user_name,
+            a.profile AS f_profile,
+            a.profile_photo_url AS f_profile_photo_url,
+            a.shussha_count AS f_shussha_count,
+            a.status AS f_account_status,
+            f.account_id_from AS f_account_id_from,
+            f.account_id_to AS f_account_id_to,
+            f.status AS f_status,
+            f.lock_version AS f_lock_version,
+            f.updated_at AS f_updated_at
         FROM
             <include refid="joinAccountFriend"/>
         WHERE
@@ -142,18 +142,18 @@
 
     <select id="findFriendByUserId" resultMap="FriendDetail">
         SELECT
-            a.account_id AS account_id,
-            a.user_id AS user_id,
-            a.user_name AS user_name,
-            a.profile AS profile,
-            a.profile_photo_url AS profile_photo_url,
-            a.shussha_count AS shussha_count,
-            a.status AS account_status,
-            f.account_id_from AS account_id_from,
-            f.account_id_to AS account_id_to,
-            f.status AS status,
-            f.lock_version AS lock_version,
-            f.updated_at AS updated_at
+            a.account_id AS f_account_id,
+            a.user_id AS f_user_id,
+            a.user_name AS f_user_name,
+            a.profile AS f_profile,
+            a.profile_photo_url AS f_profile_photo_url,
+            a.shussha_count AS f_shussha_count,
+            a.status AS f_account_status,
+            f.account_id_from AS f_account_id_from,
+            f.account_id_to AS f_account_id_to,
+            f.status AS f_status,
+            f.lock_version AS f_lock_version,
+            f.updated_at AS f_updated_at
         FROM
             <include refid="joinAccountFriend"/>
         WHERE
@@ -181,20 +181,20 @@
 
     <select id="findGoOfficeFriends" resultMap="ShusshaFriends">
         SELECT
-            f.account_id_from AS account_id_from,
-            f.account_id_to AS account_id_to,
-            a.account_id AS account_id,
-            a.user_id AS user_id,
-            a.user_name AS user_name,
-            a.profile AS profile,
-            a.profile_photo_url AS profile_photo_url,
-            a.shussha_count AS shussha_count,
-            a.status AS account_status,
-            f.status AS status,
-            f.lock_version AS lock_version,
-            f.updated_at AS updated_at,
-            s.date AS date,
-            s.status AS shussha_status
+            f.account_id_from AS f_account_id_from,
+            f.account_id_to AS f_account_id_to,
+            a.account_id AS f_account_id,
+            a.user_id AS f_user_id,
+            a.user_name AS f_user_name,
+            a.profile AS f_profile,
+            a.profile_photo_url AS f_profile_photo_url,
+            a.shussha_count AS f_shussha_count,
+            a.status AS f_account_status,
+            f.status AS f_status,
+            f.lock_version AS f_lock_version,
+            f.updated_at AS f_updated_at,
+            s.date AS f_date,
+            s.status AS f_shussha_status
         FROM
             account a
             INNER JOIN friend f
