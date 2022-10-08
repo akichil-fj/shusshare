@@ -56,7 +56,7 @@ create table if not exists recruitment
     foreign key (shussha_id) references shussha (shussha_id)
 );
 
-create table if not exists lunch_participants
+create table if not exists recruitment_participant
 (
     recruitment_id     bigint unsigned                            not null,
     account_id         bigint unsigned                            not null,

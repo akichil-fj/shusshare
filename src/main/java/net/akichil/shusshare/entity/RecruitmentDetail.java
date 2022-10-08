@@ -17,7 +17,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecruitmentDetail extends Recruitment {
 
-    private List<FriendDetail> participants;
+    private FriendDetail createdFriend;
+
+    private List<Account> participants;
 
     private Boolean canParticipate;
 
