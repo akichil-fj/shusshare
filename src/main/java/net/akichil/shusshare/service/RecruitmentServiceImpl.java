@@ -51,18 +51,12 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Transactional
     @Override
     public void addParticipants(Integer recruitmentId, List<Integer> accountIds) {
-        Recruitment recruitment = recruitmentRepository.findOne(recruitmentId);
-        recruitment.setParticipantCount(recruitment.getParticipantCount() + accountIds.size()); //参加者を増やす
-        recruitmentRepository.set(recruitment);
         recruitmentRepository.addParticipants(recruitmentId, accountIds);
     }
 
     @Transactional
     @Override
     public void removeParticipants(Integer recruitmentId, List<Integer> accountIds) {
-        Recruitment recruitment = recruitmentRepository.findOne(recruitmentId);
-        recruitment.setParticipantCount(recruitment.getParticipantCount() - accountIds.size()); //参加者を減らす
-        recruitmentRepository.set(recruitment);
         recruitmentRepository.removeParticipants(recruitmentId, accountIds);
     }
 

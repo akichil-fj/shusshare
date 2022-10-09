@@ -67,11 +67,17 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepository {
 
     @Override
     public void addParticipants(Integer recruitmentId, List<Integer> accountIds) {
+        Recruitment recruitment = this.findOne(recruitmentId);
+        recruitment.setParticipantCount(recruitment.getParticipantCount() + accountIds.size()); //参加者を増やす
+        this.set(recruitment);
         sqlSession.getMapper(RecruitmentMapper.class).addParticipants(recruitmentId, accountIds);
     }
 
     @Override
     public void removeParticipants(Integer recruitmentId, List<Integer> accountIds) {
+        Recruitment recruitment = this.findOne(recruitmentId);
+        recruitment.setParticipantCount(recruitment.getParticipantCount() - accountIds.size()); //参加者を減らす
+        this.set(recruitment);
         final int affected = sqlSession.getMapper(RecruitmentMapper.class).removeParticipants(recruitmentId, accountIds);
         if (affected != accountIds.size()) {
             throw new ResourceNotFoundException();

@@ -6,7 +6,10 @@ import net.akichil.shusshare.repository.RecruitmentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,38 +103,20 @@ public class RecruitmentServiceImplTest {
     public void testAddParticipants() {
         final Integer recruitmentId = 3;
         final List<Integer> accountIds = List.of(4, 5);
-        final Recruitment recruitment = Recruitment.builder()
-                .recruitmentId(recruitmentId)
-                .participantCount(0)
-                .build();
-        Mockito.doReturn(recruitment).when(recruitmentRepository).findOne(recruitmentId);
-        ArgumentCaptor<Recruitment> captor = ArgumentCaptor.forClass(Recruitment.class);
 
         target.addParticipants(recruitmentId, accountIds);
 
-        Mockito.verify(recruitmentRepository, Mockito.times(1)).findOne(recruitmentId);
         Mockito.verify(recruitmentRepository, Mockito.times(1)).addParticipants(recruitmentId, accountIds);
-        Mockito.verify(recruitmentRepository, Mockito.times(1)).set(captor.capture());
-        assertEquals(accountIds.size(), captor.getValue().getParticipantCount()); // 加算されているか
     }
 
     @Test
     public void testRemoveParticipants() {
         final Integer recruitmentId = 3;
         final List<Integer> accountIds = List.of(4, 5);
-        final Recruitment recruitment = Recruitment.builder()
-                .recruitmentId(recruitmentId)
-                .participantCount(3)
-                .build();
-        Mockito.doReturn(recruitment).when(recruitmentRepository).findOne(recruitmentId);
-        ArgumentCaptor<Recruitment> captor = ArgumentCaptor.forClass(Recruitment.class);
 
         target.removeParticipants(recruitmentId, accountIds);
 
-        Mockito.verify(recruitmentRepository, Mockito.times(1)).findOne(recruitmentId);
         Mockito.verify(recruitmentRepository, Mockito.times(1)).removeParticipants(recruitmentId, accountIds);
-        Mockito.verify(recruitmentRepository, Mockito.times(1)).set(captor.capture());
-        assertEquals(1, captor.getValue().getParticipantCount()); // 減算されているか
     }
 
 }
