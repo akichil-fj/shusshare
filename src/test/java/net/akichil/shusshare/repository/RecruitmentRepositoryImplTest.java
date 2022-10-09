@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -98,6 +99,29 @@ public class RecruitmentRepositoryImplTest {
             DbUnitUtil.assertMutateResults(dataSource, "recruitment", INSERT_DATA_PATH,
                     "recruitment_id", "updated_at");
         }
+
+        /**
+         * 参加者を追加
+         */
+        @Test
+        public void testInsertParticipants() throws Exception {
+            Integer recruitmentId = 2;
+            List<Integer> accountIds = List.of(3, 5);
+
+            target.addParticipants(recruitmentId, accountIds);
+            DbUnitUtil.assertMutateResults(dataSource, "recruitment_participant", INSERT_DATA_PATH);
+        }
+
+        /**
+         * 参加者追加に失敗（すでに参加済み）
+         */
+        @Test
+        public void testInsertParticipantsFail() {
+            Integer recruitmentId = 1;
+            List<Integer> accountIds = List.of(2);
+
+            assertThrows(DataIntegrityViolationException.class, () -> target.addParticipants(recruitmentId, accountIds));
+        }
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})
@@ -167,6 +191,30 @@ public class RecruitmentRepositoryImplTest {
             final Integer recruitmentId = 10;
 
             assertThrows(ResourceNotFoundException.class, () -> target.remove(recruitmentId));
+        }
+
+        /**
+         * 参加者を削除
+         */
+        @Test
+        public void testDeleteRecruitmentParticipants() throws Exception {
+            Integer recruitmentId = 4;
+            List<Integer> accountIds = List.of(3, 5);
+
+            target.removeParticipants(recruitmentId, accountIds);
+            DbUnitUtil.assertMutateResults(dataSource, "recruitment_participant", DELETE_DATA_PATH);
+        }
+
+        /**
+         * 参加者の削除に失敗
+         * リストと実際に削除された数が異なる
+         */
+        @Test
+        public void testDeleteRecruitmentParticipantsFail() {
+            Integer recruitmentId = 4;
+            List<Integer> accountIds = List.of(3, 5, 6);
+
+            assertThrows(ResourceNotFoundException.class, () -> target.removeParticipants(recruitmentId, accountIds));
         }
     }
 

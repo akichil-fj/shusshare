@@ -165,4 +165,27 @@
             status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
     </update>
 
+    <insert id="addParticipants" parameterType="java.util.List">
+        INSERT INTO recruitment_participant (
+            recruitment_id,
+            account_id
+        ) VALUES
+        <foreach collection="accountIds" item="accountId" separator=","> (
+            #{recruitmentId},
+            #{accountId}
+        )
+        </foreach>
+    </insert>
+
+    <delete id="removeParticipants" parameterType="java.util.List">
+        DELETE FROM
+            recruitment_participant
+        WHERE
+            <foreach collection="accountIds" item="accountId" separator="OR">
+                (recruitment_id = #{recruitmentId}
+                AND
+                account_id = #{accountId})
+            </foreach>
+    </delete>
+
 </mapper>

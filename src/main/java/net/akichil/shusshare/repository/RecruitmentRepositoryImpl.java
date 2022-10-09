@@ -52,4 +52,17 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepository {
             throw new ResourceNotFoundException();
         }
     }
+
+    @Override
+    public void addParticipants(Integer recruitmentId, List<Integer> accountIds) {
+        sqlSession.getMapper(RecruitmentMapper.class).addParticipants(recruitmentId, accountIds);
+    }
+
+    @Override
+    public void removeParticipants(Integer recruitmentId, List<Integer> accountIds) {
+        final int affected = sqlSession.getMapper(RecruitmentMapper.class).removeParticipants(recruitmentId, accountIds);
+        if (affected != accountIds.size()) {
+            throw new ResourceNotFoundException();
+        }
+    }
 }

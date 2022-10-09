@@ -16,12 +16,14 @@ public interface RecruitmentMapper {
 
     int add(Recruitment recruitment);
 
-    int addParticipants(Integer recruitmentId, List<Integer> accountIds);
+    int addParticipants(@Param("recruitmentId") Integer recruitmentId,
+                        @Param("accountIds") List<Integer> accountIds);
 
     int set(Recruitment recruitment);
 
     int remove(Integer recruitmentId);
 
-    int removeParticipants(Integer recruitmentId, List<Integer> accountIds);
+    int removeParticipants(@Param("recruitmentId") Integer recruitmentId,
+                           @Param("accountIds") List<Integer> accountIds);
 
 }
