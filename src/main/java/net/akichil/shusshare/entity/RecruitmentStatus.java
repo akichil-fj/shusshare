@@ -12,7 +12,8 @@ public enum RecruitmentStatus {
     NONE(0),
     OPENED(1),
     CLOSED(2),
-    CANCELED(3);
+    CANCELED(3),
+    DELETED(4);
 
     private final int value;
 

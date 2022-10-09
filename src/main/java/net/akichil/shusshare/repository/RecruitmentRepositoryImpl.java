@@ -2,6 +2,7 @@ package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.entity.Recruitment;
 import net.akichil.shusshare.entity.RecruitmentDetail;
+import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.repository.mybatis.RecruitmentMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -33,16 +34,22 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepository {
 
     @Override
     public void add(Recruitment recruitment) {
-
+        sqlSession.getMapper(RecruitmentMapper.class).add(recruitment);
     }
 
     @Override
     public void set(Recruitment recruitment) {
-
+        final int affected = sqlSession.getMapper(RecruitmentMapper.class).set(recruitment);
+        if (affected == 0) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     @Override
     public void remove(Integer recruitmentId) {
-
+        final int affected = sqlSession.getMapper(RecruitmentMapper.class).remove(recruitmentId);
+        if (affected == 0) {
+            throw new ResourceNotFoundException();
+        }
     }
 }

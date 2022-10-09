@@ -105,5 +105,64 @@
         ON r.created_by = f.account_id_to
     </sql>
 
+    <insert id="add">
+        INSERT INTO recruitment (
+            created_by,
+            shussha_id,
+            title,
+            genre,
+            capacity,
+            deadline,
+            status
+        ) VALUES (
+            #{createdBy},
+            #{shusshaId},
+            #{title},
+            #{genre},
+            #{capacity},
+            #{deadline},
+            #{status}
+        )
+    </insert>
+
+    <update id="set">
+        UPDATE
+            recruitment
+        SET
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="genre != null">
+                genre = #{genre},
+            </if>
+            <if test="deadline != null">
+                deadline = #{deadline},
+            </if>
+            <if test="capacity != null">
+                capacity = #{capacity},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            recruitment_id = #{recruitmentId}
+            AND
+            lock_version = #{lockVersion}
+    </update>
+
+    <update id="remove">
+        UPDATE
+            recruitment
+        SET
+            status = '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}',
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            recruitment_id = #{recruitment_id}
+            AND
+            status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
+    </update>
 
 </mapper>
