@@ -183,7 +183,9 @@
             lock_version = lock_version + 1,
             updated_at = CURRENT_TIMESTAMP
         WHERE
-            recruitment_id = #{recruitment_id}
+            recruitment_id = #{recruitmentId}
+            AND
+            lock_version = #{lockVersion}
             AND
             status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
     </update>

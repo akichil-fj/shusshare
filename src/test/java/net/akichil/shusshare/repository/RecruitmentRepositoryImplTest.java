@@ -200,7 +200,15 @@ public class RecruitmentRepositoryImplTest {
          */
         @Test
         public void testDeleteRecruitment() throws Exception {
-            final Integer recruitment = 1;
+            Recruitment recruitment = Recruitment.builder()
+                    .recruitmentId(1)
+                    .shusshaId(1)
+                    .title("募集テスト1")
+                    .genre(RecruitmentGenre.LUNCH)
+                    .capacity(3)
+                    .deadline(LocalDateTime.of(2022, 6, 5, 12, 0))
+                    .lockVersion(0)
+                    .build();
 
             target.remove(recruitment);
 
@@ -213,9 +221,11 @@ public class RecruitmentRepositoryImplTest {
          */
         @Test
         public void testDeleteRecruitmentFailByIdNotFound() {
-            final Integer recruitmentId = 10;
+            Recruitment recruitment = Recruitment.builder()
+                    .recruitmentId(10)
+                    .build();
 
-            assertThrows(ResourceNotFoundException.class, () -> target.remove(recruitmentId));
+            assertThrows(ResourceNotFoundException.class, () -> target.remove(recruitment));
         }
 
         /**

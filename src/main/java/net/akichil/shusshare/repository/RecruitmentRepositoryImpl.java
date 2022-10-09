@@ -58,8 +58,8 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepository {
     }
 
     @Override
-    public void remove(Integer recruitmentId) {
-        final int affected = sqlSession.getMapper(RecruitmentMapper.class).remove(recruitmentId);
+    public void remove(Recruitment recruitment) {
+        final int affected = sqlSession.getMapper(RecruitmentMapper.class).remove(recruitment);
         if (affected == 0) {
             throw new ResourceNotFoundException();
         }

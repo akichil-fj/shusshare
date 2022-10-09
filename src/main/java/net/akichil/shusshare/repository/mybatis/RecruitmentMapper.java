@@ -23,7 +23,7 @@ public interface RecruitmentMapper {
 
     int set(Recruitment recruitment);
 
-    int remove(Integer recruitmentId);
+    int remove(Recruitment recruitment);
 
     int removeParticipants(@Param("recruitmentId") Integer recruitmentId,
                            @Param("accountIds") List<Integer> accountIds);

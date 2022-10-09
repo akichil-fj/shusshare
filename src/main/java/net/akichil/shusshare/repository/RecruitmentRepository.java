@@ -17,7 +17,7 @@ public interface RecruitmentRepository {
 
     void set(Recruitment recruitment);
 
-    void remove(Integer recruitmentId);
+    void remove(Recruitment recruitment);
 
     void addParticipants(Integer recruitmentId, List<Integer> accountIds);
 
