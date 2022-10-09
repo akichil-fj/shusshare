@@ -11,6 +11,8 @@ public interface RecruitmentRepository {
 
     RecruitmentDetail findOne(Integer recruitmentId, Integer accountId);
 
+    Recruitment findOne(Integer recruitmentId);
+
     void add(Recruitment recruitment);
 
     void set(Recruitment recruitment);

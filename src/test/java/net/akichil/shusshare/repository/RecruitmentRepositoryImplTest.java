@@ -69,6 +69,31 @@ public class RecruitmentRepositoryImplTest {
             assertEquals(FriendStatus.NONE, result.getCreatedFriend().getStatus());
         }
 
+        @Test
+        public void testFindOneNotFound() {
+            final Integer recruitmentId = 10;
+            final Integer accountId = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(recruitmentId, accountId));
+        }
+
+        @Test
+        public void testGet() {
+            final Integer recruitmentId = 1;
+
+            Recruitment result = target.findOne(recruitmentId);
+
+            assertEquals(1, result.getRecruitmentId());
+            assertEquals("募集テスト1", result.getTitle());
+        }
+
+        @Test
+        public void testGetNotFound() {
+            final Integer recruitmentId = 10;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(recruitmentId));
+        }
+
     }
 
 

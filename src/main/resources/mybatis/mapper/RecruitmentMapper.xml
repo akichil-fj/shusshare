@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.akichil.shusshare.repository.mybatis.RecruitmentMapper">
 
-    <resultMap id="RecruitmentDetail" type="net.akichil.shusshare.entity.RecruitmentDetail">
+    <resultMap id="Recruitment" type="net.akichil.shusshare.entity.Recruitment">
         <result property="recruitmentId" column="r_recruitment_id"/>
         <result property="createdBy" column="r_created_by"/>
         <result property="shusshaId" column="r_shussha_id"/>
@@ -13,6 +13,9 @@
         <result property="participantCount" column="r_participant_count"/>
         <result property="status" column="r_status"/>
         <result property="lockVersion" column="r_lock_version"/>
+    </resultMap>
+
+    <resultMap id="RecruitmentDetail" type="net.akichil.shusshare.entity.RecruitmentDetail" extends="Recruitment">
         <result property="canParticipate" column="r_can_participate"/>
         <association property="createdFriend" resultMap="net.akichil.shusshare.repository.mybatis.FriendMapper.FriendDetail"/>
         <collection property="participants" resultMap="net.akichil.shusshare.repository.mybatis.AccountMapper.Account"/>
@@ -34,6 +37,26 @@
             <include refid="joinRecruitmentAccountRecruitmentParticipant"/>
         WHERE
             r.recruitment_id = #{recruitmentId}
+    </select>
+
+    <select id="get" resultMap="Recruitment">
+        SELECT
+            r.recruitment_id AS r_recruitment_id,
+            r.created_by AS r_created_by,
+            r.shussha_id AS r_shussha_id,
+            r.title AS r_title,
+            r.genre AS r_genre,
+            r.capacity AS r_capacity,
+            r.deadline AS r_deadline,
+            r.participant_count AS r_participant_count,
+            r.status AS r_status,
+            r.lock_version AS r_lock_version
+        FROM
+            recruitment r
+        WHERE
+            r.recruitment_id = #{recruitmentId}
+            AND
+            r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
     </select>
 
     <sql id="columns">

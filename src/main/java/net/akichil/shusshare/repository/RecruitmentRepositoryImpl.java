@@ -28,7 +28,19 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepository {
     @Override
     public RecruitmentDetail findOne(Integer recruitmentId, Integer accountId) {
         RecruitmentDetail result = sqlSession.getMapper(RecruitmentMapper.class).findOne(recruitmentId, accountId);
+        if (result == null) {
+            throw new ResourceNotFoundException();
+        }
         result.getParticipants().removeIf(p -> p.getAccountId() == null);  // JOINした結果、参加者0の場合項目がnullの参加者が生成されるので除外
+        return result;
+    }
+
+    @Override
+    public Recruitment findOne(Integer recruitmentId) {
+        Recruitment result = sqlSession.getMapper(RecruitmentMapper.class).get(recruitmentId);
+        if (result == null) {
+            throw new ResourceNotFoundException();
+        }
         return result;
     }
 

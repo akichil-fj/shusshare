@@ -14,6 +14,8 @@ public interface RecruitmentMapper {
 
     RecruitmentDetail findOne(@Param("recruitmentId")Integer recruitmentId, @Param("accountId") Integer accountId);
 
+    Recruitment get(Integer recruitmentId);
+
     int add(Recruitment recruitment);
 
     int addParticipants(@Param("recruitmentId") Integer recruitmentId,
