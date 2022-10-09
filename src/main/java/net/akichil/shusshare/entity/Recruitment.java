@@ -27,6 +27,8 @@ public class Recruitment {
 
     private LocalDateTime deadline;
 
+    private Integer capacity;
+
     private Integer participantCount;
 
     private RecruitmentStatus status;

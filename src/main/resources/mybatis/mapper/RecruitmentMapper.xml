@@ -9,6 +9,7 @@
         <result property="title" column="r_title"/>
         <result property="genre" column="r_genre"/>
         <result property="deadline" column="r_deadline"/>
+        <result property="capacity" column="r_capacity"/>
         <result property="participantCount" column="r_participant_count"/>
         <result property="status" column="r_status"/>
         <result property="lockVersion" column="r_lock_version"/>
@@ -53,6 +54,7 @@
         r.shussha_id AS r_shussha_id,
         r.title AS r_title,
         r.genre AS r_genre,
+        r.capacity AS r_capacity,
         r.deadline AS r_deadline,
         r.participant_count AS r_participant_count,
         r.status AS r_status,
