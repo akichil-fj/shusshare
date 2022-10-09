@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = ShusshareApplication.class)
-public class RecruitmentRepositoryImplTest {
+public class RecruitmentRepositoryImplDbUnitTest {
 
     @Autowired
     private RecruitmentRepository target;
