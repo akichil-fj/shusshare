@@ -54,15 +54,15 @@
 
     <select id="findOneByUserId" resultMap="Account">
         SELECT
-            a_account_id,
-            a_user_id,
-            a_user_name,
-            a_password,
-            a_profile,
-            a_profile_photo_url,
-            a_status,
-            a_shussha_count,
-            a_lock_version
+            account_id AS a_account_id,
+            user_id AS a_user_id,
+            user_name AS a_user_name,
+            password AS a_password,
+            profile AS a_profile,
+            profile_photo_url AS a_profile_photo_url,
+            status AS a_status,
+            shussha_count AS a_shussha_count,
+            lock_version AS a_lock_version
         FROM
             account
         WHERE
