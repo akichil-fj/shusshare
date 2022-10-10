@@ -9,11 +9,13 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum RecruitmentGenre {
 
-    NONE(0),
-    LUNCH(1),
-    CAFE(2);
+    NONE(0, ""),
+    LUNCH(1, "ランチ"),
+    CAFE(2, "カフェ");
 
     private final int value;
+
+    private final String name;
 
     public static RecruitmentGenre getRecruitmentGenre(int value) {
         return Arrays.stream(values())

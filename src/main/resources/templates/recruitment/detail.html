@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="_common::meta"/>
+    <title>募集詳細</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-md-5 mt-sm-4 mt-2" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-md-12">
+            <h2>募集詳細</h2>
+            <h3 class="mt-4" th:text="${recruitment.genre.name() == 'LUNCH' ? '🍴' : '☕️'} + ${recruitment.title}"/>
+            <div class="d-flex flex-row align-items-center mt-4">
+                <div class="me-2">
+                    作成者：
+                </div>
+                <img src="/img/icon.png" class="img-fluid rounded-circle" width="30"
+                     th:style="|background: ${@colorUtil.generateColorCode(recruitment.createdFriend.userId)}|">
+                <div class="d-flex flex-column ms-2">
+                    <div class="d-flex flex-row flex-wrap">
+                        <a th:text="${recruitment.createdFriend.userName}"
+                           th:href="@{/user/{userId}(userId = ${recruitment.createdFriend.userId})}"/>
+                        <div class="ms-2 text-secondary" th:text="${recruitment.createdFriend.userId}"/>
+                        <div class="ms-2">
+                            <i class="bi bi-lock-fill"
+                               th:if="${recruitment.createdFriend.accountStatus.name()} == PRIVATE"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row align-items-start"
+                 th:if="${recruitment.deadline != null}">
+                <div class="me-2 pt-2">
+                    締切時間：
+                </div>
+                <div class="pt-2" th:text="${#temporals.format(recruitment.deadline, 'yyyy/MM/dd hh:mm')}"/>
+            </div>
+            <div class="d-flex flex-row align-items-start"
+                 th:if="${recruitment.capacity != null}">
+                <div class="me-2 pt-2">
+                    最大人数：
+                </div>
+                <div class="pt-2" th:text="${recruitment.capacity}"/>
+            </div>
+            <div class="d-flex flex-row align-items-start">
+                <div class="me-2 pt-2">
+                    参加者：
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="participant:${recruitment.participants}">
+                        <div class="d-flex flex-row align-items-center">
+                            <img src="/img/icon.png" class="img-fluid rounded-circle" width="20"
+                                 th:style="|background: ${@colorUtil.generateColorCode(participant.userId)}|">
+                            <div class="d-flex flex-column ms-2">
+                                <div class="d-flex flex-row flex-wrap">
+                                    <a th:text="${participant.userName}"
+                                       th:href="@{/user/{userId}(userId = ${participant.userId})}"/>
+                                    <div class="ms-2 text-secondary" th:text="${participant.userId}"/>
+                                    <div class="ms-2">
+                                        <i class="bi bi-lock-fill"
+                                           th:if="${participant.status.name()} == PRIVATE"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-5 d-flex flex-row flex-wrap justify-content-evenly">
+                <form th:if="true" method="post"
+                      th:action="@{/recruitment/participate(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-primary">参加する</button>
+                </form>
+                <form th:if="${recruitment.createdBy == accountId}" method="get"
+                      th:action="@{/recruitment/edit(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-primary">編集する</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="_common::script"/>
+</body>
+</html>
