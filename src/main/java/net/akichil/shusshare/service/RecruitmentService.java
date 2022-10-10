@@ -2,12 +2,13 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Recruitment;
 import net.akichil.shusshare.entity.RecruitmentDetail;
+import net.akichil.shusshare.entity.RecruitmentSelector;
 
 import java.util.List;
 
 public interface RecruitmentService {
 
-    List<RecruitmentDetail> find(Integer accountId);
+    List<RecruitmentDetail> find(RecruitmentSelector selector);
 
     RecruitmentDetail get(Integer recruitmentId, Integer accountId);
 

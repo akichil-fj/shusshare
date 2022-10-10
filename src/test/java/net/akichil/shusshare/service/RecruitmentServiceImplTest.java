@@ -2,6 +2,7 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Recruitment;
 import net.akichil.shusshare.entity.RecruitmentDetail;
+import net.akichil.shusshare.entity.RecruitmentSelector;
 import net.akichil.shusshare.repository.RecruitmentRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,14 +40,14 @@ public class RecruitmentServiceImplTest {
 
     @Test
     public void testFind() {
-        final Integer accountId = 1;
+        final RecruitmentSelector selector = RecruitmentSelector.builder().build();
         List<Recruitment> recruitments = new ArrayList<>();
-        Mockito.doReturn(recruitments).when(recruitmentRepository).findList(accountId);
+        Mockito.doReturn(recruitments).when(recruitmentRepository).findList(selector);
 
-        List<RecruitmentDetail> results = target.find(accountId);
+        List<RecruitmentDetail> results = target.find(selector);
 
         assertEquals(recruitments, results);
-        Mockito.verify(recruitmentRepository, Mockito.times(1)).findList(accountId);
+        Mockito.verify(recruitmentRepository, Mockito.times(1)).findList(selector);
     }
 
     @Test

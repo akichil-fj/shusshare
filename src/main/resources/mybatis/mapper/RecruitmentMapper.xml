@@ -28,6 +28,22 @@
             <include refid="joinRecruitmentAccountRecruitmentParticipant"/>
         WHERE
             f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
+            OR
+            created_by = #{accountId}
+            <if test="createdById != null">
+                AND r.created_by = #{createdById}
+            </if>
+            <if test="shusshaId != null">
+                AND r.shussha_id = #{shusshaId}
+            </if>
+            <if test="startDate != null">
+                AND
+                #{startDate} &lt;= s.date
+            </if>
+            <if test="endDate != null">
+                AND
+                s.date &lt;= #{endDate}
+            </if>
     </select>
 
     <select id="findOne" resultMap="RecruitmentDetail">
@@ -126,6 +142,8 @@
                 account_id_from = #{accountId}
             ) AS f
         ON r.created_by = f.account_id_to
+        INNER JOIN shussha s
+        ON r.shussha_id = s.shussha_id
     </sql>
 
     <insert id="add">

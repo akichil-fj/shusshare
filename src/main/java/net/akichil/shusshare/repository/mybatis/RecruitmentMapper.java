@@ -2,15 +2,14 @@ package net.akichil.shusshare.repository.mybatis;
 
 import net.akichil.shusshare.entity.Recruitment;
 import net.akichil.shusshare.entity.RecruitmentDetail;
+import net.akichil.shusshare.entity.RecruitmentSelector;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface RecruitmentMapper {
 
-    List<RecruitmentDetail> findList(@Param("accountId") Integer accountId,
-                                              @Param("createdById") Integer createdAccountId,
-                                              @Param("shusshaId") Integer shusshaId);
+    List<RecruitmentDetail> findList(RecruitmentSelector selector);
 
     RecruitmentDetail findOne(@Param("recruitmentId")Integer recruitmentId, @Param("accountId") Integer accountId);
 

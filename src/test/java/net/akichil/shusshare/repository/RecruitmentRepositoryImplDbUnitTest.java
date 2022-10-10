@@ -14,6 +14,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,14 +37,42 @@ public class RecruitmentRepositoryImplDbUnitTest {
         @Test
         public void testFindAll() {
             final Integer accountId = 2;
+            RecruitmentSelector selector = RecruitmentSelector.builder().accountId(accountId).build();
 
-            List<RecruitmentDetail> results = target.findList(accountId);
+            List<RecruitmentDetail> results = target.findList(selector);
+
+            assertEquals(3, results.size());
+            assertEquals(3, results.get(2).getParticipants().size());
+            assertEquals(4, results.get(1).getParticipants().get(0).getAccountId());
+            assertEquals(3, results.get(1).getRecruitmentId());
+            assertEquals("test_user4", results.get(1).getCreatedFriend().getUserId());
+        }
+
+        @Test
+        public void testFindByDate() {
+            final Integer accountId = 2;
+            final LocalDate startDate = LocalDate.of(2022, 6, 6);
+            RecruitmentSelector selector = RecruitmentSelector.builder()
+                    .accountId(accountId)
+                    .startDate(startDate).build();
+
+            List<RecruitmentDetail> results = target.findList(selector);
 
             assertEquals(2, results.size());
-            assertEquals(3, results.get(1).getParticipants().size());
-            assertEquals(4, results.get(0).getParticipants().get(0).getAccountId());
-            assertEquals(3, results.get(0).getRecruitmentId());
-            assertEquals("test_user4", results.get(0).getCreatedFriend().getUserId());
+        }
+
+        @Test
+        public void testFindByShusshaId() {
+            final Integer accountId = 1;
+            final Integer shusshaId = 1;
+            RecruitmentSelector selector = RecruitmentSelector.builder()
+                    .accountId(accountId)
+                    .shusshaId(shusshaId).build();
+
+            List<RecruitmentDetail> results = target.findList(selector);
+
+            assertEquals(1, results.size());
+            assertEquals(shusshaId, results.get(0).getShusshaId());
         }
 
         @Test

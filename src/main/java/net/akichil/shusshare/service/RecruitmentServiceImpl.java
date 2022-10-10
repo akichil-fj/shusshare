@@ -2,6 +2,7 @@ package net.akichil.shusshare.service;
 
 import net.akichil.shusshare.entity.Recruitment;
 import net.akichil.shusshare.entity.RecruitmentDetail;
+import net.akichil.shusshare.entity.RecruitmentSelector;
 import net.akichil.shusshare.repository.RecruitmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,8 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     @Transactional
     @Override
-    public List<RecruitmentDetail> find(Integer accountId) {
-        return recruitmentRepository.findList(accountId);
+    public List<RecruitmentDetail> find(RecruitmentSelector selector) {
+        return recruitmentRepository.findList(selector);
     }
 
     @Transactional

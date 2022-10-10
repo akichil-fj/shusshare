@@ -2,6 +2,7 @@ package net.akichil.shusshare.repository;
 
 import net.akichil.shusshare.entity.Recruitment;
 import net.akichil.shusshare.entity.RecruitmentDetail;
+import net.akichil.shusshare.entity.RecruitmentSelector;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.repository.mybatis.RecruitmentMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -19,8 +20,8 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepository {
     }
 
     @Override
-    public List<RecruitmentDetail> findList(Integer accountId) {
-        List<RecruitmentDetail> results = sqlSession.getMapper(RecruitmentMapper.class).findList(accountId, null, null);
+    public List<RecruitmentDetail> findList(RecruitmentSelector selector) {
+        List<RecruitmentDetail> results = sqlSession.getMapper(RecruitmentMapper.class).findList(selector);
         results.forEach(r -> r.getParticipants().removeIf(p -> p.getAccountId() == null));  // JOINした結果、参加者0の場合項目がnullの参加者が生成されるので除外
         return results;
     }
