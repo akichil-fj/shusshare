@@ -27,9 +27,9 @@
         FROM
             <include refid="joinRecruitmentAccountRecruitmentParticipant"/>
         WHERE
-            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
+            (created_by = #{accountId}
             OR
-            created_by = #{accountId}
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}')
             <if test="createdById != null">
                 AND r.created_by = #{createdById}
             </if>
