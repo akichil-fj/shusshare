@@ -23,4 +23,6 @@ public class RecruitmentDetail extends Recruitment {
 
     private Boolean canParticipate;
 
+    private Boolean isParticipate;
+
 }
