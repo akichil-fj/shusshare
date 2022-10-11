@@ -41,8 +41,8 @@ public class RecruitmentRepositoryImplDbUnitTest {
 
             List<RecruitmentDetail> results = target.findList(selector);
 
-            assertEquals(3, results.size());
-            assertEquals(3, results.get(2).getParticipants().size());
+            assertEquals(2, results.size());
+            assertEquals(3, results.get(0).getParticipants().size());
             assertEquals(4, results.get(1).getParticipants().get(0).getAccountId());
             assertEquals(3, results.get(1).getRecruitmentId());
             assertEquals("test_user4", results.get(1).getCreatedFriend().getUserId());
@@ -58,7 +58,7 @@ public class RecruitmentRepositoryImplDbUnitTest {
 
             List<RecruitmentDetail> results = target.findList(selector);
 
-            assertEquals(2, results.size());
+            assertEquals(1, results.size());
         }
 
         @Test
@@ -84,17 +84,17 @@ public class RecruitmentRepositoryImplDbUnitTest {
 
             assertEquals("募集byふが", result.getTitle());
             assertEquals("ふが山フガ子", result.getCreatedFriend().getUserName());
-            assertEquals(0, result.getParticipants().size());
+            assertEquals(3, result.getParticipants().size());
         }
 
         @Test
         public void testFindOneNotFollowed() {
-            final Integer recruitmentId = 4;
+            final Integer recruitmentId = 3;
             final Integer accountId = 1;
 
             RecruitmentDetail result = target.findOne(recruitmentId, accountId);
 
-            assertEquals("募集テスト4", result.getTitle());
+            assertEquals("募集3", result.getTitle());
             assertEquals(FriendStatus.NONE, result.getCreatedFriend().getStatus());
         }
 
@@ -102,6 +102,14 @@ public class RecruitmentRepositoryImplDbUnitTest {
         public void testFindOneNotFound() {
             final Integer recruitmentId = 10;
             final Integer accountId = 1;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.findOne(recruitmentId, accountId));
+        }
+
+        @Test
+        public void testFindOnePrivate() {
+            final Integer recruitmentId = 5;
+            final Integer accountId = 4;
 
             assertThrows(ResourceNotFoundException.class, () -> target.findOne(recruitmentId, accountId));
         }
@@ -159,8 +167,8 @@ public class RecruitmentRepositoryImplDbUnitTest {
          */
         @Test
         public void testInsertParticipants() throws Exception {
-            Integer recruitmentId = 2;
-            List<Integer> accountIds = List.of(3, 5);
+            Integer recruitmentId = 5;
+            List<Integer> accountIds = List.of(2, 4);
 
             target.addParticipants(recruitmentId, accountIds);
             DbUnitUtil.assertMutateResults(dataSource, "recruitment_participant", INSERT_DATA_PATH);
@@ -262,8 +270,8 @@ public class RecruitmentRepositoryImplDbUnitTest {
          */
         @Test
         public void testDeleteRecruitmentParticipants() throws Exception {
-            Integer recruitmentId = 4;
-            List<Integer> accountIds = List.of(3, 5);
+            Integer recruitmentId = 2;
+            List<Integer> accountIds = List.of(1, 5);
 
             target.removeParticipants(recruitmentId, accountIds);
             DbUnitUtil.assertMutateResults(dataSource, "recruitment_participant", DELETE_DATA_PATH);
@@ -275,7 +283,7 @@ public class RecruitmentRepositoryImplDbUnitTest {
          */
         @Test
         public void testDeleteRecruitmentParticipantsFail() {
-            Integer recruitmentId = 4;
+            Integer recruitmentId = 2;
             List<Integer> accountIds = List.of(3, 5, 6);
 
             assertThrows(ResourceNotFoundException.class, () -> target.removeParticipants(recruitmentId, accountIds));

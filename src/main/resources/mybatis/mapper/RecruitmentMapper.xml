@@ -30,6 +30,8 @@
             (created_by = #{accountId}
             OR
             f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}')
+            AND
+            r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
             <if test="createdById != null">
                 AND r.created_by = #{createdById}
             </if>
@@ -53,6 +55,14 @@
             <include refid="joinRecruitmentAccountRecruitmentParticipant"/>
         WHERE
             r.recruitment_id = #{recruitmentId}
+            AND
+            r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
+            AND
+            (a.status != '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
+            OR
+            a.status = '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
+            AND
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}')
     </select>
 
     <select id="get" resultMap="Recruitment">
