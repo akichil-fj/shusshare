@@ -38,6 +38,19 @@
             date = #{date}
     </select>
 
+    <select id="get" resultMap="Shussha">
+        SELECT
+            shussha_id AS s_shussha_id,
+            account_id AS s_account_id,
+            date AS s_date,
+            status AS s_status,
+            lock_version AS s_lock_version
+        FROM
+            shussha
+        WHERE
+            shussha_id = #{shusshaId}
+    </select>
+
     <insert id="add" useGeneratedKeys="true" keyProperty="shusshaId" keyColumn="shussha_id">
         INSERT INTO shussha(
             account_id,

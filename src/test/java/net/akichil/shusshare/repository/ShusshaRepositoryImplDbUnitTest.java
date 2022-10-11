@@ -60,6 +60,22 @@ public class ShusshaRepositoryImplDbUnitTest {
             assertThrows(ResourceNotFoundException.class, () -> target.find(accountId, date));
         }
 
+        @Test
+        public void testGet() {
+            final Integer shusshaId = 1;
+
+            Shussha findResult = target.get(shusshaId);
+
+            assertEquals(shusshaId, findResult.getAccountId());
+        }
+
+        @Test
+        public void testGetNotFound() {
+            final Integer shusshaId = 10;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.get(shusshaId));
+        }
+
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})

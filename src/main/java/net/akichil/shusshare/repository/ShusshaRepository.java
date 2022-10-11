@@ -11,6 +11,8 @@ public interface ShusshaRepository {
 
     Shussha find(Integer accountId, LocalDate date);
 
+    Shussha get(Integer shusshaId);
+
     void add(Shussha shussha);
 
     void remove(Shussha shussha);
