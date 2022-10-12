@@ -83,7 +83,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         for (Integer accountId : accountIds) {
             // 作成者をフォローしているかどうか
             List<FriendDetail> friendFromUser = friendRepository.findFriendFromUser(accountId);
-            friendFromUser.stream().filter(f -> f.getAccountIdTo().equals(recruitment.getRecruitmentId()))
+            friendFromUser.stream().filter(f -> f.getAccountId().equals(recruitment.getCreatedBy()))
                     .filter(f -> f.getStatus() == FriendStatus.FOLLOWED)
                     .findAny().orElseThrow(NoAccessResourceException::new);
         }
