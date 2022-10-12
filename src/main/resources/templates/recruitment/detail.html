@@ -71,9 +71,13 @@
                 </ul>
             </div>
             <div class="mt-5 d-flex flex-row flex-wrap justify-content-evenly">
-                <form th:if="true" method="post"
+                <form th:if="${recruitment.canParticipate == true && recruitment.isParticipate != true}" method="post"
                       th:action="@{/recruitment/participate(recruitmentId=${recruitment.recruitmentId})}">
                     <button type="submit" class="btn btn-primary">参加する</button>
+                </form>
+                <form th:if="${recruitment.isParticipate == true}" method="post"
+                      th:action="@{/recruitment/leave(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-danger">退出する</button>
                 </form>
                 <form th:if="${recruitment.createdBy == accountId}" method="get"
                       th:action="@{/recruitment/edit(recruitmentId=${recruitment.recruitmentId})}">
