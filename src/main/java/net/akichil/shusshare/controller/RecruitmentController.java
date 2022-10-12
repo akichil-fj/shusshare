@@ -64,6 +64,7 @@ public class RecruitmentController {
     public String add(@Validated(AddGroup.class) @ModelAttribute(name = "recruitment") RecruitmentForEdit recruitment,
                       BindingResult bindingResult,
                       Model model,
+                      RedirectAttributes attributes,
                       @AuthenticationPrincipal LoginUser loginUser) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("genreList", getRecruitmentGenre());
@@ -96,7 +97,7 @@ public class RecruitmentController {
             model.addAttribute("genreList", getRecruitmentGenre());
             return "recruitment/add";
         } catch (NoAccessResourceException exception) {
-            model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error.wrongshussha"));
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error.wrongshussha"));
             return "redirect:/recruitment/list";
         }
 
