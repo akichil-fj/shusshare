@@ -18,13 +18,8 @@
             <h2>新規募集作成</h2>
         </div>
         <form th:action="@{/recruitment/add}" th:method="post" th:object="${recruitment}">
-            <div class="mb-3 form-group hidden">
-<!--                <label for="inputShusshaId" class="form-label">shussha_id</label>-->
-                <input type="hidden" id="inputShusshaId" class="form-control" th:field="*{shusshaId}"
-                       th:classappend="${#fields.hasErrors('shusshaId')} ? 'is-invalid'"/>
-<!--                <span class="text-danger" th:if="${#fields.hasErrors('shusshaId')}"-->
-<!--                      th:errors="*{title}"> userId error</span>-->
-            </div>
+            <input type="hidden" id="inputShusshaId" class="form-control" th:field="*{shusshaId}"
+                   th:classappend="${#fields.hasErrors('shusshaId')} ? 'is-invalid'"/>
             <div class="mb-3 form-group">
                 <label for="inputTitle" class="form-label">タイトル</label>
                 <input id="inputTitle" class="form-control" th:field="*{title}"
@@ -34,8 +29,6 @@
             </div>
             <div class="mb-3 form-group">
                 <label for="selectGenre" class="form-label">ジャンル</label>
-<!--                <input id="inputGenre" class="form-control" th:field="*{genre}"-->
-<!--                       th:classappend="${#fields.hasErrors('genre')} ? 'is-invalid'"/>-->
                 <select id="selectGenre" class="form-select" name="genre">
                     <option th:each="genre:${genreList}"
                             th:value="${genre.name()}" th:text="${genre.name}">
