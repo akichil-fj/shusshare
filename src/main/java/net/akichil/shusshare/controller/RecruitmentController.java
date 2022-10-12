@@ -5,6 +5,7 @@ import net.akichil.shusshare.helper.MessageSourceHelper;
 import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.security.LoginUser;
 import net.akichil.shusshare.service.RecruitmentService;
+import net.akichil.shusshare.service.exception.NoAccessResourceException;
 import net.akichil.shusshare.validation.AddGroup;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -94,6 +95,9 @@ public class RecruitmentController {
             model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error"));
             model.addAttribute("genreList", getRecruitmentGenre());
             return "recruitment/add";
+        } catch (NoAccessResourceException exception) {
+            model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error.wrongshussha"));
+            return "redirect:/recruitment/list";
         }
 
         return "redirect:/recruitment/list";
