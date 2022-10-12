@@ -270,46 +270,66 @@ public class RecruitmentServiceImplTest {
 
     @Test
     public void testSetCanParticipateOk() {
+        Integer accountId = 2;
         RecruitmentDetail recruitmentDetail = new RecruitmentDetail();
+        recruitmentDetail.setCreatedBy(1);
         recruitmentDetail.setDeadline(LocalDateTime.now().plusHours(1));
         recruitmentDetail.setCapacity(3);
         recruitmentDetail.setParticipantCount(2);
         recruitmentDetail.setStatus(RecruitmentStatus.OPENED);
 
-        target.setCanParticipate(recruitmentDetail);
+        target.setCanParticipate(recruitmentDetail, accountId);
 
         assertEquals(true, recruitmentDetail.getCanParticipate());
     }
 
     @Test
     public void testSetCanParticipateNgDeadline() {
+        Integer accountId = 2;
         RecruitmentDetail recruitmentDetail = new RecruitmentDetail();
+        recruitmentDetail.setCreatedBy(1);
         recruitmentDetail.setDeadline(LocalDateTime.now().minusHours(1));
         recruitmentDetail.setStatus(RecruitmentStatus.OPENED);
 
-        target.setCanParticipate(recruitmentDetail);
+        target.setCanParticipate(recruitmentDetail, accountId);
 
         assertEquals(false, recruitmentDetail.getCanParticipate());
     }
 
     @Test
     public void testSetCanParticipateNgCapacity() {
+        Integer accountId = 2;
         RecruitmentDetail recruitmentDetail = new RecruitmentDetail();
+        recruitmentDetail.setCreatedBy(1);
         recruitmentDetail.setCapacity(4);
         recruitmentDetail.setParticipantCount(4);
         recruitmentDetail.setStatus(RecruitmentStatus.OPENED);
 
-        target.setCanParticipate(recruitmentDetail);
+        target.setCanParticipate(recruitmentDetail, accountId);
 
         assertEquals(false, recruitmentDetail.getCanParticipate());
     }
 
     @Test
     public void testSetCanParticipateNgStatus() {
+        Integer accountId = 2;
         RecruitmentDetail recruitmentDetail = new RecruitmentDetail();
+        recruitmentDetail.setCreatedBy(1);
         recruitmentDetail.setStatus(RecruitmentStatus.CLOSED);
 
-        target.setCanParticipate(recruitmentDetail);
+        target.setCanParticipate(recruitmentDetail, accountId);
+
+        assertEquals(false, recruitmentDetail.getCanParticipate());
+    }
+
+    @Test
+    public void testSetCanParticipateCreatedByMyself() {
+        Integer accountId = 2;
+        RecruitmentDetail recruitmentDetail = new RecruitmentDetail();
+        recruitmentDetail.setCreatedBy(2);
+        recruitmentDetail.setStatus(RecruitmentStatus.OPENED);
+
+        target.setCanParticipate(recruitmentDetail, accountId);
 
         assertEquals(false, recruitmentDetail.getCanParticipate());
     }

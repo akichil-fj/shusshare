@@ -58,11 +58,15 @@
             AND
             r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
             AND
-            (a.status != '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
+            ((
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
             OR
             a.status = '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
             AND
-            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}')
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
+            )
+            OR
+            created_by = #{accountId})
     </select>
 
     <select id="get" resultMap="Recruitment">

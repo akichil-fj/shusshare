@@ -105,17 +105,19 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     }
 
     void setParticipate(RecruitmentDetail recruitmentDetail, Integer accountId) {
-        setCanParticipate(recruitmentDetail);
+        setCanParticipate(recruitmentDetail, accountId);
         setIsParticipate(recruitmentDetail, accountId);
     }
 
-    void setCanParticipate(RecruitmentDetail r) {
+    void setCanParticipate(RecruitmentDetail r, Integer accountId) {
         boolean canParticipate = true;
         if (r.getDeadline() != null && r.getDeadline().isBefore(LocalDateTime.now()))
             canParticipate = false;
         else if (r.getCapacity() != null && r.getCapacity() <= r.getParticipantCount())
             canParticipate = false;
         else if (r.getStatus() != RecruitmentStatus.OPENED)
+            canParticipate = false;
+        else if (r.getCreatedBy().equals(accountId))
             canParticipate = false;
         r.setCanParticipate(canParticipate);
     }
