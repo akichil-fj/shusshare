@@ -6,6 +6,7 @@ import net.akichil.shusshare.repository.exception.ResourceNotFoundException;
 import net.akichil.shusshare.security.LoginUser;
 import net.akichil.shusshare.service.RecruitmentService;
 import net.akichil.shusshare.service.exception.NoAccessResourceException;
+import net.akichil.shusshare.service.exception.ParticipantsOverCapacityException;
 import net.akichil.shusshare.validation.AddGroup;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -96,7 +97,7 @@ public class RecruitmentController {
             model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error"));
             model.addAttribute("genreList", getRecruitmentGenre());
             return "recruitment/add";
-        } catch (NoAccessResourceException exception) {
+        } catch (NoAccessResourceException | ResourceNotFoundException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error.wrongshussha"));
             return "redirect:/recruitment/list";
         }
@@ -118,6 +119,40 @@ public class RecruitmentController {
         model.addAttribute("accountId", loginUser.getAccountId());
 
         return "recruitment/detail";
+    }
+
+    @PostMapping(path = "/participate")
+    public String participate(RedirectAttributes attributes,
+                              @AuthenticationPrincipal LoginUser loginUser,
+                              @RequestParam(value = "recruitmentId") Integer recruitmentId) {
+        try {
+            recruitmentService.addParticipants(recruitmentId, List.of(loginUser.getAccountId()));
+        } catch (NoAccessResourceException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.participate.error.noaccess"));
+            return "redirect:/recruitment/detail/" + recruitmentId;
+        } catch (ParticipantsOverCapacityException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.participate.error.capacityover"));
+            return "redirect:/recruitment/detail/" + recruitmentId;
+        } catch (DataIntegrityViolationException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.participate.error.duplicate"));
+            return "redirect:/recruitment/detail/" + recruitmentId;
+        }
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("recruitment.participate.success"));
+        return "redirect:/recruitment/detail/" + recruitmentId;
+    }
+
+    @PostMapping(path = "/leave")
+    public String leave(RedirectAttributes attributes,
+                        @AuthenticationPrincipal LoginUser loginUser,
+                        @RequestParam(value = "recruitmentId") Integer recruitmentId) {
+        try {
+            recruitmentService.removeParticipants(recruitmentId, List.of(loginUser.getAccountId()));
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.leave.error.notfound"));
+            return "redirect:/recruitment/detail/" + recruitmentId;
+        }
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("recruitment.leave.success"));
+        return "redirect:/recruitment/detail/" + recruitmentId;
     }
 
     private List<RecruitmentGenre> getRecruitmentGenre() {
