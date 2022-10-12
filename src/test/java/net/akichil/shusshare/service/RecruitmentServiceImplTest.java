@@ -100,6 +100,26 @@ public class RecruitmentServiceImplTest {
     }
 
     @Test
+    public void testAddNoDeadline() {
+        final Integer accountId = 2;
+        final Integer shusshaId = 3;
+        final Recruitment recruitment = Recruitment.builder()
+                .title("test")
+                .shusshaId(shusshaId)
+                .createdBy(accountId)
+                .build();
+        Shussha shussha = new Shussha();
+        shussha.setAccountId(accountId);
+        shussha.setDate(LocalDate.of(2022, 1, 3));
+        Mockito.doReturn(shussha).when(shusshaRepository).get(shusshaId);
+
+        target.add(recruitment);
+
+        Mockito.verify(shusshaRepository, Mockito.times(1)).get(shusshaId);
+        Mockito.verify(recruitmentRepository, Mockito.times(1)).add(recruitment);
+    }
+
+    @Test
     public void testAddFailByDifferentAccountId() {
         final Integer accountId = 2;
         final Integer shusshaId = 3;

@@ -52,7 +52,9 @@ public class RecruitmentServiceImpl implements RecruitmentService {
             throw new NoAccessResourceException();
         }
         // 締切日時を出社日に合わせる
-        recruitment.setDeadline(LocalDateTime.of(shussha.getDate(), recruitment.getDeadline().toLocalTime()));
+        if (recruitment.getDeadline() != null) {
+            recruitment.setDeadline(LocalDateTime.of(shussha.getDate(), recruitment.getDeadline().toLocalTime()));
+        }
         recruitmentRepository.add(recruitment);
     }
 
