@@ -93,7 +93,8 @@
                     <button type="submit" class="btn btn-danger">退出する</button>
                 </form>
                 <form th:if="${recruitment.createdBy == accountId}" method="get"
-                      th:action="@{/recruitment/edit(recruitmentId=${recruitment.recruitmentId})}">
+                      th:action="@{/recruitment/edit}">
+                    <input type="hidden" id="recruitmentId" class="form-control" th:field="*{recruitment.recruitmentId}"/>
                     <button type="submit" class="btn btn-primary">編集する</button>
                 </form>
             </div>

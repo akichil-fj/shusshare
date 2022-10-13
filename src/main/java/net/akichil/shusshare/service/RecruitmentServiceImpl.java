@@ -62,12 +62,15 @@ public class RecruitmentServiceImpl implements RecruitmentService {
     @Override
     public void set(Recruitment recruitment) {
         // 出社の登録者と募集の作成者が一致するか
-        Shussha shussha = shusshaRepository.get(recruitment.getShusshaId());
+        Recruitment existedRecruitment = recruitmentRepository.findOne(recruitment.getRecruitmentId());
+        Shussha shussha = shusshaRepository.get(existedRecruitment.getShusshaId());
         if (!shussha.getAccountId().equals(recruitment.getCreatedBy())) {
             throw new NoAccessResourceException();
         }
         // 締切日時を出社日に合わせる
-        recruitment.setDeadline(LocalDateTime.of(shussha.getDate(), recruitment.getDeadline().toLocalTime()));
+        if (recruitment.getDeadline() != null) {
+            recruitment.setDeadline(LocalDateTime.of(shussha.getDate(), recruitment.getDeadline().toLocalTime()));
+        }
         recruitmentRepository.set(recruitment);
     }
 

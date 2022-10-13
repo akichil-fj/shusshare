@@ -190,12 +190,8 @@
             <if test="genre != null">
                 genre = #{genre},
             </if>
-            <if test="deadline != null">
-                deadline = #{deadline},
-            </if>
-            <if test="capacity != null">
-                capacity = #{capacity},
-            </if>
+            deadline = #{deadline},
+            capacity = #{capacity},
             <if test="status != null">
                 status = #{status},
             </if>

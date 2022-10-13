@@ -21,11 +21,12 @@ import java.time.LocalDateTime;
 @Builder
 public class Recruitment {
 
+    @NotNull(groups = {SetGroup.class})
     private Integer recruitmentId;
 
     private Integer createdBy;
 
-    @NotNull(groups = {AddGroup.class, SetGroup.class})
+    @NotNull(groups = {AddGroup.class})
     private Integer shusshaId;
 
     @NotNull(groups = {AddGroup.class, SetGroup.class})

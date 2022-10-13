@@ -8,6 +8,7 @@ import net.akichil.shusshare.service.RecruitmentService;
 import net.akichil.shusshare.service.exception.NoAccessResourceException;
 import net.akichil.shusshare.service.exception.ParticipantsOverCapacityException;
 import net.akichil.shusshare.validation.AddGroup;
+import net.akichil.shusshare.validation.SetGroup;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -103,6 +104,70 @@ public class RecruitmentController {
         }
 
         return "redirect:/recruitment/list";
+    }
+
+    @GetMapping(path = "/edit")
+    public String getEdit(@ModelAttribute(name = "recruitment") RecruitmentForEdit recruitment,
+                          @RequestParam("recruitmentId") Integer recruitmentId,
+                          Model model,
+                          RedirectAttributes attributes,
+                          @AuthenticationPrincipal LoginUser loginUser) {
+        try {
+            Recruitment recruitmentDetail = recruitmentService.get(recruitmentId, loginUser.getAccountId());
+            recruitment.set(recruitmentDetail);
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.detail.error.notfound"));
+            return "redirect/error";
+        }
+        model.addAttribute("genreList", getRecruitmentGenre());
+        return "recruitment/edit";
+    }
+
+    @PostMapping(path = "/edit")
+    public String edit(@Validated(SetGroup.class) @ModelAttribute(name = "recruitment") RecruitmentForEdit recruitment,
+                       BindingResult bindingResult,
+                       Model model,
+                       RedirectAttributes attributes,
+                       @AuthenticationPrincipal LoginUser loginUser) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("genreList", getRecruitmentGenre());
+            return "recruitment/edit";
+        }
+        if (recruitment.getDeadlineStr() != null) {
+            // 時間をパース
+            try {
+                // 一旦現在時刻をもとに締切を設定。Serviceで出社日時に合わせる。
+                String targetStr = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd ")) + recruitment.getDeadlineStr();
+                recruitment.setDeadline(LocalDateTime.parse(targetStr, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")));
+            } catch (DateTimeParseException exception) {
+                model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.edit.error.dateformat"));
+                model.addAttribute("genreList", getRecruitmentGenre());
+                return "recruitment/edit";
+            }
+        } else {
+            recruitment.setDeadline(null);
+        }
+        if (recruitment.getCapacityStr() != null) {
+            recruitment.setCapacity(Integer.parseInt(recruitment.getCapacityStr()));
+        } else {
+            recruitment.setCapacityStr(null);
+        }
+        // 作成者を登録
+        recruitment.setCreatedBy(loginUser.getAccountId());
+
+        try {
+            recruitmentService.set(recruitment);
+        } catch (DataIntegrityViolationException exception) {
+            model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.edit.error"));
+            model.addAttribute("genreList", getRecruitmentGenre());
+            return "recruitment/edit";
+        } catch (NoAccessResourceException | ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.edit.error.wrongshussha"));
+            return "redirect:/recruitment/detail/" + recruitment.getRecruitmentId();
+        }
+
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("recruitment.edit.success"));
+        return "redirect:/recruitment/detail/" + recruitment.getRecruitmentId();
     }
 
     @GetMapping(path = "/detail/{recruitmentId}")
