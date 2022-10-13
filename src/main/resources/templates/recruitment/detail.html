@@ -24,6 +24,9 @@
         </div>
         <div class="col-md-12">
             <h3 class="mt-4" th:text="${recruitment.genre.name() == 'LUNCH' ? '🍴' : '☕️'} + ${recruitment.title}"/>
+            <div class="mt-4" th:if="${recruitment.status.name() == 'CANCELED'}">
+                <span class="badge bg-secondary">キャンセル済み</span></h3>
+            </div>
             <div class="d-flex flex-row align-items-center mt-4">
                 <div class="me-2">
                     作成者：
@@ -96,6 +99,10 @@
                       th:action="@{/recruitment/edit}">
                     <input type="hidden" id="recruitmentId" class="form-control" th:field="*{recruitment.recruitmentId}"/>
                     <button type="submit" class="btn btn-primary">編集する</button>
+                </form>
+                <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() == 'OPENED'}" method="post"
+                      th:action="@{/recruitment/cancel/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-danger">キャンセル</button>
                 </form>
             </div>
         </div>

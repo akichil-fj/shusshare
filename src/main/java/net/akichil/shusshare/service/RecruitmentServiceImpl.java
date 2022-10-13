@@ -76,9 +76,13 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     @Transactional
     @Override
-    public void remove(Integer recruitmentId) {
+    public void cancel(Integer recruitmentId, Integer accountId) {
         Recruitment recruitment = recruitmentRepository.findOne(recruitmentId);
-        recruitmentRepository.remove(recruitment);
+        if (!recruitment.getCreatedBy().equals(accountId)) {
+            throw new NoAccessResourceException();
+        }
+        recruitment.setStatus(RecruitmentStatus.CANCELED);
+        recruitmentRepository.set(recruitment);
     }
 
     @Transactional

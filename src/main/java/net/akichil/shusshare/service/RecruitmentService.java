@@ -16,7 +16,7 @@ public interface RecruitmentService {
 
     void set(Recruitment recruitment);
 
-    void remove(Integer recruitmentId);
+    void cancel(Integer recruitmentId, Integer accountId);
 
     void addParticipants(Integer recruitmentId, List<Integer> accountIds);
 

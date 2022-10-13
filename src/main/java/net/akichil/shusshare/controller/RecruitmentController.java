@@ -186,6 +186,25 @@ public class RecruitmentController {
         return "recruitment/detail";
     }
 
+    @PostMapping(path = "/cancel/{recruitmentId}")
+    public String cancel(Model model,
+                         RedirectAttributes attributes,
+                         @AuthenticationPrincipal LoginUser loginUser,
+                         @PathVariable("recruitmentId") Integer recruitmentId) {
+        try {
+            recruitmentService.cancel(recruitmentId, loginUser.getAccountId());
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.cancel.error.notfound"));
+            return "redirect:/error";
+        } catch (NoAccessResourceException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.cancel.error.noaccess"));
+            return "redirect:/recruitment/detail/" + recruitmentId;
+        }
+
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("recruitment.cancel.success"));
+        return "redirect:/recruitment/detail/" + recruitmentId;
+    }
+
     @PostMapping(path = "/participate")
     public String participate(RedirectAttributes attributes,
                               @AuthenticationPrincipal LoginUser loginUser,
