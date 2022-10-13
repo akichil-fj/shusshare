@@ -21,6 +21,8 @@
             shussha
         WHERE
             account_id = #{accountId}
+            AND
+            status != '${@net.akichil.shusshare.entity.ShusshaStatus@CANCEL.getValue}'
     </select>
 
     <select id="find" resultMap="Shussha">
@@ -79,11 +81,17 @@
             lock_version = #{lockVersion}
     </update>
 
-    <delete id="remove">
-        DELETE FROM
+    <update id="remove">
+        UPDATE
             shussha
+        SET
+            status = '${@net.akichil.shusshare.entity.ShusshaStatus@CANCEL.getValue}',
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
         WHERE
             shussha_id = #{shusshaId}
-    </delete>
+        AND
+            lock_version = #{lockVersion}
+    </update>
 
 </mapper>

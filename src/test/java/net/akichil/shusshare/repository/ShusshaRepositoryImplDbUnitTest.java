@@ -110,6 +110,7 @@ public class ShusshaRepositoryImplDbUnitTest {
             final Shussha deleteData = new Shussha();
             deleteData.setShusshaId(6);
             deleteData.setAccountId(2);
+            deleteData.setLockVersion(0);
             deleteData.setDate(LocalDate.of(2022, 6, 6));
 
             target.remove(deleteData);

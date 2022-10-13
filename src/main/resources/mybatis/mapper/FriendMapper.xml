@@ -207,6 +207,8 @@
             a.status != '${@net.akichil.shusshare.entity.AccountStatus@DELETED.getValue}'
             AND
             f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
+            AND
+            s.status != '${@net.akichil.shusshare.entity.ShusshaStatus@CANCEL.getValue}'
             <if test="startDate != null">
                 AND
                 #{startDate} &lt;= date
