@@ -40,6 +40,11 @@
             <p class="mb-0" th:text="出社回数： + ${account.shusshaCount} + 回"/>
             </div>
         </div>
+        <div class="col-12 mt-3">
+            <a class="btn btn-primary" th:href="@{/recruitment/add(shusshaId=${shussha.shusshaId})}" th:if="${shussha != null && shussha.status.name() == 'DONE'}">
+                募集作成
+            </a>
+        </div>
 
         <div class="col-md-12 mt-5">
             <h2>出社中のユーザー</h2>
