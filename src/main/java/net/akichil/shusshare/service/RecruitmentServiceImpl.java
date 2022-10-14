@@ -85,6 +85,16 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         recruitmentRepository.set(recruitment);
     }
 
+    @Override
+    public void reopen(Integer recruitmentId, Integer accountId) {
+        Recruitment recruitment = recruitmentRepository.findOne(recruitmentId);
+        if (!recruitment.getCreatedBy().equals(accountId)) {
+            throw new NoAccessResourceException();
+        }
+        recruitment.setStatus(RecruitmentStatus.OPENED);
+        recruitmentRepository.set(recruitment);
+    }
+
     @Transactional
     @Override
     public void addParticipants(Integer recruitmentId, List<Integer> accountIds) {

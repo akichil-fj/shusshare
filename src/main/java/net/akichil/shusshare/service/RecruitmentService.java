@@ -18,6 +18,8 @@ public interface RecruitmentService {
 
     void cancel(Integer recruitmentId, Integer accountId);
 
+    void reopen(Integer recruitmentId, Integer accountId);
+
     void addParticipants(Integer recruitmentId, List<Integer> accountIds);
 
     void removeParticipants(Integer recruitmentId, List<Integer> accountIds);

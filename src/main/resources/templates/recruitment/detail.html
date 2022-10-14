@@ -102,7 +102,11 @@
                 </form>
                 <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() == 'OPENED'}" method="post"
                       th:action="@{/recruitment/cancel/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
-                    <button type="submit" class="btn btn-danger">キャンセル</button>
+                    <button type="submit" class="btn btn-outline-danger">キャンセル</button>
+                </form>
+                <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() == 'CANCELED'}" method="post"
+                      th:action="@{/recruitment/reopen/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-info">再募集</button>
                 </form>
             </div>
         </div>
