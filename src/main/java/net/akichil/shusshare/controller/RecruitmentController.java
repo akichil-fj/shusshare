@@ -53,6 +53,17 @@ public class RecruitmentController {
         return "recruitment/list";
     }
 
+    @GetMapping(path = "/mine")
+    public String mine(Model model, @AuthenticationPrincipal LoginUser loginUser) {
+        RecruitmentSelector selector = RecruitmentSelector.builder()
+                .accountId(loginUser.getAccountId())
+                .createdById(loginUser.getAccountId())
+                .build();
+        List<RecruitmentDetail> recruitments = recruitmentService.find(selector);
+        model.addAttribute("recruitments", recruitments);
+        return "recruitment/mine";
+    }
+
     @GetMapping(path = "/add")
     public String getAdd(@ModelAttribute(name = "recruitment") RecruitmentForEdit recruitment,
                          @RequestParam("shusshaId") Integer shusshaId,

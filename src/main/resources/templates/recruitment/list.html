@@ -26,7 +26,7 @@
             <th:block th:if="${recruitments.size == 0}">
                 <p>現在募集はありません</p>
             </th:block>
-            <ul class="list-group list-group-flush mt-3">
+            <ul class="list-group list-group-flush mt-3" th:fragment="recruitmentList">
                 <li class="list-group-item" th:each="recruitment:${recruitments}"
                     th:style="${recruitment.status.name() == 'CANCELED' ? 'background-color: #dcdcdc' : ''}">
                     <div class="d-flex flex-row align-items-start my-2">
