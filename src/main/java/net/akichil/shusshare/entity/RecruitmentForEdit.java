@@ -32,6 +32,7 @@ public class RecruitmentForEdit extends Recruitment {
         setCreatedBy(recruitment.getCreatedBy());
         setShusshaId(recruitment.getShusshaId());
         setTitle(recruitment.getTitle());
+        setDescription(recruitment.getDescription());
         setGenre(recruitment.getGenre());
         setCapacity(recruitment.getCapacity());
         setParticipantCount(recruitment.getParticipantCount());
