@@ -67,6 +67,7 @@ public class RecruitmentServiceImplTest {
         final Integer accountId = 1;
         final Integer recruitmentId = 2;
         final RecruitmentDetail recruitmentDetail = new RecruitmentDetail();
+        recruitmentDetail.setCreatedBy(3);
         recruitmentDetail.setStatus(RecruitmentStatus.OPENED);
         recruitmentDetail.setParticipants(List.of());
         Mockito.doReturn(recruitmentDetail).when(recruitmentRepository).findOne(recruitmentId, accountId);
@@ -141,9 +142,11 @@ public class RecruitmentServiceImplTest {
 
     @Test
     public void testSet() {
+        final Integer recruitmentId = 4;
         final Integer accountId = 2;
         final Integer shusshaId = 3;
         final Recruitment recruitment = Recruitment.builder()
+                .recruitmentId(recruitmentId)
                 .title("test")
                 .shusshaId(shusshaId)
                 .createdBy(accountId)
@@ -151,11 +154,14 @@ public class RecruitmentServiceImplTest {
                 .build();
         Shussha shussha = new Shussha();
         shussha.setAccountId(accountId);
+        shussha.setShusshaId(shusshaId);
         shussha.setDate(LocalDate.of(2022, 1, 3));
+        Mockito.doReturn(recruitment).when(recruitmentRepository).findOne(recruitmentId);
         Mockito.doReturn(shussha).when(shusshaRepository).get(shusshaId);
 
         target.set(recruitment);
 
+        Mockito.verify(recruitmentRepository, Mockito.times(1)).findOne(recruitmentId);
         Mockito.verify(shusshaRepository, Mockito.times(1)).get(shusshaId);
         Mockito.verify(recruitmentRepository, Mockito.times(1)).set(recruitment);
         assertEquals(LocalDateTime.of(2022, 1, 3, 3, 45), recruitment.getDeadline());
