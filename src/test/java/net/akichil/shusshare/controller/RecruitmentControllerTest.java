@@ -266,6 +266,19 @@ public class RecruitmentControllerTest {
     }
 
     @Test
+    public void testGetEditFailByResourceNotFound() throws Exception {
+        Integer recruitmentId = 1;
+        Mockito.doThrow(ResourceNotFoundException.class).when(recruitmentService).get(recruitmentId, 1);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL_PREFIX + "/edit")
+                        .param("recruitmentId", recruitmentId.toString())
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/error"))
+                .andExpect(flash().attribute("errorMsg", "お探しの募集は見つかりませんでした。"));
+    }
+
+    @Test
     public void testEditSuccess() throws Exception {
         RecruitmentForEdit recruitment = new RecruitmentForEdit();
         recruitment.setRecruitmentId(2);
@@ -321,6 +334,49 @@ public class RecruitmentControllerTest {
                 .andExpect(model().attributeHasFieldErrors("recruitment", "title", "deadlineStr", "capacityStr"));
 
         Mockito.verify(recruitmentService, Mockito.times(0)).add(any());
+    }
+
+    @Test
+    public void testEditFailByDateParseError() throws Exception {
+        RecruitmentForEdit recruitment = new RecruitmentForEdit();
+        recruitment.setCreatedBy(1);
+        recruitment.setRecruitmentId(2);
+        recruitment.setGenre(RecruitmentGenre.LUNCH);
+        recruitment.setTitle("test title");
+        recruitment.setDeadlineStr("99:99");
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/edit")
+                        .param("recruitmentId", String.valueOf(recruitment.getRecruitmentId()))
+                        .param("title", recruitment.getTitle())
+                        .param("genre", recruitment.getGenre().name())
+                        .param("deadlineStr", recruitment.getDeadlineStr())
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recruitment/edit"))
+                .andExpect(model().attribute("errorMsg", "失敗：日付のフォーマットを確認してください。"));
+
+        Mockito.verify(recruitmentService, Mockito.times(0)).set(any());
+    }
+
+    @Test
+    public void testEditFailByResourceNotFound() throws Exception {
+        RecruitmentForEdit recruitment = new RecruitmentForEdit();
+        recruitment.setCreatedBy(1);
+        recruitment.setRecruitmentId(2);
+        recruitment.setGenre(RecruitmentGenre.LUNCH);
+        recruitment.setTitle("test title");
+        Mockito.doThrow(ResourceNotFoundException.class).when(recruitmentService).set(any());
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/edit")
+                        .param("recruitmentId", String.valueOf(recruitment.getRecruitmentId()))
+                        .param("title", recruitment.getTitle())
+                        .param("genre", recruitment.getGenre().name())
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/recruitment/detail/2"))
+                .andExpect(flash().attribute("errorMsg", "失敗：出社の指定にエラーがありました。"));
+
+        Mockito.verify(recruitmentService, Mockito.times(1)).set(any());
     }
 
     @Test
@@ -414,6 +470,19 @@ public class RecruitmentControllerTest {
     }
 
     @Test
+    public void testCancelFailByResourceNotFound() throws Exception {
+        Mockito.doThrow(ResourceNotFoundException.class).when(recruitmentService).cancel(4, 1);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/cancel/4")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/error"))
+                .andExpect(flash().attribute("errorMsg", "指定された募集が見つかりません。"));
+
+        Mockito.verify(recruitmentService, Mockito.times(1)).cancel(4, 1);
+    }
+
+    @Test
     public void testCancelFailByNoAccess() throws Exception {
         Mockito.doThrow(NoAccessResourceException.class).when(recruitmentService).cancel(4, 1);
 
@@ -433,6 +502,19 @@ public class RecruitmentControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/recruitment/detail/5"))
                 .andExpect(flash().attribute("msg", "再募集済み"));
+
+        Mockito.verify(recruitmentService, Mockito.times(1)).reopen(5, 1);
+    }
+
+    @Test
+    public void testReopenFailByResourceNotFound() throws Exception {
+        Mockito.doThrow(ResourceNotFoundException.class).when(recruitmentService).reopen(5, 1);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/reopen/5")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/error"))
+                .andExpect(flash().attribute("errorMsg", "指定された募集が見つかりません。"));
 
         Mockito.verify(recruitmentService, Mockito.times(1)).reopen(5, 1);
     }

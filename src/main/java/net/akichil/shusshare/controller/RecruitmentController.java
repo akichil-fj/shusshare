@@ -83,6 +83,9 @@ public class RecruitmentController {
             model.addAttribute("genreList", getRecruitmentGenre());
             return "recruitment/add";
         }
+        if (recruitment.getCapacityStr() != null) {
+            recruitment.setCapacity(Integer.parseInt(recruitment.getCapacityStr()));
+        }
         if (recruitment.getDeadlineStr() != null) {
             // 時間をパース
             try {
@@ -95,9 +98,6 @@ public class RecruitmentController {
                 return "recruitment/add";
             }
         }
-        if (recruitment.getCapacityStr() != null) {
-            recruitment.setCapacity(Integer.parseInt(recruitment.getCapacityStr()));
-        }
         // 作成者を登録
         recruitment.setCreatedBy(loginUser.getAccountId());
         // 状態を登録
@@ -105,10 +105,6 @@ public class RecruitmentController {
 
         try {
             recruitmentService.add(recruitment);
-        } catch (DataIntegrityViolationException exception) {
-            model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error"));
-            model.addAttribute("genreList", getRecruitmentGenre());
-            return "recruitment/add";
         } catch (NoAccessResourceException | ResourceNotFoundException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.add.error.wrongshussha"));
             return "redirect:/recruitment/list";
@@ -144,6 +140,11 @@ public class RecruitmentController {
             model.addAttribute("genreList", getRecruitmentGenre());
             return "recruitment/edit";
         }
+        if (recruitment.getCapacityStr() != null) {
+            recruitment.setCapacity(Integer.parseInt(recruitment.getCapacityStr()));
+        } else {
+            recruitment.setCapacityStr(null);
+        }
         if (recruitment.getDeadlineStr() != null) {
             // 時間をパース
             try {
@@ -158,20 +159,11 @@ public class RecruitmentController {
         } else {
             recruitment.setDeadline(null);
         }
-        if (recruitment.getCapacityStr() != null) {
-            recruitment.setCapacity(Integer.parseInt(recruitment.getCapacityStr()));
-        } else {
-            recruitment.setCapacityStr(null);
-        }
         // 作成者を登録
         recruitment.setCreatedBy(loginUser.getAccountId());
 
         try {
             recruitmentService.set(recruitment);
-        } catch (DataIntegrityViolationException exception) {
-            model.addAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.edit.error"));
-            model.addAttribute("genreList", getRecruitmentGenre());
-            return "recruitment/edit";
         } catch (NoAccessResourceException | ResourceNotFoundException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.edit.error.wrongshussha"));
             return "redirect:/recruitment/detail/" + recruitment.getRecruitmentId();
