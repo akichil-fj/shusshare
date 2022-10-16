@@ -85,6 +85,7 @@ public class RecruitmentRepositoryImplDbUnitTest {
             assertEquals("募集byふが", result.getTitle());
             assertEquals("ふが山フガ子", result.getCreatedFriend().getUserName());
             assertEquals(3, result.getParticipants().size());
+            assertEquals(LocalDate.of(2022, 6, 5), result.getDate());
         }
 
         @Test

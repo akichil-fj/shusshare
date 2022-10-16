@@ -12,6 +12,7 @@
         <result property="deadline" column="r_deadline"/>
         <result property="capacity" column="r_capacity"/>
         <result property="participantCount" column="r_participant_count"/>
+        <result property="date" column="r_date"/>
         <result property="status" column="r_status"/>
         <result property="lockVersion" column="r_lock_version"/>
     </resultMap>
@@ -115,6 +116,7 @@
         r.participant_count AS r_participant_count,
         r.status AS r_status,
         r.lock_version AS r_lock_version,
+        s.date AS r_date,
         rp_a.account_id AS a_account_id,
         rp_a.user_id AS a_user_id,
         rp_a.user_name AS a_user_name,

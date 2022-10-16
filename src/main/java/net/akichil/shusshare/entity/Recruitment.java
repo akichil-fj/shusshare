@@ -11,6 +11,7 @@ import net.akichil.shusshare.validation.SetGroup;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -44,6 +45,8 @@ public class Recruitment {
     private Integer capacity;
 
     private Integer participantCount;
+
+    private LocalDate date;
 
     private RecruitmentStatus status;
 
