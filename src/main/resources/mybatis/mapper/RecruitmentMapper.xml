@@ -200,6 +200,9 @@
             description = #{description},
             deadline = #{deadline},
             capacity = #{capacity},
+            <if test="participantCount != null">
+                participant_count = #{participantCount},
+            </if>
             <if test="status != null">
                 status = #{status},
             </if>
