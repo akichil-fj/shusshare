@@ -147,6 +147,7 @@ public class RecruitmentRepositoryImplDbUnitTest {
         public void testInsertRecruitment() throws Exception {
             Recruitment recruitment = Recruitment.builder()
                     .title("募集テスト1-2")
+                    .description("1-2")
                     .createdBy(1)
                     .genre(RecruitmentGenre.CAFE)
                     .capacity(3)
@@ -200,6 +201,7 @@ public class RecruitmentRepositoryImplDbUnitTest {
             Recruitment recruitment = Recruitment.builder()
                     .recruitmentId(3)
                     .title("募集3-更新")
+                    .description("募集テスト3-更新")
                     .capacity(4)
                     .deadline(LocalDateTime.of(2022, 6, 6, 13, 0))
                     .lockVersion(0)

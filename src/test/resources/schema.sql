@@ -45,6 +45,7 @@ create table if not exists recruitment
     created_by         bigint unsigned                            not null,
     shussha_id         bigint unsigned                            not null,
     title              varchar(30)                                not null,
+    description        text                  default '',
     genre              smallint unsigned     default 0            not null,
     deadline           timestamp(3)          default null,
     capacity           int unsigned          default null,

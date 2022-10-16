@@ -33,6 +33,9 @@ public class Recruitment {
     @Size(min = 1, max = 30, groups = {AddGroup.class, SetGroup.class})
     private String title;
 
+    @Size(max = 100, groups = {AddGroup.class, SetGroup.class})
+    private String description;
+
     @NotNull(groups = {AddGroup.class, SetGroup.class})
     private RecruitmentGenre genre;
 

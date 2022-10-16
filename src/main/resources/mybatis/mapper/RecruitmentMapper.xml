@@ -7,6 +7,7 @@
         <result property="createdBy" column="r_created_by"/>
         <result property="shusshaId" column="r_shussha_id"/>
         <result property="title" column="r_title"/>
+        <result property="description" column="r_description"/>
         <result property="genre" column="r_genre"/>
         <result property="deadline" column="r_deadline"/>
         <result property="capacity" column="r_capacity"/>
@@ -75,6 +76,7 @@
             r.created_by AS r_created_by,
             r.shussha_id AS r_shussha_id,
             r.title AS r_title,
+            r.description AS r_description,
             r.genre AS r_genre,
             r.capacity AS r_capacity,
             r.deadline AS r_deadline,
@@ -106,6 +108,7 @@
         f.updated_at AS f_updated_at,
         r.shussha_id AS r_shussha_id,
         r.title AS r_title,
+        r.description AS r_description,
         r.genre AS r_genre,
         r.capacity AS r_capacity,
         r.deadline AS r_deadline,
@@ -165,6 +168,7 @@
             created_by,
             shussha_id,
             title,
+            description,
             genre,
             capacity,
             deadline,
@@ -173,6 +177,7 @@
             #{createdBy},
             #{shusshaId},
             #{title},
+            #{description},
             #{genre},
             #{capacity},
             #{deadline},
@@ -190,6 +195,7 @@
             <if test="genre != null">
                 genre = #{genre},
             </if>
+            description = #{description},
             deadline = #{deadline},
             capacity = #{capacity},
             <if test="status != null">

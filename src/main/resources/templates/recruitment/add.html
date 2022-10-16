@@ -28,6 +28,13 @@
                       th:errors="*{title}">userId error</span>
             </div>
             <div class="mb-3 form-group">
+                <label for="inputDescription" class="form-label">説明（任意）</label>
+                <input id="inputDescription" class="form-control" th:field="*{description}"
+                       th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('description')}"
+                      th:errors="*{description}">description error</span>
+            </div>
+            <div class="mb-3 form-group">
                 <label for="selectGenre" class="form-label">ジャンル</label>
                 <select id="selectGenre" class="form-select" name="genre">
                     <option th:each="genre:${genreList}"

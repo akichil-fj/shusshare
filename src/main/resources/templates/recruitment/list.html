@@ -34,6 +34,9 @@
                             <div class="h4 mb-3">
                                 <th:block th:text="${recruitment.genre.name() == 'LUNCH' ? '🍴' : '☕️'} + ${recruitment.title}"/>
                             </div>
+                            <div class="mb-2" th:if="${recruitment.description != ''}">
+                                <th:block th:text="${recruitment.description}"/>
+                            </div>
                             <div class="d-flex flex-row align-items-center">
                                 <div class="me-2">by</div>
                                 <img src="/img/icon.png" class="img-fluid rounded-circle" width="30"
