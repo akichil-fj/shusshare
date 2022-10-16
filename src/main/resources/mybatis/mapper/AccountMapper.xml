@@ -3,28 +3,28 @@
 <mapper namespace="net.akichil.shusshare.repository.mybatis.AccountMapper">
 
     <resultMap id="Account" type="net.akichil.shusshare.entity.Account">
-        <id property="accountId" column="account_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="userName" column="user_name"/>
-        <result property="password" column="password"/>
-        <result property="profile" column="profile"/>
-        <result property="profilePhotoUrl" column="profile_photo_url"/>
-        <result property="status" column="status"/>
-        <result property="shusshaCount" column="shussha_count"/>
-        <result property="lockVersion" column="lock_version"/>
+        <id property="accountId" column="a_account_id"/>
+        <result property="userId" column="a_user_id"/>
+        <result property="userName" column="a_user_name"/>
+        <result property="password" column="a_password"/>
+        <result property="profile" column="a_profile"/>
+        <result property="profilePhotoUrl" column="a_profile_photo_url"/>
+        <result property="status" column="a_status"/>
+        <result property="shusshaCount" column="a_shussha_count"/>
+        <result property="lockVersion" column="a_lock_version"/>
     </resultMap>
 
     <select id="findList" resultMap="Account">
         SELECT
-            account_id,
-            user_id,
-            user_name,
-            password,
-            profile,
-            profile_photo_url,
-            status,
-            shussha_count,
-            lock_version
+            account_id AS a_account_id,
+            user_id AS a_user_id,
+            user_name AS a_user_name,
+            password AS a_password,
+            profile AS a_profile,
+            profile_photo_url AS a_profile_photo_url,
+            status AS a_status,
+            shussha_count AS a_shussha_count,
+            lock_version AS a_lock_version
         FROM
             account
         WHERE
@@ -35,15 +35,15 @@
 
     <select id="findOne" resultMap="Account">
         SELECT
-            account_id,
-            user_id,
-            user_name,
-            password,
-            profile,
-            profile_photo_url,
-            status,
-            shussha_count,
-            lock_version
+            account_id AS a_account_id,
+            user_id AS a_user_id,
+            user_name AS a_user_name,
+            password AS a_password,
+            profile AS a_profile,
+            profile_photo_url AS a_profile_photo_url,
+            status AS a_status,
+            shussha_count AS a_shussha_count,
+            lock_version AS a_lock_version
         FROM
             account
         WHERE
@@ -54,15 +54,15 @@
 
     <select id="findOneByUserId" resultMap="Account">
         SELECT
-            account_id,
-            user_id,
-            user_name,
-            password,
-            profile,
-            profile_photo_url,
-            status,
-            shussha_count,
-            lock_version
+            account_id AS a_account_id,
+            user_id AS a_user_id,
+            user_name AS a_user_name,
+            password AS a_password,
+            profile AS a_profile,
+            profile_photo_url AS a_profile_photo_url,
+            status AS a_status,
+            shussha_count AS a_shussha_count,
+            lock_version AS a_lock_version
         FROM
             account
         WHERE

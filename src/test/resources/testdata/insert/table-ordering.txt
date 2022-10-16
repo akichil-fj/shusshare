@@ -1,3 +1,5 @@
 account
 friend
 shussha
+recruitment
+recruitment_participant

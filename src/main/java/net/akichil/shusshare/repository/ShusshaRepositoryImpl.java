@@ -33,6 +33,15 @@ public class ShusshaRepositoryImpl implements ShusshaRepository {
     }
 
     @Override
+    public Shussha get(Integer shusshaId) {
+        Shussha shussha = sqlSession.getMapper(ShusshaMapper.class).get(shusshaId);
+        if (shussha == null) {
+            throw new ResourceNotFoundException();
+        }
+        return shussha;
+    }
+
+    @Override
     public void add(Shussha shussha) {
         sqlSession.getMapper(ShusshaMapper.class).add(shussha);
     }

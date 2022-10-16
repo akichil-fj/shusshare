@@ -3,39 +3,54 @@
 <mapper namespace="net.akichil.shusshare.repository.mybatis.ShusshaMapper">
 
     <resultMap id="Shussha" type="net.akichil.shusshare.entity.Shussha">
-        <id property="shusshaId" column="shussha_id"/>
-        <result property="accountId" column="account_id"/>
-        <result property="date" column="date"/>
-        <result property="status" column="status"/>
-        <result property="lockVersion" column="lock_version"/>
+        <id property="shusshaId" column="s_shussha_id"/>
+        <result property="accountId" column="s_account_id"/>
+        <result property="date" column="s_date"/>
+        <result property="status" column="s_status"/>
+        <result property="lockVersion" column="s_lock_version"/>
     </resultMap>
 
     <select id="findAll" resultMap="Shussha">
         SELECT
-            shussha_id,
-            account_id,
-            date,
-            status,
-            lock_version
+            shussha_id AS s_shussha_id,
+            account_id AS s_account_id,
+            date AS s_date,
+            status AS s_status,
+            lock_version AS s_lock_version
         FROM
             shussha
         WHERE
             account_id = #{accountId}
+            AND
+            status != '${@net.akichil.shusshare.entity.ShusshaStatus@CANCEL.getValue}'
     </select>
 
     <select id="find" resultMap="Shussha">
         SELECT
-            shussha_id,
-            account_id,
-            date,
-            status,
-            lock_version
+            shussha_id AS s_shussha_id,
+            account_id AS s_account_id,
+            date AS s_date,
+            status AS s_status,
+            lock_version AS s_lock_version
         FROM
             shussha
         WHERE
             account_id = #{accountId}
             AND
             date = #{date}
+    </select>
+
+    <select id="get" resultMap="Shussha">
+        SELECT
+            shussha_id AS s_shussha_id,
+            account_id AS s_account_id,
+            date AS s_date,
+            status AS s_status,
+            lock_version AS s_lock_version
+        FROM
+            shussha
+        WHERE
+            shussha_id = #{shusshaId}
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="shusshaId" keyColumn="shussha_id">
@@ -66,11 +81,17 @@
             lock_version = #{lockVersion}
     </update>
 
-    <delete id="remove">
-        DELETE FROM
+    <update id="remove">
+        UPDATE
             shussha
+        SET
+            status = '${@net.akichil.shusshare.entity.ShusshaStatus@CANCEL.getValue}',
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
         WHERE
             shussha_id = #{shusshaId}
-    </delete>
+        AND
+            lock_version = #{lockVersion}
+    </update>
 
 </mapper>

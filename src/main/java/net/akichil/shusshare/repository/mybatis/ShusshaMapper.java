@@ -14,6 +14,8 @@ public interface ShusshaMapper {
 
     Shussha find(@Param("accountId") Integer accountId, @Param("date") LocalDate date);
 
+    Shussha get(Integer shusshaId);
+
     void add(Shussha shussha);
 
     int remove(Shussha shussha);
