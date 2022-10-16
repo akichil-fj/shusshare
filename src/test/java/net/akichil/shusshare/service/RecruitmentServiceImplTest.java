@@ -169,9 +169,11 @@ public class RecruitmentServiceImplTest {
 
     @Test
     public void testSetFailByDifferentAccountId() {
+        final Integer recruitmentId = 1;
         final Integer accountId = 2;
         final Integer shusshaId = 3;
         final Recruitment recruitment = Recruitment.builder()
+                .recruitmentId(recruitmentId)
                 .title("test")
                 .shusshaId(shusshaId)
                 .createdBy(100)
@@ -179,9 +181,10 @@ public class RecruitmentServiceImplTest {
                 .build();
         Shussha shussha = new Shussha();
         shussha.setAccountId(accountId);
+        Mockito.doReturn(recruitment).when(recruitmentRepository).findOne(recruitmentId);
         Mockito.doReturn(shussha).when(shusshaRepository).get(shusshaId);
 
-        assertThrows(NoAccessResourceException.class, () -> target.add(recruitment));
+        assertThrows(NoAccessResourceException.class, () -> target.set(recruitment));
 
         Mockito.verify(shusshaRepository, Mockito.times(1)).get(shusshaId);
         Mockito.verify(recruitmentRepository, Mockito.times(0)).set(recruitment);
