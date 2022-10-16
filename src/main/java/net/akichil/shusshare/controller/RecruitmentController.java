@@ -128,7 +128,7 @@ public class RecruitmentController {
             recruitment.set(recruitmentDetail);
         } catch (ResourceNotFoundException exception) {
             attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.detail.error.notfound"));
-            return "redirect/error";
+            return "redirect:/error";
         }
         model.addAttribute("genreList", getRecruitmentGenre());
         return "recruitment/edit";
@@ -198,8 +198,7 @@ public class RecruitmentController {
     }
 
     @PostMapping(path = "/cancel/{recruitmentId}")
-    public String cancel(Model model,
-                         RedirectAttributes attributes,
+    public String cancel(RedirectAttributes attributes,
                          @AuthenticationPrincipal LoginUser loginUser,
                          @PathVariable("recruitmentId") Integer recruitmentId) {
         try {
@@ -217,8 +216,7 @@ public class RecruitmentController {
     }
 
     @PostMapping(path = "/reopen/{recruitmentId}")
-    public String reopen(Model model,
-                         RedirectAttributes attributes,
+    public String reopen(RedirectAttributes attributes,
                          @AuthenticationPrincipal LoginUser loginUser,
                          @PathVariable("recruitmentId") Integer recruitmentId) {
         try {
