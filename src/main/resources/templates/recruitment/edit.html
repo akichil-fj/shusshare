@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <th:block th:replace="_common::meta"/>
+    <title>募集内容編集</title>
+    <th:block th:replace="_common::css"/>
+    <script>
+    window.onload = function onLoad() {
+        document.getElementById('inputDeadlineCheck').checked = (document.getElementById('inputDeadline').value != '');
+        document.getElementById('inputCapacityCheck').checked = (document.getElementById('inputCapacity').value != '');
+    }
+    </script>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-md-5 mt-sm-4 mt-2 mb-3" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-12 mb-2 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}" style="margin-top: -1rem;">
+            <th:block th:text="${errorMsg}"/>
+        </div>
+        <div class="col-12">
+            <h2>募集内容編集</h2>
+        </div>
+        <form th:action="@{/recruitment/edit}" th:method="post" th:object="${recruitment}">
+            <input type="hidden" id="inputRecruitmentId" class="form-control" th:field="*{recruitmentId}"
+                   th:classappend="${#fields.hasErrors('shusshaId')} ? 'is-invalid'"/>
+            <div class="mb-3 form-group">
+                <label for="inputTitle" class="form-label">タイトル</label>
+                <input id="inputTitle" class="form-control" th:field="*{title}"
+                       th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('title')}"
+                      th:errors="*{title}">userId error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="inputDescription" class="form-label">説明（任意）</label>
+                <input id="inputDescription" class="form-control" th:field="*{description}"
+                       th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('description')}"
+                      th:errors="*{description}">description error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="selectGenre" class="form-label">ジャンル</label>
+                <select id="selectGenre" class="form-select" name="genre">
+                    <option th:each="genre:${genreList}"
+                            th:value="${genre.name()}" th:text="${genre.name}">
+                    </option>
+                </select>
+                <span class="text-danger" th:if="${#fields.hasErrors('genre')}"
+                      th:errors="*{genre}">genre error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="inputDeadline" class="form-label">締め切り時間を設定</label>
+                <input id="inputDeadlineCheck" class="form-check-input" type="checkbox" value=""
+                       onclick="changeInputStatus('inputDeadline', this.checked);"/>
+                <input id="inputDeadline" class="form-control" th:field="*{deadlineStr}"
+                       placeholder="hh:mm"
+                       th:disabled="*{deadlineStr == null}"
+                       th:classappend="${#fields.hasErrors('deadlineStr')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('deadlineStr')}"
+                      th:errors="*{deadlineStr}">deadline error</span>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="inputCapacity" class="form-label">最大人数を設定</label>
+                <input id="inputCapacityCheck" class="form-check-input" type="checkbox" value=""
+                       onclick="changeInputStatus('inputCapacity', this.checked);"/>
+                <input id="inputCapacity" class="form-control" th:field="*{capacityStr}"
+                       th:disabled="*{capacityStr == null}"
+                       th:classappend="${#fields.hasErrors('capacityStr')} ? 'is-invalid'"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('capacityStr')}"
+                      th:errors="*{capacityStr}">capacity error</span>
+            </div>
+            <input type="hidden" id="lockVersion" class="form-control" th:field="*{lockVersion}"/>
+            <button type="submit" class="btn btn-primary mt-3">更新</button>
+        </form>
+    </div>
+</div>
+<th:block th:replace="_common::script"/>
+<script>
+function changeInputStatus(inputId, isChecked) {
+    if (isChecked) {
+        document.getElementById(inputId).disabled = false;
+    } else {
+        document.getElementById(inputId).disabled = true;
+        document.getElementById(inputId).value = null;
+    }
+}
+</script>
+</body>
+</html>

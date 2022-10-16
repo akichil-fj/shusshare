@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.akichil.shusshare.repository.mybatis.RecruitmentMapper">
+
+    <resultMap id="Recruitment" type="net.akichil.shusshare.entity.Recruitment">
+        <result property="recruitmentId" column="r_recruitment_id"/>
+        <result property="createdBy" column="r_created_by"/>
+        <result property="shusshaId" column="r_shussha_id"/>
+        <result property="title" column="r_title"/>
+        <result property="description" column="r_description"/>
+        <result property="genre" column="r_genre"/>
+        <result property="deadline" column="r_deadline"/>
+        <result property="capacity" column="r_capacity"/>
+        <result property="participantCount" column="r_participant_count"/>
+        <result property="date" column="r_date"/>
+        <result property="status" column="r_status"/>
+        <result property="lockVersion" column="r_lock_version"/>
+    </resultMap>
+
+    <resultMap id="RecruitmentDetail" type="net.akichil.shusshare.entity.RecruitmentDetail" extends="Recruitment">
+        <result property="canParticipate" column="r_can_participate"/>
+        <association property="createdFriend" resultMap="net.akichil.shusshare.repository.mybatis.FriendMapper.FriendDetail"/>
+        <collection property="participants" resultMap="net.akichil.shusshare.repository.mybatis.AccountMapper.Account"/>
+    </resultMap>
+
+    <select id="findList" resultMap="RecruitmentDetail">
+        SELECT
+            <include refid="columns"/>
+        FROM
+            <include refid="joinRecruitmentAccountRecruitmentParticipant"/>
+        WHERE
+            (created_by = #{accountId}
+            OR
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}')
+            AND
+            r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
+            <if test="createdById != null">
+                AND r.created_by = #{createdById}
+            </if>
+            <if test="shusshaId != null">
+                AND r.shussha_id = #{shusshaId}
+            </if>
+            <if test="startDate != null">
+                AND
+                #{startDate} &lt;= s.date
+            </if>
+            <if test="endDate != null">
+                AND
+                s.date &lt;= #{endDate}
+            </if>
+    </select>
+
+    <select id="findOne" resultMap="RecruitmentDetail">
+        SELECT
+            <include refid="columns"/>
+        FROM
+            <include refid="joinRecruitmentAccountRecruitmentParticipant"/>
+        WHERE
+            r.recruitment_id = #{recruitmentId}
+            AND
+            r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
+            AND
+            ((
+            a.status != '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
+            OR
+            a.status = '${@net.akichil.shusshare.entity.AccountStatus@PRIVATE.getValue}'
+            AND
+            f.status = '${@net.akichil.shusshare.entity.FriendStatus@FOLLOWED.getValue}'
+            )
+            OR
+            created_by = #{accountId})
+    </select>
+
+    <select id="get" resultMap="Recruitment">
+        SELECT
+            r.recruitment_id AS r_recruitment_id,
+            r.created_by AS r_created_by,
+            r.shussha_id AS r_shussha_id,
+            r.title AS r_title,
+            r.description AS r_description,
+            r.genre AS r_genre,
+            r.capacity AS r_capacity,
+            r.deadline AS r_deadline,
+            r.participant_count AS r_participant_count,
+            r.status AS r_status,
+            r.lock_version AS r_lock_version
+        FROM
+            recruitment r
+        WHERE
+            r.recruitment_id = #{recruitmentId}
+            AND
+            r.status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
+    </select>
+
+    <sql id="columns">
+        r.recruitment_id AS r_recruitment_id,
+        r.created_by AS r_created_by,
+        f.account_id_from AS f_account_id_from,
+        f.account_id_to AS f_account_id_to,
+        a.account_id AS f_account_id,
+        a.user_id AS f_user_id,
+        a.user_name AS f_user_name,
+        a.profile AS f_profile,
+        a.profile_photo_url AS f_profile_photo_url,
+        a.shussha_count AS f_shussha_count,
+        a.status AS f_account_status,
+        f.status AS f_status,
+        f.lock_version AS f_lock_version,
+        f.updated_at AS f_updated_at,
+        r.shussha_id AS r_shussha_id,
+        r.title AS r_title,
+        r.description AS r_description,
+        r.genre AS r_genre,
+        r.capacity AS r_capacity,
+        r.deadline AS r_deadline,
+        r.participant_count AS r_participant_count,
+        r.status AS r_status,
+        r.lock_version AS r_lock_version,
+        s.date AS r_date,
+        rp_a.account_id AS a_account_id,
+        rp_a.user_id AS a_user_id,
+        rp_a.user_name AS a_user_name,
+        rp_a.profile AS a_profile,
+        rp_a.profile_photo_url AS a_profile_photo_url,
+        rp_a.shussha_count AS a_shussha_count,
+        rp_a.status AS a_status,
+        rp_a.updated_at AS a_updated_at
+    </sql>
+
+    <sql id="joinRecruitmentAccountRecruitmentParticipant">
+        recruitment r
+        INNER JOIN account a
+        ON r.created_by = a.account_id
+        LEFT OUTER JOIN
+            (SELECT
+                rp.recruitment_id,
+                a.account_id,
+                a.user_id,
+                a.user_name,
+                a.profile,
+                a.profile_photo_url,
+                a.shussha_count,
+                a.status,
+                a.updated_at
+            FROM
+                recruitment_participant rp
+                JOIN account a
+                ON rp.account_id = a.account_id
+            ) AS rp_a
+        ON r.recruitment_id = rp_a.recruitment_id
+        LEFT OUTER JOIN
+            (SELECT
+                account_id_from,
+                account_id_to,
+                status,
+                lock_version,
+                updated_at
+            FROM
+                friend
+            WHERE
+                account_id_from = #{accountId}
+            ) AS f
+        ON r.created_by = f.account_id_to
+        INNER JOIN shussha s
+        ON r.shussha_id = s.shussha_id
+    </sql>
+
+    <insert id="add">
+        INSERT INTO recruitment (
+            created_by,
+            shussha_id,
+            title,
+            description,
+            genre,
+            capacity,
+            deadline,
+            status
+        ) VALUES (
+            #{createdBy},
+            #{shusshaId},
+            #{title},
+            #{description},
+            #{genre},
+            #{capacity},
+            #{deadline},
+            #{status}
+        )
+    </insert>
+
+    <update id="set">
+        UPDATE
+            recruitment
+        SET
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="genre != null">
+                genre = #{genre},
+            </if>
+            description = #{description},
+            deadline = #{deadline},
+            capacity = #{capacity},
+            <if test="status != null">
+                status = #{status},
+            </if>
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            recruitment_id = #{recruitmentId}
+            AND
+            lock_version = #{lockVersion}
+    </update>
+
+    <update id="remove">
+        UPDATE
+            recruitment
+        SET
+            status = '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}',
+            lock_version = lock_version + 1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            recruitment_id = #{recruitmentId}
+            AND
+            lock_version = #{lockVersion}
+            AND
+            status != '${@net.akichil.shusshare.entity.RecruitmentStatus@DELETED.getValue}'
+    </update>
+
+    <insert id="addParticipants" parameterType="java.util.List">
+        INSERT INTO recruitment_participant (
+            recruitment_id,
+            account_id
+        ) VALUES
+        <foreach collection="accountIds" item="accountId" separator=","> (
+            #{recruitmentId},
+            #{accountId}
+        )
+        </foreach>
+    </insert>
+
+    <delete id="removeParticipants" parameterType="java.util.List">
+        DELETE FROM
+            recruitment_participant
+        WHERE
+            <foreach collection="accountIds" item="accountId" separator="OR">
+                (recruitment_id = #{recruitmentId}
+                AND
+                account_id = #{accountId})
+            </foreach>
+    </delete>
+
+</mapper>

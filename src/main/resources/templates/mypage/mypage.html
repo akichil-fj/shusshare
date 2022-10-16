@@ -81,6 +81,9 @@
                             <div class="d-flex flex-row align-items-center">
                                 <div th:text="${#temporals.format(shussha.date, 'yyyy/MM/dd') + ' (' + #temporals.dayOfWeekNameShort(shussha.date) + ')'}"></div>
                                 <div class="flex-fill"></div>
+                                <a class="btn btn-sm btn-primary mx-1" th:href="@{/recruitment/add(shusshaId=${shussha.shusshaId})}">
+                                    募集
+                                </a>
                                 <form th:action="@{/mypage/shussha/remove(date=${#temporals.format(shussha.date, 'yyyy/MM/dd')})}" method="post">
                                     <button class="btn btn-sm btn-outline-danger" type="submit">取り消し</button>
                                 </form>

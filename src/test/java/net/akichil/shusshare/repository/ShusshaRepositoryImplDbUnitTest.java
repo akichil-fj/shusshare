@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = ShusshareApplication.class)
-public class ShusshaRepositoryImplTest {
+public class ShusshaRepositoryImplDbUnitTest {
 
     @Autowired
     private ShusshaRepository target;
@@ -60,6 +60,22 @@ public class ShusshaRepositoryImplTest {
             assertThrows(ResourceNotFoundException.class, () -> target.find(accountId, date));
         }
 
+        @Test
+        public void testGet() {
+            final Integer shusshaId = 1;
+
+            Shussha findResult = target.get(shusshaId);
+
+            assertEquals(shusshaId, findResult.getAccountId());
+        }
+
+        @Test
+        public void testGetNotFound() {
+            final Integer shusshaId = 10;
+
+            assertThrows(ResourceNotFoundException.class, () -> target.get(shusshaId));
+        }
+
     }
 
     @TestExecutionListeners({DbTestExecutionListener.class, DependencyInjectionTestExecutionListener.class})
@@ -94,6 +110,7 @@ public class ShusshaRepositoryImplTest {
             final Shussha deleteData = new Shussha();
             deleteData.setShusshaId(6);
             deleteData.setAccountId(2);
+            deleteData.setLockVersion(0);
             deleteData.setDate(LocalDate.of(2022, 6, 6));
 
             target.remove(deleteData);

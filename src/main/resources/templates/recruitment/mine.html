@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="_common::meta"/>
+    <title>自分の募集</title>
+    <th:block th:replace="_common::css"/>
+</head>
+<header>
+    <th:block th:replace="header::header"/>
+</header>
+<body>
+<div class="container-md mt-md-5 mt-sm-4 mt-2" style="max-width: 720px;">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <h2>作成した募集</h2>
+        </div>
+        <div class="col-12 mt-2 alert alert-success" id="msg" role="alert" th:if="${msg != null}"
+             style="margin-top: -1rem;">
+            <th:block th:text="${msg}"/>
+        </div>
+        <div class="col-12 mt-2 alert alert-danger" id="errorMsg" role="alert" th:if="${errorMsg != null}"
+             style="margin-top: -1rem;">
+            <th:block th:text="${errorMsg}"/>
+        </div>
+        <div class="col-md-12">
+            <th:block th:if="${recruitments.size == 0}">
+                <p>作成した募集はありません</p>
+            </th:block>
+            <th:block th:replace="recruitment/list::recruitmentList"/>
+        </div>
+    </div>
+</div>
+<th:block th:replace="_common::script"/>
+</body>
+</html>
