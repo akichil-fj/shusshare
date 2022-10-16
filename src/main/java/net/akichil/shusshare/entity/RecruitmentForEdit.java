@@ -36,6 +36,7 @@ public class RecruitmentForEdit extends Recruitment {
         setCapacity(recruitment.getCapacity());
         setParticipantCount(recruitment.getParticipantCount());
         setDeadline(recruitment.getDeadline());
+        setDate(recruitment.getDate());
         setStatus(recruitment.getStatus());
         setLockVersion(recruitment.getLockVersion());
         if (recruitment.getDeadline() != null) {
