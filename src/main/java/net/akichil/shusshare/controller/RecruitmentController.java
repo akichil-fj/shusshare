@@ -207,6 +207,24 @@ public class RecruitmentController {
         return "redirect:/recruitment/detail/" + recruitmentId;
     }
 
+    @PostMapping(path = "/close/{recruitmentId}")
+    public String close(RedirectAttributes attributes,
+                        @AuthenticationPrincipal LoginUser loginUser,
+                        @PathVariable("recruitmentId") Integer recruitmentId) {
+        try {
+            recruitmentService.close(recruitmentId, loginUser.getAccountId());
+        } catch (ResourceNotFoundException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.close.error.notfound"));
+            return "redirect:/error";
+        } catch (NoAccessResourceException exception) {
+            attributes.addFlashAttribute("errorMsg", messageSourceHelper.getMessage("recruitment.close.error.noaccess"));
+            return "redirect:/recruitment/detail/" + recruitmentId;
+        }
+
+        attributes.addFlashAttribute("msg", messageSourceHelper.getMessage("recruitment.close.success"));
+        return "redirect:/recruitment/detail/" + recruitmentId;
+    }
+
     @PostMapping(path = "/reopen/{recruitmentId}")
     public String reopen(RedirectAttributes attributes,
                          @AuthenticationPrincipal LoginUser loginUser,

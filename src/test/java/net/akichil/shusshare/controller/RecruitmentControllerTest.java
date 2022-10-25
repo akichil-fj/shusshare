@@ -496,6 +496,43 @@ public class RecruitmentControllerTest {
     }
 
     @Test
+    public void testClose() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/close/6")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/recruitment/detail/6"))
+                .andExpect(flash().attribute("msg", "締切済み"));
+
+        Mockito.verify(recruitmentService, Mockito.times(1)).close(6, 1);
+    }
+
+    @Test
+    public void testCloseFailByResourceNotFound() throws Exception {
+        Mockito.doThrow(ResourceNotFoundException.class).when(recruitmentService).close(6, 1);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/close/6")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/error"))
+                .andExpect(flash().attribute("errorMsg", "指定された募集が見つかりません。"));
+
+        Mockito.verify(recruitmentService, Mockito.times(1)).close(6, 1);
+    }
+
+    @Test
+    public void testCloseFailByNoAccess() throws Exception {
+        Mockito.doThrow(NoAccessResourceException.class).when(recruitmentService).close(6, 1);
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/close/6")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isFound())
+                .andExpect(view().name("redirect:/recruitment/detail/6"))
+                .andExpect(flash().attribute("errorMsg", "締切権限がありません。"));
+
+        Mockito.verify(recruitmentService, Mockito.times(1)).close(6, 1);
+    }
+
+    @Test
     public void testReopen() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/reopen/5")
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
