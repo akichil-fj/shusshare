@@ -27,6 +27,9 @@
             <div class="mt-4" th:if="${recruitment.status.name() == 'CANCELED'}">
                 <span class="badge bg-secondary">キャンセル済み</span></h3>
             </div>
+            <div class="mt-4" th:if="${recruitment.status.name() == 'CLOSED'}">
+                <span class="badge bg-secondary">締切済み</span></h3>
+            </div>
             <div class="mt-2" th:if="${recruitment.description != ''}">
                 <th:block th:text="${recruitment.description}"/>
             </div>
@@ -110,12 +113,16 @@
                     <button type="submit" class="btn btn-primary">編集する</button>
                 </form>
                 <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() == 'OPENED'}" method="post"
-                      th:action="@{/recruitment/cancel/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
-                    <button type="submit" class="btn btn-outline-danger">キャンセル</button>
+                      th:action="@{/recruitment/close/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-info">締め切る</button>
                 </form>
-                <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() == 'CANCELED'}" method="post"
+                <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() != 'OPENED'}" method="post"
                       th:action="@{/recruitment/reopen/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
                     <button type="submit" class="btn btn-info">再募集</button>
+                </form>
+                <form th:if="${recruitment.createdBy == accountId && recruitment.status.name() != 'CANCELED'}" method="post"
+                      th:action="@{/recruitment/cancel/{recruitmentId}(recruitmentId=${recruitment.recruitmentId})}">
+                    <button type="submit" class="btn btn-outline-danger">キャンセル</button>
                 </form>
             </div>
         </div>
