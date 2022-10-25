@@ -85,6 +85,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
         recruitmentRepository.set(recruitment);
     }
 
+    @Transactional
     @Override
     public void reopen(Integer recruitmentId, Integer accountId) {
         Recruitment recruitment = recruitmentRepository.findOne(recruitmentId);
