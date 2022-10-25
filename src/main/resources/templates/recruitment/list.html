@@ -96,6 +96,9 @@
                             <div class="mt-1" th:if="${recruitment.status.name() == 'CANCELED'}">
                                 <span class="badge bg-secondary">キャンセル済み</span></h3>
                             </div>
+                            <div class="mt-1" th:if="${recruitment.status.name() == 'CLOSED'}">
+                                <span class="badge bg-secondary">締切済み</span></h3>
+                            </div>
                         </div>
                     </div>
                 </li>

@@ -224,6 +224,39 @@ public class RecruitmentServiceImplTest {
     }
 
     @Test
+    public void testClose() {
+        final Integer recruitmentId = 1;
+        final Integer accountId = 1;
+        final Recruitment recruitment = Recruitment.builder()
+                .recruitmentId(1)
+                .createdBy(1)
+                .build();
+        Mockito.doReturn(recruitment).when(recruitmentRepository).findOne(recruitmentId);
+
+        target.close(recruitmentId, accountId);
+
+        Mockito.verify(recruitmentRepository, Mockito.times(1)).findOne(recruitmentId);
+        Mockito.verify(recruitmentRepository, Mockito.times(1)).set(recruitment);
+        assertEquals(RecruitmentStatus.CLOSED, recruitment.getStatus());
+    }
+
+    @Test
+    public void testCannotClose() {
+        final Integer recruitmentId = 1;
+        final Integer accountId = 1;
+        final Recruitment recruitment = Recruitment.builder()
+                .recruitmentId(1)
+                .createdBy(10)
+                .build();
+        Mockito.doReturn(recruitment).when(recruitmentRepository).findOne(recruitmentId);
+
+        assertThrows(NoAccessResourceException.class, () -> target.close(recruitmentId, accountId));
+
+        Mockito.verify(recruitmentRepository, Mockito.times(1)).findOne(recruitmentId);
+        Mockito.verify(recruitmentRepository, Mockito.times(0)).set(recruitment);
+    }
+
+    @Test
     public void testReopen() {
         final Integer recruitmentId = 1;
         final Integer accountId = 1;
