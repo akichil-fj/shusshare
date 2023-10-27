@@ -2,6 +2,8 @@ package net.akichil.shusshare.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,8 +11,6 @@ import lombok.NoArgsConstructor;
 import net.akichil.shusshare.validation.AddGroup;
 import net.akichil.shusshare.validation.SetGroup;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Pattern;
 import java.time.format.DateTimeFormatter;
 
 @Data

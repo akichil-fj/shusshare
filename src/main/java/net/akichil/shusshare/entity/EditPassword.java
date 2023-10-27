@@ -2,11 +2,10 @@ package net.akichil.shusshare.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import net.akichil.shusshare.validation.CompareEquals;
 import net.akichil.shusshare.validation.SetPasswordGroup;
-
-import javax.validation.constraints.Size;
 
 /**
  * ハッシュ化前のパスワードを入れる
